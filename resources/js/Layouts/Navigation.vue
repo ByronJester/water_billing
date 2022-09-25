@@ -4,7 +4,7 @@
             style="background-color: #6eafdb; height: 7%"
         >   
             <div style="width: 7%">
-                <img src="/images/logo.png" class="py-1 px-1 cursor-pointer"
+                <img src="/images/logo.jpg" class="py-1 px-1 cursor-pointer"
                     style="width: 100%; height: 100%; border-radius: 50%"
                 />
             </div>

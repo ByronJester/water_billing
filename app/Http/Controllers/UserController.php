@@ -25,7 +25,7 @@ class UserController extends Controller
                 return redirect('/users');
             } else {
                 if($auth->user_type == 'reader') {
-                    return redirect('/payments');
+                    return redirect('/bills'); 
                 }
 
                 if($auth->user_type == 'utility') {
@@ -75,6 +75,31 @@ class UserController extends Controller
         return response()->json(['status' => 200], 200);  
     }
 
+    public function saveUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => "required|string",
+            'phone' => "required|numeric|unique:users,phone",
+            'email' => "required|unique:users,email|email:rfc,dns", 
+            'user_type' => "required",
+            'role' => "required",
+            'password' => "sometimes|required|min:8",
+            'confirm_password' => "sometimes|required|same:password|min:8",
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);
+        }
+
+        $data = $request->except(['confirm_password']);
+
+        $data['password'] = Hash::make($request->password);
+        
+        $saveUser = User::create($data);
+        
+        return response()->json(['status' => 200], 200);  
+    }
+
     public function loginAccount(Request $request)
     {
         $data = [
@@ -95,24 +120,8 @@ class UserController extends Controller
         if(Auth::attempt($data)) {
             $auth = Auth::user();
 
-            $canAccessUsers = ['admin', 'staff'];
-
             if($auth) {
-                if(in_array($auth->user_type, $canAccessUsers)) {
-                    return redirect('/users');
-                } else {
-                    if($auth->user_type == 'reader') {
-                        return redirect('/clients/bills');
-                    }
-    
-                    if($auth->user_type == 'utility') {
-                        return redirect('/clients/utilities');
-                    }
-    
-                    if($auth->user_type == 'client') {
-                        return redirect('/announcements');
-                    }
-                }
+                return redirect('/');
             }
 
         } else {
@@ -126,6 +135,10 @@ class UserController extends Controller
 
         if($auth) {
             $users = User::orderBy('created_at', 'desc')->whereNotIn('id', [$auth->id]);
+
+            if($auth->user_type == 'staff') {
+                $users = $users->where('user_type', '!=', 'admin');
+            }
 
             return Inertia::render('Users', [
                 'auth'    => $auth,

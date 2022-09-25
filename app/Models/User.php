@@ -38,4 +38,12 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
+    public function getReferenceAttribute($val)
+    {
+        if(!$val) {
+            return 'N/A';
+        }
+
+        return $val;
+    }
 }

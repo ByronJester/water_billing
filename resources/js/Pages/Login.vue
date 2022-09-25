@@ -7,7 +7,7 @@
 			<div v-if="!isRegister"
 				class="mx-2" style="border: 1px solid black; border-radius: 5px;"
 			>	
-				<div class="w-full">
+				<div class="w-full" v-if="!mobile">
 					<span class="float-right mr-3 cursor-pointer"
 						@click="isLogin = false"
 					> 
@@ -41,6 +41,7 @@
 
 					<p class="text-black text-sm ml-14 cursor-pointer hover:underline"
 						@click="isRegister = true"
+						v-if="!mobile"
 					>
 						Doesn't have accout ? Sign Up Here!
 					</p>
@@ -257,6 +258,10 @@
 							</p>
 						</div>
 					</div>
+
+					<div class="w-full" v-if="active == 'contact'">
+						Contact
+					</div>
 					
 				</div>
 			</div>
@@ -331,13 +336,7 @@ export default {
 		},
 
 		register() {
-			let headers = {
-				'Access-Control-Allow-Origin': '*',
-				'Access-Control-Allow-Methods': 'HEAD, GET, POST, PUT, PATCH, DELETE, OPTIONS',
-				'Access-Control-Allow-Headers': 'Content-Type'
-			}
-			
-			axios.post(this.$root.route + "/users/create-client-account", this.formRegisterData, headers)
+			axios.post(this.$root.route + "/users/create-client-account", this.formRegisterData)
 				.then(response => {
 					if(response.data.status == 422) {
 						this.saveError = response.data.errors 
@@ -380,9 +379,9 @@ export default {
 }
 
 .--banner {
-	background-image: url('/images/bg.jpg');
+	background-image: url('/images/banner.png');
 	background-repeat: no-repeat;
- 	background-size: cover;
+ 	background-size: 100% 100%;
 }
 
 .--login__register {

@@ -30,27 +30,31 @@ Route::middleware(['cors'])->group(function () {
         
     });
     
-    Route::prefix('users')->group(function () {
+    Route::prefix('users')->group(function () { 
         Route::get('/', [UserController::class, 'viewUsers'])->name('view.users');
         Route::post('/login', [UserController::class, 'loginAccount']);
         Route::post('/logout', [UserController::class, 'logoutAccount']);
         Route::post('/deactivate-reactivate', [UserController::class, 'changeStatus']);
         Route::post('/create-client-account', [UserController::class, 'saveClientUser']);
+        Route::post('/create-account', [UserController::class, 'saveUser']);
     });
 
     Route::prefix('clients')->group(function () {
         Route::get('/', [ClientController::class, 'viewClients'])->name('view.clients');
         Route::get('/{id}', [ClientController::class, 'viewClient'])->name('view.client');
         Route::post('/client/create', [ClientController::class, 'saveClient']);
+        Route::post('/deactivate-reactivate', [ClientController::class, 'changeStatus']);
         
-        Route::prefix('bills')->group(function () {
-        });
     });
-
-    
 
     Route::prefix('announcements')->group(function () {
         Route::get('/', [AnnouncementController::class, 'viewAnnouncements'])->name('view.announcements');
+    });
+
+    Route::prefix('bills')->group(function () {
+        Route::get('/', [ClientController::class, 'viewBill'])->name('view.bill');
+        Route::post('/generate', [ClientController::class, 'generateBill']);
+        
     });
     
 });

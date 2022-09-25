@@ -70,4 +70,47 @@ class ClientController extends Controller
         
         return response()->json(['status' => 200], 200);  
     }
+
+    public function changeStatus(Request $request)
+    {
+        Client::where('id', $request->id)->update([
+            'is_active' => $request->is_active
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function viewBill(Request $request)
+    {
+        $auth = Auth::user();
+
+        return Inertia::render('Bill', [
+            'auth'    => $auth,
+            'options' => [
+                'sample' => []
+            ]
+        ]);
+    }
+
+    public function generateBill(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'reference' => "required|exists:clients,reference",
+            'amount' => "required|numeric",
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);
+        }
+
+        $client = Client::where('reference', $request->reference)->first();
+
+        $saveBill = ClientPayment::create([
+            'client_id' => $client->id,
+            'amount' => $request->amount,
+            'status' => 'unpaid'
+        ]);
+
+        return response()->json(['status' => 200], 200);  
+    }
 }

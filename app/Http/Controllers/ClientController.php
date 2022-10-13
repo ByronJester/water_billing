@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateClient;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ClientController extends Controller
 {
@@ -96,7 +97,8 @@ class ClientController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'reference' => "required|exists:clients,reference",
-            'amount' => "required|numeric",
+            'amount' => "required|numeric|min:1",
+            'date' => "required"
         ]);
 
         if ($validator->fails()) {
@@ -105,12 +107,30 @@ class ClientController extends Controller
 
         $client = Client::where('reference', $request->reference)->first();
 
+        $bills = ClientPayment::where('client_id', $client->id)->where('status', 'unpaid')->get();
+
+        $totalAmount = $request->amount;
+
+        if(count($bills) > 0) {
+            $totalAmount += $bills->sum('amount');
+            $penalty = (5 / 100) * $totalAmount;
+            $client->penalty = $client->penalty + $penalty;
+            $client->save();
+        }
+
         $saveBill = ClientPayment::create([
             'client_id' => $client->id,
             'amount' => $request->amount,
-            'status' => 'unpaid'
+            'status' => 'unpaid',
+            'date' => $request->date
         ]);
 
-        return response()->json(['status' => 200], 200);  
+        $data = [
+            'client' => $client,
+            'amount' => $totalAmount,
+            'due_date' => $request->date
+        ];
+
+        return response()->json(['status' => 200, 'data' => $data], 200);  
     }
 }

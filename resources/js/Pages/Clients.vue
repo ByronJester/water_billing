@@ -117,7 +117,7 @@ export default {
     data(){
         return {
             columns: [
-                'Name', 'Address', 'Line #'
+                'Name', 'Address', 'Penalty', 'Line #'
             ],
             keys : [
                 {
@@ -125,6 +125,9 @@ export default {
                 },
                 {
                     label: 'address',
+                },
+                {
+                    label: 'penalty',
                 },
                 {
                     label: 'reference',

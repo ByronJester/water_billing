@@ -9,7 +9,6 @@
                 <span class="float-right">
                     {{ client.name }} - {{ client.reference }}
                 </span>
-                
             </div>
             
         </div>

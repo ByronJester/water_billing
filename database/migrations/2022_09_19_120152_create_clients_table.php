@@ -18,6 +18,7 @@ class CreateClientsTable extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('reference');
+            $table->double('penalty', 8, 2)->default(0);
             $table->boolean('is_active')->default(true);
 
             $table->softDeletes();

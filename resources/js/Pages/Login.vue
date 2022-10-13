@@ -106,7 +106,8 @@
 		</div>
 
 		<div :style="{ width: !isLogin ? '100%' : '80%'}" v-if="!mobile" class="relative">
-			<div class="w-full px-60 mt-10 flex flex-row"
+			<div class="w-full mt-10 flex flex-row"
+				style="padding-left: 12rem; padding-right: 12rem;"
 			>
 				<div class="w-full text-center cursor-pointer py-4"
 					style="background: #2596be"
@@ -259,6 +260,36 @@
 						</div>
 					</div>
 
+					<div class="w-full mt-8 flex justify-center items-center" v-if="active == 'about'">
+						<div class="w-6/12 flex flex-col" style="">
+							<div class="w-full mt-2">
+								<p class="text-xl font-bold">
+									About Us
+								</p>
+
+								<p class="text-lg font-semibold text-justify mt-4">
+									Water Billing System is a website that helps consumer to monitor their water usage, also consumers can see future announcemnt about the water billing.
+								</p>
+
+								<p class="text-xl font-bold mt-8">
+									Mission
+								</p>
+
+								<p class="text-lg font-semibold text-justify mt-4">
+									There's a perception that you have to be brutal to grow a business management. But we are aware that there is a better method to develop one in which what's good for the client’s satisfactory and also benefits the bottom line. We think that companies can develop a conscience and thrive with a soul. Because technology is being used more effectively, we made the decision to come up with a better way to handle water services, simplify client payment processes, and streamline the work of water readers.
+								</p>
+
+								<p class="text-xl font-bold mt-8">
+									Vision
+								</p>
+
+								<p class="text-lg font-semibold text-justify mt-4">
+									The approach we developed will enable us to prioritize client’s satisfaction while speeding up workers productivity.
+								</p>
+							</div>
+						</div>
+					</div>
+
 					<div class="w-full" v-if="active == 'contact'">
 						Contact
 					</div>
@@ -297,7 +328,7 @@ export default {
 			saveError: null,
 			mobile: window.screen.width <= 400,
 			isLogin: null,
-			active: 'client'
+			active: 'home'
 		}
 	},
 

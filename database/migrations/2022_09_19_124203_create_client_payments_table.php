@@ -17,6 +17,7 @@ class CreateClientPaymentsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('client_id')->unsigned()->comment('Foreign key from table clients');
             $table->double('amount', 8, 2);
+            $table->date('date');
             $table->string('status');
             
             $table->foreign('client_id')->references('id')->on('clients');

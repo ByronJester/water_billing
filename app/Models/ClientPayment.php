@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class ClientPayment extends Model
 {
@@ -12,7 +13,24 @@ class ClientPayment extends Model
     protected $fillable = [
         'client_id',
         'amount',
-        'penalty',
-        'status'
+        'status',
+        'date'
     ];
+
+    protected $appends = [
+        "month",
+        "due_date"
+    ];
+
+    public function getMonthAttribute()
+    {
+        return date("F", strtotime($this->created_at));
+    }
+
+    public function getDueDateAttribute()
+    {
+        $date = Carbon::parse($this->date);
+
+        return $date->isoFormat('LL'); 
+    }
 }

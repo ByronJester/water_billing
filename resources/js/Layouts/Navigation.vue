@@ -1,49 +1,69 @@
 <template>
-    <div class="w-screen h-screen flex flex-col">
-        <div class="w-full flex flex-row"
-            style="background-color: #6eafdb; height: 7%"
-        >   
-            <div style="width: 7%">
-                <img src="/images/logo.jpg" class="py-1 px-1 cursor-pointer"
-                    style="width: 100%; height: 100%; border-radius: 50%"
-                />
-            </div>
+    <div class="w-screen h-screen flex flex-row">
+        <div class="--left__panel" @mouseover="biggerWidth()" @mouseleave="smallerWidth()"
+            :style="{ 'width': leftPanel}"
+        >
+            <ul class="pl-2 pt-10 --ul__caption text-bold w-full">
+                <li class="mt-1 mb-10 cursor-pointer"
+                    @click="changeActive('/users')"
+                >
+                    <i class="fa-solid fa-user-group fa-lg mx-2"></i> 
+                    <span v-if="isHover" class="mx-2"
+                        :style="{'border-bottom': active === '/users' ? '1px solid black' : 'none'}"
+                    > 
+                        USERS
+                    </span>
+                </li>
 
-            <div style="width: 93%">
-                <div class="float-right flex flex-row mt-6 mr-3 font-semibold">
-                    <div class="mx-5 cursor-pointer dropdown">
-                        <span class="dropbtn"><i class="fa-solid fa-user mr-1"></i> PROFILE</span>
-                        <div class="dropdown-content text-center font-medium text-sm">
-                            <!-- <a>View Profile</a> -->
-                            <a @click="logout()">Logout</a>
-                        </div>
-                    </div>
+                <li class="mt-1 mb-10 cursor-pointer"
+                    @click="changeActive('/clients')"
+                >
+                    <i class="fa-sharp fa-solid fa-users-between-lines fa-lg mx-2"></i>
+                    <span v-if="isHover" class="mx-2"
+                        :style="{'border-bottom': active === '/clients' ? '1px solid black' : 'none'}"
+                    > 
+                        CLIENTS
+                    </span>
+                </li>
 
-                    <div class="mx-5 cursor-pointer" :class="{'--active' : active == '/users'}"
-                        @click="changeActive('/users')"
-                    >
-                        <i class="fa-solid fa-users-gear mr-1"></i>USERS
-                    </div>
+                <li class="mt-1 mb-10 cursor-pointer"
+                    @click="changeActive('/settings')"
+                >
+                    <i class="fa-solid fa-gears fa-lg mx-2"></i>
+                    <span v-if="isHover" class="mx-2"
+                        :style="{'border-bottom': active === '/settings' ? '1px solid black' : 'none'}"
+                    > 
+                        SETTINGS
+                    </span>
+                </li>
 
-                    <div class="mx-5 cursor-pointer" :class="{'--active' : active.includes('clients')}"
-                        @click="changeActive('/clients')"
-                    >
-                        <i class="fa-solid fa-users mr-1"></i>CLIENTS
-                    </div>
+                <li class="mt-1 mb-10 cursor-pointer"
+                    @click="changeActive('/users/profile')"
+                >
+                    <i class="fa-solid fa-user-pen fa-lg mx-2"></i>
+                    <span v-if="isHover" class="mx-2"
+                        :style="{'border-bottom': active === '/users/profile' ? '1px solid black' : 'none'}"
+                    > 
+                        PROFILE
+                    </span>
+                </li>
 
-                    <div class="mx-5 cursor-pointer" :class="{'--active' : active == '/announcements'}"
-                        @click="changeActive('/announcements')"
-                    >
-                        <i class="fa-sharp fa-solid fa-envelopes-bulk mr-1"></i>ANNOUNCEMENTS
-                    </div>
-
-                </div>
                 
-            </div>
+            </ul>
+
+            <ul class="--ul__caption absolute text-bold w-full"
+                style="bottom: 0.2rem;"
+            >
+                <hr>
+                <li class="my-5 px-2 cursor-pointer" @click="logout()">
+                    <i class="fa-solid fa-door-open fa-lg mx-2"></i> 
+                    <span v-if="isHover" class="mx-2"> LOGOUT </span>
+                </li>
+            </ul>
         </div>
 
-        <div class="w-full"
-            style="background-color: #ffefd2; height: 93%"
+        <div class="--right__panel"
+            :style="{ 'width': rightPanel}"
         >
             <slot></slot>
         </div>
@@ -59,15 +79,29 @@ export default {
         return {
             leftPanel: '3%',
             rightPanel: '97%',
-            active: window.location.pathname
+            isHover: false,
+            active: window.location.pathname,
+            tabs: []
         }
 	},
 
     created(){
-        
+
     },
 
 	methods: {
+        biggerWidth() {
+            this.leftPanel = '9%';
+            this.rightPanel = '91%';
+            this.isHover = true
+        },
+
+        smallerWidth(){
+            this.leftPanel = '3%';
+            this.rightPanel = '97%';
+            this.isHover = false
+        },
+
         logout(){
             Inertia.post(this.$root.route + "/users/logout", {},
 			{
@@ -76,6 +110,10 @@ export default {
 				orError: (err) => {
 				}
 			});
+        },
+
+        hasAccess(arg){
+            return this.tabs.includes(arg)
         },
 
         changeActive(arg){
@@ -92,33 +130,18 @@ export default {
 </script>
 
 <style scoped>
-.dropdown {
-  position: relative;
-  display: inline-block;
+.--left__panel {
+    background: #0097A7;
+    width: 15%;
 }
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #ffffff;
-  min-width: 130px;
-  z-index: 1;
-  border: 1px solid black;
-  border-radius: 5px;
-  left: -2.5rem;
+.--right__panel {
+    background: #ffffff;
 }
 
-.dropdown-content a {
-  color: black;
-  text-decoration: none;
-  display: block;
+.--ul__caption {
+    color: black !important;
+    font-weight: bold;
 }
 
-.dropdown-content a:hover {background-color: #2c85c1;}
-
-.dropdown:hover .dropdown-content {display: block;}
-
-.--active {
-    border-bottom: 2px solid black;
-}
 </style>

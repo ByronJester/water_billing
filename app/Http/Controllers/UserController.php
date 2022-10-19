@@ -121,7 +121,7 @@ class UserController extends Controller
             $auth = Auth::user();
 
             if($auth) {
-                return redirect('/');
+                return redirect('/'); 
             }
 
         } else {
@@ -165,6 +165,48 @@ class UserController extends Controller
         Auth::logout();
 
         return redirect('/');;
+    }
+
+    public function viewProfile(Request $request)
+    {
+        $auth = Auth::user();
+
+        if($auth) {
+            return Inertia::render('Profile', [
+                'auth'    => $auth,
+                'options' => [
+                ]
+            ]);
+        }
+
+        return redirect('/');
+    }
+
+    public function editProfile(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => "required|string",
+            'phone' => "required|numeric|unique:users,phone," . $request->id,
+            'email' => "required|email:rfc,dns|unique:users,email," . $request->id, 
+            'password' => "sometimes|required|min:8",
+            'confirm_password' => "sometimes|required|same:password|min:8",
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);
+        }
+
+        $data = $request->toArray();
+
+        if(!!$request->password) {
+            $data = $request->except(['confirm_password']);
+
+            $data['password'] = Hash::make($request->password);
+        }
+        
+        $saveUser = User::where('id', $request->id)->update($data);
+        
+        return response()->json(['status' => 200], 200);  
     }
 } 
  

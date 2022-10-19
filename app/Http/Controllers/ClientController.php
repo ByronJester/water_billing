@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\Client;
 use App\Models\ClientPayment;
 use App\Models\ClientUtility;
+use App\Models\WaterBill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateClient;
@@ -37,13 +38,22 @@ class ClientController extends Controller
     {   
         $auth = Auth::user();
 
-        $client = Client::where('id', $id);
+        $client = Client::where('id', $id); 
+        $payments = ClientPayment::where('client_id', $id)->orderBy('created_at')->whereYear('created_at', Carbon::now()->year)->get();
+
+        $reportArr = [];
 
         if($auth) {
             return Inertia::render('Client', [
                 'auth'    => $auth,
                 'options' => [
-                    'client' => $client->first()
+                    'client' => $client->first(),
+                    'payments' => $payments,
+                    'reports' => [
+                        'amount' => $payments->pluck('amount'),
+                        'month' => $payments->pluck('month')
+                    ]
+                    
                 ]
             ]);
         }
@@ -97,7 +107,7 @@ class ClientController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'reference' => "required|exists:clients,reference",
-            'amount' => "required|numeric|min:1",
+            'consumed_cubic_meter' => "required|numeric|min:1",
             'date' => "required"
         ]);
 
@@ -109,7 +119,11 @@ class ClientController extends Controller
 
         $bills = ClientPayment::where('client_id', $client->id)->where('status', 'unpaid')->get();
 
-        $totalAmount = $request->amount;
+        $waterBill = WaterBill::orderBy('created_at', 'desc')->first();
+
+        $waterBillAmount = $waterBill->amount * $request->consumed_cubic_meter;
+
+        $totalAmount = $waterBillAmount;
 
         if(count($bills) > 0) {
             $totalAmount += $bills->sum('amount');
@@ -120,7 +134,7 @@ class ClientController extends Controller
 
         $saveBill = ClientPayment::create([
             'client_id' => $client->id,
-            'amount' => $request->amount,
+            'amount' => $waterBillAmount,
             'status' => 'unpaid',
             'date' => $request->date
         ]);

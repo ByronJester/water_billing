@@ -18,9 +18,9 @@
 
             <div class="w-full">
                 <input type="number" class="w-full  my-2 --login__register--input text-center"
-                    placeholder="Amount" v-model="form.amount"
+                    placeholder="Consumed Cubic Meter" v-model="form.consumed_cubic_meter"
                 >
-                <span class="text-xs text-red-500">{{validationError('amount', saveError)}} </span>
+                <span class="text-xs text-red-500">{{validationError('consumed_cubic_meter', saveError)}} </span>
             </div>
 
             <div class="w-full">
@@ -146,7 +146,7 @@ export default {
         return {
             form: {
                 reference: null,
-                amount: 0,
+                consumed_cubic_meter: 0,
                 date: null
             },
             saveError: null,
@@ -192,7 +192,7 @@ export default {
 
                         this.form = {
 							reference: null,
-							amount: 0,
+							consumed_cubic_meter: 0,
                             date: null
 						}
 

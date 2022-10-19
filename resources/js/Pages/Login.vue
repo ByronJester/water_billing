@@ -122,7 +122,7 @@
 					:class="{'font-bold': active == 'client'}"
 					@click="changeActive('client')"
 				>
-					CLIENT
+					REQUIREMENTS
 				</div>
 
 				<div class="w-full text-center cursor-pointer py-4"

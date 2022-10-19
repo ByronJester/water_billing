@@ -53,8 +53,8 @@ td {
 
 th {
     border: 1px solid black;
-    background: #3949AB;
-    color: white;
+    background: #0097A7;
+    color: black;
 }
 
 .--active__color {

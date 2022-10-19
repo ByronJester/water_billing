@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientPaymentsTable extends Migration
+class CreateWaterBillTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,13 @@ class CreateClientPaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('client_payments', function (Blueprint $table) {
+        Schema::create('water_bills', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('client_id')->unsigned()->comment('Foreign key from table clients'); 
+            $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
             $table->double('amount', 8, 2);
             $table->date('date');
-            $table->string('status');
             
-            $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -33,6 +32,6 @@ class CreateClientPaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_payments');
+        Schema::dropIfExists('water_bills');
     }
 }

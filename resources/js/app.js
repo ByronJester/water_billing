@@ -44,6 +44,8 @@ const pages = {
   'Clients': require('./Pages/Clients.vue').default,
   'Client': require('./Pages/Client.vue').default,
   'Bill': require('./Pages/Bill.vue').default,
+  'Settings': require('./Pages/Settings.vue').default,
+  'Profile': require('./Pages/Profile.vue').default,
 }
 
 new Vue({

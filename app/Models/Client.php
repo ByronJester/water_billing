@@ -13,6 +13,7 @@ class Client extends Model
         'name',
         'address',
         'reference',
-        'is_active'
+        'is_active',
+        'penalty'
     ];
 }

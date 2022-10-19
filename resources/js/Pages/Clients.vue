@@ -149,7 +149,7 @@ export default {
 
     watch: {
         client(arg) {
-            console.log(arg)
+            
         }
     },
 

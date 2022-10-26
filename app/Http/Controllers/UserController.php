@@ -33,7 +33,8 @@ class UserController extends Controller
                 }
 
                 if($auth->user_type == 'client') {
-                    return redirect('/announcements');
+                    $route =  "/clients" . "/" . $auth->reference;
+                    return redirect($route);
                 }
             }
         }

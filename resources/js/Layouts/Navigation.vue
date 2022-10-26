@@ -6,6 +6,7 @@
             <ul class="pl-2 pt-10 --ul__caption text-bold w-full">
                 <li class="mt-1 mb-10 cursor-pointer"
                     @click="changeActive('/users')"
+                    v-if="auth.user_type == 'admin' || auth.user_type == 'staff'"
                 >
                     <i class="fa-solid fa-user-group fa-lg mx-2"></i> 
                     <span v-if="isHover" class="mx-2"
@@ -17,6 +18,7 @@
 
                 <li class="mt-1 mb-10 cursor-pointer"
                     @click="changeActive('/clients')"
+                    v-if="auth.user_type == 'admin' || auth.user_type == 'staff'"
                 >
                     <i class="fa-sharp fa-solid fa-users-between-lines fa-lg mx-2"></i>
                     <span v-if="isHover" class="mx-2"
@@ -28,12 +30,25 @@
 
                 <li class="mt-1 mb-10 cursor-pointer"
                     @click="changeActive('/settings')"
+                    v-if="auth.user_type == 'admin' || auth.user_type == 'staff'"
                 >
                     <i class="fa-solid fa-gears fa-lg mx-2"></i>
                     <span v-if="isHover" class="mx-2"
                         :style="{'border-bottom': active === '/settings' ? '1px solid black' : 'none'}"
                     > 
                         SETTINGS
+                    </span>
+                </li>
+
+                <li class="mt-1 mb-10 cursor-pointer"
+                    @click="changeActive('/clients/' + auth.reference)"
+                    v-if="auth.user_type == 'client'"
+                >
+                    <i class="fa-sharp fa-solid fa-hand-holding-droplet fa-lg mx-2"></i>
+                    <span v-if="isHover" class="mx-2"
+                        :style="{'border-bottom': active === '/clients/' + auth.reference ? '1px solid black' : 'none'}"
+                    > 
+                        CONNECTION
                     </span>
                 </li>
 

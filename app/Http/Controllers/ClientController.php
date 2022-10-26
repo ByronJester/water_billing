@@ -34,12 +34,13 @@ class ClientController extends Controller
         return redirect('/');
     }
 
-    public function viewClient($id) 
+    public function viewClient($reference) 
     {   
         $auth = Auth::user();
 
-        $client = Client::where('id', $id); 
-        $payments = ClientPayment::where('client_id', $id)->orderBy('created_at')->whereYear('created_at', Carbon::now()->year)->get();
+        $client = Client::where('reference', $reference)->first(); 
+
+        $payments = ClientPayment::where('client_id', $client->id)->orderBy('created_at')->whereYear('created_at', Carbon::now()->year)->get();
 
         $reportArr = [];
 
@@ -47,7 +48,7 @@ class ClientController extends Controller
             return Inertia::render('Client', [
                 'auth'    => $auth,
                 'options' => [
-                    'client' => $client->first(),
+                    'client' => $client,
                     'payments' => $payments,
                     'reports' => [
                         'amount' => $payments->pluck('amount'),

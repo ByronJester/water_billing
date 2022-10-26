@@ -2,7 +2,7 @@
     <Navigation :auth="auth">
         <div class="w-full h-full px-2 py-2">
             <div class="w-full text-2xl pt-5 px-4 cursor-pointer">
-                <span @click="back()">
+                <span @click="back()" v-if="auth.role != 2">
                     <i class="fa-solid fa-arrow-left mr-2"></i> Back
                 </span>
 
@@ -29,7 +29,7 @@
                             :names="['Water Billing Report']"
                             :colors="[ '#246AC6']"
                             :values="options.reports.amount">
-                        <note :text="'Water Billing Report'" :align="'center'"></note>
+                        <note :text="'Year ' + new Date().getFullYear()" :align="'center'"></note>
                         <tooltip :names="['Water Billing Report']" :position="'left'"></tooltip>
                         <legends :names="['Water Billing Report']"></legends>
                         <guideline :tooltip-y="true"></guideline>

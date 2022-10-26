@@ -2285,6 +2285,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth'],
@@ -46136,101 +46151,159 @@ var render = function() {
       },
       [
         _c("ul", { staticClass: "pl-2 pt-10 --ul__caption text-bold w-full" }, [
-          _c(
-            "li",
-            {
-              staticClass: "mt-1 mb-10 cursor-pointer",
-              on: {
-                click: function($event) {
-                  return _vm.changeActive("/users")
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "fa-solid fa-user-group fa-lg mx-2" }),
-              _vm._v(" "),
-              _vm.isHover
-                ? _c(
-                    "span",
-                    {
-                      staticClass: "mx-2",
-                      style: {
-                        "border-bottom":
-                          _vm.active === "/users" ? "1px solid black" : "none"
-                      }
-                    },
-                    [_vm._v(" \n                    USERS\n                ")]
-                  )
-                : _vm._e()
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "mt-1 mb-10 cursor-pointer",
-              on: {
-                click: function($event) {
-                  return _vm.changeActive("/clients")
-                }
-              }
-            },
-            [
-              _c("i", {
-                staticClass:
-                  "fa-sharp fa-solid fa-users-between-lines fa-lg mx-2"
-              }),
-              _vm._v(" "),
-              _vm.isHover
-                ? _c(
-                    "span",
-                    {
-                      staticClass: "mx-2",
-                      style: {
-                        "border-bottom":
-                          _vm.active === "/clients" ? "1px solid black" : "none"
-                      }
-                    },
-                    [_vm._v(" \n                    CLIENTS\n                ")]
-                  )
-                : _vm._e()
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              staticClass: "mt-1 mb-10 cursor-pointer",
-              on: {
-                click: function($event) {
-                  return _vm.changeActive("/settings")
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "fa-solid fa-gears fa-lg mx-2" }),
-              _vm._v(" "),
-              _vm.isHover
-                ? _c(
-                    "span",
-                    {
-                      staticClass: "mx-2",
-                      style: {
-                        "border-bottom":
-                          _vm.active === "/settings"
-                            ? "1px solid black"
-                            : "none"
-                      }
-                    },
-                    [
-                      _vm._v(
-                        " \n                    SETTINGS\n                "
+          _vm.auth.user_type == "admin" || _vm.auth.user_type == "staff"
+            ? _c(
+                "li",
+                {
+                  staticClass: "mt-1 mb-10 cursor-pointer",
+                  on: {
+                    click: function($event) {
+                      return _vm.changeActive("/users")
+                    }
+                  }
+                },
+                [
+                  _c("i", { staticClass: "fa-solid fa-user-group fa-lg mx-2" }),
+                  _vm._v(" "),
+                  _vm.isHover
+                    ? _c(
+                        "span",
+                        {
+                          staticClass: "mx-2",
+                          style: {
+                            "border-bottom":
+                              _vm.active === "/users"
+                                ? "1px solid black"
+                                : "none"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            " \n                    USERS\n                "
+                          )
+                        ]
                       )
-                    ]
-                  )
-                : _vm._e()
-            ]
-          ),
+                    : _vm._e()
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.auth.user_type == "admin" || _vm.auth.user_type == "staff"
+            ? _c(
+                "li",
+                {
+                  staticClass: "mt-1 mb-10 cursor-pointer",
+                  on: {
+                    click: function($event) {
+                      return _vm.changeActive("/clients")
+                    }
+                  }
+                },
+                [
+                  _c("i", {
+                    staticClass:
+                      "fa-sharp fa-solid fa-users-between-lines fa-lg mx-2"
+                  }),
+                  _vm._v(" "),
+                  _vm.isHover
+                    ? _c(
+                        "span",
+                        {
+                          staticClass: "mx-2",
+                          style: {
+                            "border-bottom":
+                              _vm.active === "/clients"
+                                ? "1px solid black"
+                                : "none"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            " \n                    CLIENTS\n                "
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.auth.user_type == "admin" || _vm.auth.user_type == "staff"
+            ? _c(
+                "li",
+                {
+                  staticClass: "mt-1 mb-10 cursor-pointer",
+                  on: {
+                    click: function($event) {
+                      return _vm.changeActive("/settings")
+                    }
+                  }
+                },
+                [
+                  _c("i", { staticClass: "fa-solid fa-gears fa-lg mx-2" }),
+                  _vm._v(" "),
+                  _vm.isHover
+                    ? _c(
+                        "span",
+                        {
+                          staticClass: "mx-2",
+                          style: {
+                            "border-bottom":
+                              _vm.active === "/settings"
+                                ? "1px solid black"
+                                : "none"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            " \n                    SETTINGS\n                "
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.auth.user_type == "client"
+            ? _c(
+                "li",
+                {
+                  staticClass: "mt-1 mb-10 cursor-pointer",
+                  on: {
+                    click: function($event) {
+                      return _vm.changeActive("/clients/" + _vm.auth.reference)
+                    }
+                  }
+                },
+                [
+                  _c("i", {
+                    staticClass:
+                      "fa-sharp fa-solid fa-hand-holding-droplet fa-lg mx-2"
+                  }),
+                  _vm._v(" "),
+                  _vm.isHover
+                    ? _c(
+                        "span",
+                        {
+                          staticClass: "mx-2",
+                          style: {
+                            "border-bottom":
+                              _vm.active === "/clients/" + _vm.auth.reference
+                                ? "1px solid black"
+                                : "none"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            " \n                    CONNECTION\n                "
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ]
+              )
+            : _vm._e(),
           _vm._v(" "),
           _c(
             "li",
@@ -46656,20 +46729,22 @@ var render = function() {
   return _c("Navigation", { attrs: { auth: _vm.auth } }, [
     _c("div", { staticClass: "w-full h-full px-2 py-2" }, [
       _c("div", { staticClass: "w-full text-2xl pt-5 px-4 cursor-pointer" }, [
-        _c(
-          "span",
-          {
-            on: {
-              click: function($event) {
-                return _vm.back()
-              }
-            }
-          },
-          [
-            _c("i", { staticClass: "fa-solid fa-arrow-left mr-2" }),
-            _vm._v(" Back\n            ")
-          ]
-        ),
+        _vm.auth.role != 2
+          ? _c(
+              "span",
+              {
+                on: {
+                  click: function($event) {
+                    return _vm.back()
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "fa-solid fa-arrow-left mr-2" }),
+                _vm._v(" Back\n            ")
+              ]
+            )
+          : _vm._e(),
         _vm._v(" "),
         _c("span", { staticClass: "float-right" }, [
           _vm._v(
@@ -46727,7 +46802,10 @@ var render = function() {
               },
               [
                 _c("note", {
-                  attrs: { text: "Water Billing Report", align: "center" }
+                  attrs: {
+                    text: "Year " + new Date().getFullYear(),
+                    align: "center"
+                  }
                 }),
                 _vm._v(" "),
                 _c("tooltip", {
@@ -46898,7 +46976,7 @@ var render = function() {
                             staticClass: "w-2/12 cursor-pointer",
                             on: {
                               click: function($event) {
-                                return _vm.viewClient(_vm.client.id)
+                                return _vm.viewClient(_vm.client.reference)
                               }
                             }
                           },

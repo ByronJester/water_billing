@@ -48,7 +48,7 @@
                         </div>
 
                         <div class="w-full mt-4 flex flex-row pl-2 pb-2">
-                            <div class="w-2/12 cursor-pointer" @click="viewClient(client.id)">
+                            <div class="w-2/12 cursor-pointer" @click="viewClient(client.reference)">
                                 <i class="fa-solid fa-eye fa-2xl"></i>
                             </div>
                             

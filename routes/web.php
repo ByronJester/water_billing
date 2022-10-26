@@ -44,7 +44,7 @@ Route::middleware(['cors'])->group(function () {
 
     Route::prefix('clients')->group(function () {
         Route::get('/', [ClientController::class, 'viewClients'])->name('view.clients');
-        Route::get('/{id}', [ClientController::class, 'viewClient'])->name('view.client');
+        Route::get('/{reference}', [ClientController::class, 'viewClient'])->name('view.client'); 
         Route::post('/client/create', [ClientController::class, 'saveClient']);
         Route::post('/deactivate-reactivate', [ClientController::class, 'changeStatus']);
         

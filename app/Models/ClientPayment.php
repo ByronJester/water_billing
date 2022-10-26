@@ -33,4 +33,9 @@ class ClientPayment extends Model
 
         return $date->isoFormat('LL'); 
     }
+
+    public function getStatusAttribute($value)
+    {
+        return strtoupper($value);
+    }
 }

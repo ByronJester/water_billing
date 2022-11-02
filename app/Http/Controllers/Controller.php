@@ -15,7 +15,7 @@ class Controller extends BaseController
     public function sendSms($to, $message)
     {
         $account_sid = 'AC0201237e8b04951bfbcdb9db86613254';
-        $auth_token = '2f8dadd4426dccf5f159b400a8185145';
+        $auth_token = '0c392402a2ec22b5e426f8b0275b80c5';
         $twilio_number = "+19123043848";
 
         $to = '+63'  . $to;

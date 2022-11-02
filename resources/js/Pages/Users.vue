@@ -35,9 +35,23 @@
 
                         <div class="w-full px-4 p-2">
                             <input type="text" class="w-full  my-2 --login__register--input text-center"
-                                placeholder="Name" v-model="formRegisterData.name"
+                                placeholder="First Name" v-model="formRegisterData.first_name"
                             >
-                            <span class="text-xs text-red-500">{{validationError('name', saveError)}} </span>
+                            <span class="text-xs text-red-500">{{validationError('first_name', saveError)}} </span>
+                        </div>
+
+                        <div class="w-full px-4 p-2">
+                            <input type="text" class="w-full  my-2 --login__register--input text-center"
+                                placeholder="Middle Name" v-model="formRegisterData.middle_name"
+                            >
+                            <span class="text-xs text-red-500">{{validationError('middle_name', saveError)}} </span>
+                        </div>
+
+                        <div class="w-full px-4 p-2">
+                            <input type="text" class="w-full  my-2 --login__register--input text-center"
+                                placeholder="Last Name" v-model="formRegisterData.last_name"
+                            >
+                            <span class="text-xs text-red-500">{{validationError('last_name', saveError)}} </span>
                         </div>
 
                         <div class="w-full px-4 p-2">
@@ -134,7 +148,9 @@ export default {
             user: null,
             newUser: false,
             formRegisterData: {
-				name: null,
+				first_name: null,
+				middle_name: null,
+				last_name: null,
 				phone: null,
 				email: null,
 				password: null,
@@ -163,7 +179,9 @@ export default {
 						this.saveError = response.data.errors 
 					} else {
 						this.formRegisterData = {
-							name: null,
+							first_name: null,
+                            middle_name: null,
+                            last_name: null,
 							phone: null,
 							email: null,
 							password: null,

@@ -50,7 +50,8 @@ class UserController extends Controller
     public function saveClientUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => "required|string",
+            'first_name' => "required|string",
+            'last_name' => "required|string",
             'phone' => "required|numeric|unique:users,phone",
             'email' => "required|unique:users,email|email:rfc,dns", 
             'user_type' => "required",
@@ -79,7 +80,8 @@ class UserController extends Controller
     public function saveUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => "required|string",
+            'first_name' => "required|string",
+            'last_name' => "required|string",
             'phone' => "required|numeric|unique:users,phone",
             'email' => "required|unique:users,email|email:rfc,dns", 
             'user_type' => "required",

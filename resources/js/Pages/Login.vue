@@ -59,9 +59,19 @@
 
 				<div class="px-2 py-2">
 					<input type="text" class="w-full  my-2 --login__register--input text-center"
-						placeholder="Name" v-model="formRegisterData.name"
+						placeholder="First Name" v-model="formRegisterData.first_name"
 					>
-					<span class="text-xs text-red-500">{{validationError('name', saveError)}} </span>
+					<span class="text-xs text-red-500">{{validationError('first_name', saveError)}} </span>
+
+					<input type="text" class="w-full  my-2 --login__register--input text-center"
+						placeholder="Middle Name" v-model="formRegisterData.middle_name"
+					>
+					<span class="text-xs text-red-500">{{validationError('middle_name', saveError)}} </span>
+
+					<input type="text" class="w-full  my-2 --login__register--input text-center"
+						placeholder="Last Name" v-model="formRegisterData.last_name"
+					>
+					<span class="text-xs text-red-500">{{validationError('last_name', saveError)}} </span>
 
 					<input type="text" class="w-full  my-2 --login__register--input text-center"
 						placeholder="Email" v-model="formRegisterData.email"
@@ -105,7 +115,7 @@
 			</div>
 		</div>
 
-		<div :style="{ width: !isLogin ? '100%' : '80%'}" v-if="!mobile" class="relative">
+		<div :style="{ width: !isLogin ? '100%' : '100%'}" v-if="!mobile" class="relative">
 			<div class="w-full mt-10 flex flex-row"
 				style="padding-left: 12rem; padding-right: 12rem;"
 			>
@@ -150,15 +160,18 @@
 			</div>
 
 			<div class="w-full flex justify-center items-center"
+				style="padding-left: 12rem; padding-right: 12rem;"
 			>
-				<div class="w-4/5 --banner"
+				<div class="w-full --banner"
 					style="height: 250px;"
 				>
 					
 				</div>
 			</div>
 
-			<div class="w-full flex justify-center items-center">
+			<div class="w-full flex justify-center items-center"
+				style="padding-left: 12rem; padding-right: 12rem;"
+			>
 				<div class="w-4/5 h-full"
 				>
 					<div class="w-full flex flex-row" v-if="active == 'client'">
@@ -315,7 +328,9 @@ export default {
 				password: null 
 			},
 			formRegisterData: {
-				name: null,
+				first_name: null,
+				middle_name: null,
+				last_name: null,
 				phone: null,
 				email: null,
 				password: null,
@@ -373,7 +388,9 @@ export default {
 						this.saveError = response.data.errors 
 					} else {
 						this.formRegisterData = {
-							name: null,
+							first_name: null,
+							middle_name: null,
+							last_name: null,
 							phone: null,
 							email: null,
 							password: null,

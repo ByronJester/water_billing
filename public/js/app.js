@@ -2773,6 +2773,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2787,19 +2811,25 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      columns: ['Name', 'Address', 'Penalty', 'Line #'],
+      columns: ['Name', 'Address', 'Amount To Pay', 'Penalty', 'Line #', 'Due Date'],
       keys: [{
         label: 'name'
       }, {
         label: 'address'
       }, {
+        label: 'amount_to_pay'
+      }, {
         label: 'penalty'
       }, {
         label: 'reference'
+      }, {
+        label: 'due_date'
       }],
       clients: [],
       form: {
-        name: null,
+        first_name: null,
+        middle_name: null,
+        last_name: null,
         address: null
       },
       saveError: null,
@@ -2838,6 +2868,23 @@ __webpack_require__.r(__webpack_exports__);
     viewClient: function viewClient(arg) {
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.get(this.$root.route + '/clients/' + arg, {
         onSuccess: function onSuccess() {}
+      });
+    },
+    markAsPaid: function markAsPaid(client_id) {
+      axios__WEBPACK_IMPORTED_MODULE_3___default().post(this.$root.route + "/clients/client/mark-as-paid", {
+        id: client_id
+      }).then(function (response) {
+        alert("Succesfully mark as paid.");
+        location.reload();
+      });
+    },
+    notify: function notify(arg) {
+      axios__WEBPACK_IMPORTED_MODULE_3___default().post(this.$root.route + "/clients/client/notify", {
+        reference: arg.reference,
+        due_date: arg.due_date
+      }).then(function (response) {
+        alert("Client has successfuly notified of his/her payment due date.");
+        location.reload();
       });
     }
   }
@@ -3163,6 +3210,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3174,7 +3234,9 @@ __webpack_require__.r(__webpack_exports__);
         password: null
       },
       formRegisterData: {
-        name: null,
+        first_name: null,
+        middle_name: null,
+        last_name: null,
         phone: null,
         email: null,
         password: null,
@@ -3223,7 +3285,9 @@ __webpack_require__.r(__webpack_exports__);
           _this.saveError = response.data.errors;
         } else {
           _this.formRegisterData = {
-            name: null,
+            first_name: null,
+            middle_name: null,
+            last_name: null,
             phone: null,
             email: null,
             password: null,
@@ -3611,6 +3675,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3640,7 +3718,9 @@ __webpack_require__.r(__webpack_exports__);
       user: null,
       newUser: false,
       formRegisterData: {
-        name: null,
+        first_name: null,
+        middle_name: null,
+        last_name: null,
         phone: null,
         email: null,
         password: null,
@@ -3666,7 +3746,9 @@ __webpack_require__.r(__webpack_exports__);
           _this.saveError = response.data.errors;
         } else {
           _this.formRegisterData = {
-            name: null,
+            first_name: null,
+            middle_name: null,
+            last_name: null,
             phone: null,
             email: null,
             password: null,
@@ -46968,28 +47050,79 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      { staticClass: "w-full mt-4 flex flex-row pl-2 pb-2" },
+                      { staticClass: "w-full mt-4 inline-flex justify-center" },
                       [
                         _c(
-                          "div",
+                          "button",
                           {
-                            staticClass: "w-2/12 cursor-pointer",
+                            staticClass: "mr-1",
+                            staticStyle: {
+                              background: "#0288D1",
+                              color: "white",
+                              padding: "5px 10px 5px 10px",
+                              "border-radius": "5px"
+                            },
                             on: {
                               click: function($event) {
                                 return _vm.viewClient(_vm.client.reference)
                               }
                             }
                           },
-                          [_c("i", { staticClass: "fa-solid fa-eye fa-2xl" })]
+                          [
+                            _vm._v(
+                              "\n                            VIEW\n                        "
+                            )
+                          ]
                         ),
                         _vm._v(" "),
-                        _c("div", { staticClass: "w-10/12" }, [
-                          _c(
-                            "span",
-                            { staticClass: "text-lg ml-1 font-semibold" },
-                            [_vm._v("View")]
-                          )
-                        ])
+                        _vm.client.amount_to_pay > 0
+                          ? _c(
+                              "button",
+                              {
+                                staticClass: "mr-1",
+                                staticStyle: {
+                                  background: "#00897B",
+                                  color: "white",
+                                  padding: "5px 10px 5px 10px",
+                                  "border-radius": "5px"
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.markAsPaid(_vm.client.id)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            MARK AS PAID\n                        "
+                                )
+                              ]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.client.amount_to_pay > 0
+                          ? _c(
+                              "button",
+                              {
+                                staticStyle: {
+                                  background: "#EF5350",
+                                  color: "white",
+                                  padding: "5px 10px 5px 10px",
+                                  "border-radius": "5px"
+                                },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.notify(_vm.client)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                            NOTIFY\n                        "
+                                )
+                              ]
+                            )
+                          : _vm._e()
                       ]
                     )
                   ]
@@ -47027,7 +47160,7 @@ var render = function() {
                   [
                     _c("div", [
                       _c("label", { attrs: { for: "name" } }, [
-                        _vm._v("Name:")
+                        _vm._v("First Name:")
                       ]),
                       _c("br"),
                       _vm._v(" "),
@@ -47036,27 +47169,110 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.name,
-                            expression: "form.name"
+                            value: _vm.form.first_name,
+                            expression: "form.first_name"
                           }
                         ],
                         staticClass: "--input py-4",
                         attrs: { type: "text", id: "name", name: "name" },
-                        domProps: { value: _vm.form.name },
+                        domProps: { value: _vm.form.first_name },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(_vm.form, "name", $event.target.value)
+                            _vm.$set(
+                              _vm.form,
+                              "first_name",
+                              $event.target.value
+                            )
                           }
                         }
                       }),
                       _vm._v(" "),
                       _c("span", { staticClass: "text-xs text-red-500" }, [
                         _vm._v(
-                          _vm._s(_vm.validationError("name", _vm.saveError)) +
-                            " "
+                          _vm._s(
+                            _vm.validationError("first_name", _vm.saveError)
+                          ) + " "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("label", { attrs: { for: "name" } }, [
+                        _vm._v("Middle Name:")
+                      ]),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.middle_name,
+                            expression: "form.middle_name"
+                          }
+                        ],
+                        staticClass: "--input py-4",
+                        attrs: { type: "text", id: "name", name: "name" },
+                        domProps: { value: _vm.form.middle_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.form,
+                              "middle_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-xs text-red-500" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.validationError("middle_name", _vm.saveError)
+                          ) + " "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("label", { attrs: { for: "name" } }, [
+                        _vm._v("Last Name:")
+                      ]),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.last_name,
+                            expression: "form.last_name"
+                          }
+                        ],
+                        staticClass: "--input py-4",
+                        attrs: { type: "text", id: "name", name: "name" },
+                        domProps: { value: _vm.form.last_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "last_name", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-xs text-red-500" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.validationError("last_name", _vm.saveError)
+                          ) + " "
                         )
                       ])
                     ]),
@@ -47358,14 +47574,14 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.formRegisterData.name,
-                            expression: "formRegisterData.name"
+                            value: _vm.formRegisterData.first_name,
+                            expression: "formRegisterData.first_name"
                           }
                         ],
                         staticClass:
                           "w-full  my-2 --login__register--input text-center",
-                        attrs: { type: "text", placeholder: "Name" },
-                        domProps: { value: _vm.formRegisterData.name },
+                        attrs: { type: "text", placeholder: "First Name" },
+                        domProps: { value: _vm.formRegisterData.first_name },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
@@ -47373,7 +47589,7 @@ var render = function() {
                             }
                             _vm.$set(
                               _vm.formRegisterData,
-                              "name",
+                              "first_name",
                               $event.target.value
                             )
                           }
@@ -47382,8 +47598,79 @@ var render = function() {
                       _vm._v(" "),
                       _c("span", { staticClass: "text-xs text-red-500" }, [
                         _vm._v(
-                          _vm._s(_vm.validationError("name", _vm.saveError)) +
-                            " "
+                          _vm._s(
+                            _vm.validationError("first_name", _vm.saveError)
+                          ) + " "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formRegisterData.middle_name,
+                            expression: "formRegisterData.middle_name"
+                          }
+                        ],
+                        staticClass:
+                          "w-full  my-2 --login__register--input text-center",
+                        attrs: { type: "text", placeholder: "Middle Name" },
+                        domProps: { value: _vm.formRegisterData.middle_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.formRegisterData,
+                              "middle_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-xs text-red-500" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.validationError("middle_name", _vm.saveError)
+                          ) + " "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formRegisterData.last_name,
+                            expression: "formRegisterData.last_name"
+                          }
+                        ],
+                        staticClass:
+                          "w-full  my-2 --login__register--input text-center",
+                        attrs: { type: "text", placeholder: "Last Name" },
+                        domProps: { value: _vm.formRegisterData.last_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.formRegisterData,
+                              "last_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-xs text-red-500" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.validationError("last_name", _vm.saveError)
+                          ) + " "
                         )
                       ]),
                       _vm._v(" "),
@@ -47613,7 +47900,7 @@ var render = function() {
           "div",
           {
             staticClass: "relative",
-            style: { width: !_vm.isLogin ? "100%" : "80%" }
+            style: { width: !_vm.isLogin ? "100%" : "100%" }
           },
           [
             _c(
@@ -47706,7 +47993,13 @@ var render = function() {
             _vm._v(" "),
             _c(
               "div",
-              { staticClass: "w-full flex justify-center items-center" },
+              {
+                staticClass: "w-full flex justify-center items-center",
+                staticStyle: {
+                  "padding-left": "12rem",
+                  "padding-right": "12rem"
+                }
+              },
               [
                 _c("div", { staticClass: "w-4/5 h-full" }, [
                   _vm.active == "client"
@@ -47750,10 +48043,13 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "div",
-      { staticClass: "w-full flex justify-center items-center" },
+      {
+        staticClass: "w-full flex justify-center items-center",
+        staticStyle: { "padding-left": "12rem", "padding-right": "12rem" }
+      },
       [
         _c("div", {
-          staticClass: "w-4/5 --banner",
+          staticClass: "w-full --banner",
           staticStyle: { height: "250px" }
         })
       ]
@@ -48505,14 +48801,14 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.formRegisterData.name,
-                            expression: "formRegisterData.name"
+                            value: _vm.formRegisterData.first_name,
+                            expression: "formRegisterData.first_name"
                           }
                         ],
                         staticClass:
                           "w-full  my-2 --login__register--input text-center",
-                        attrs: { type: "text", placeholder: "Name" },
-                        domProps: { value: _vm.formRegisterData.name },
+                        attrs: { type: "text", placeholder: "First Name" },
+                        domProps: { value: _vm.formRegisterData.first_name },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
@@ -48520,7 +48816,7 @@ var render = function() {
                             }
                             _vm.$set(
                               _vm.formRegisterData,
-                              "name",
+                              "first_name",
                               $event.target.value
                             )
                           }
@@ -48529,8 +48825,83 @@ var render = function() {
                       _vm._v(" "),
                       _c("span", { staticClass: "text-xs text-red-500" }, [
                         _vm._v(
-                          _vm._s(_vm.validationError("name", _vm.saveError)) +
-                            " "
+                          _vm._s(
+                            _vm.validationError("first_name", _vm.saveError)
+                          ) + " "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-full px-4 p-2" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formRegisterData.middle_name,
+                            expression: "formRegisterData.middle_name"
+                          }
+                        ],
+                        staticClass:
+                          "w-full  my-2 --login__register--input text-center",
+                        attrs: { type: "text", placeholder: "Middle Name" },
+                        domProps: { value: _vm.formRegisterData.middle_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.formRegisterData,
+                              "middle_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-xs text-red-500" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.validationError("middle_name", _vm.saveError)
+                          ) + " "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-full px-4 p-2" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formRegisterData.last_name,
+                            expression: "formRegisterData.last_name"
+                          }
+                        ],
+                        staticClass:
+                          "w-full  my-2 --login__register--input text-center",
+                        attrs: { type: "text", placeholder: "Last Name" },
+                        domProps: { value: _vm.formRegisterData.last_name },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.formRegisterData,
+                              "last_name",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-xs text-red-500" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.validationError("last_name", _vm.saveError)
+                          ) + " "
                         )
                       ])
                     ]),

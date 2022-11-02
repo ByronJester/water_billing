@@ -17,7 +17,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'middle_name',
+        'last_name',
         'image',
         'phone',
         'email',
@@ -38,6 +40,10 @@ class User extends Authenticatable
         'is_active' => 'boolean',
     ];
 
+    protected $appends = [
+        'name'
+    ];
+
     public function getReferenceAttribute($val)
     {
         if(!$val) {
@@ -45,5 +51,10 @@ class User extends Authenticatable
         }
 
         return $val;
+    }
+
+    public function getNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 }

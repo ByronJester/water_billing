@@ -14,20 +14,25 @@ class Controller extends BaseController
 
     public function sendSms($to, $message)
     {
-        // $account_sid = 'AC0201237e8b04951bfbcdb9db86613254';
-        // $auth_token = 'f3e32661062146402c7427e0a2dc3aed';
-        // $twilio_number = "+19123043848";
+        $account_sid = 'AC0201237e8b04951bfbcdb9db86613254';
+        $auth_token = '2f8dadd4426dccf5f159b400a8185145';
+        $twilio_number = "+19123043848";
 
-        // $client = new Client($account_sid, $auth_token);
+        $to = '+63'  . $to;
 
-        // $to = '+'  . $to;
+        $client = new Client($account_sid, $auth_token);
 
-        // return $client->messages->create(
-        //     $to,
-        //     array(
-        //         'from' => $twilio_number,
-        //         'body' => $message
-        //     )
-        // );
+        // $client->validationRequests
+        //     ->create($to, // phoneNumber
+        //             ["Client" => "My Client Number"]
+        //     );
+
+        return $client->messages->create(
+            $to,
+            array(
+                'from' => $twilio_number,
+                'body' => $message
+            )
+        );
     }
 }

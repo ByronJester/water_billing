@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\User;
 use App\Models\Client;
 use App\Models\ClientPayment;
 use App\Models\ClientUtility;
@@ -23,7 +24,7 @@ class ClientController extends Controller
         if($auth) {
             $clients = Client::orderBy('created_at', 'desc');
 
-            return Inertia::render('Clients', [
+            return Inertia::render('Clients', [ 
                 'auth'    => $auth,
                 'options' => [
                     'clients' => $clients->get()
@@ -66,7 +67,8 @@ class ClientController extends Controller
     public function saveClient(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => "required|string",
+            'first_name' => "required|string",
+            'last_name' => "required|string",
             'address' => "required|string",
         ]);
 
@@ -147,5 +149,29 @@ class ClientController extends Controller
         ];
 
         return response()->json(['status' => 200, 'data' => $data], 200);  
+    }
+
+    public function markAsPaid(Request $request)
+    {
+        Client::where('id', $request->id)->update(['penalty' => 0]);
+
+        ClientPayment::where('client_id', $request->id)->update(['status' => 'paid']);
+
+        return response()->json(['status' => 200], 200);  
+    }
+
+    public function notifyClient(Request $request)
+    {
+
+        $users = User::where('reference', $request->reference)->get();
+
+        foreach($users as $user) {
+            $message = 'Due date of your payment is ' . $request->due_date;
+            $phone = substr($user->phone, 1);
+
+            $this->sendSms($phone, $message);
+        }
+
+        return response()->json(['status' => 200], 200);  
     }
 }

@@ -20,7 +20,7 @@
                         <div class="w-full">
                             <span class="ml-2 cursor-pointer"
                                 @click="client = null"
-                            > 
+                            >  
                                 <i class="fa-solid fa-xmark"></i>
                             </span>
                         </div>
@@ -47,14 +47,26 @@
                             </div>
                         </div>
 
-                        <div class="w-full mt-4 flex flex-row pl-2 pb-2">
-                            <div class="w-2/12 cursor-pointer" @click="viewClient(client.reference)">
-                                <i class="fa-solid fa-eye fa-2xl"></i>
-                            </div>
-                            
-                            <div class="w-10/12">    
-                                <span class="text-lg ml-1 font-semibold">View</span>
-                            </div>
+                        <div class="w-full mt-4 inline-flex justify-center">
+                            <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #0288D1"
+                                @click="viewClient(client.reference)" class="mr-1"
+                            >
+                                VIEW
+                            </button>
+
+                            <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #00897B" 
+                                @click="markAsPaid(client.id)" class="mr-1" v-if="client.amount_to_pay > 0"
+                            >
+                                MARK AS PAID
+                            </button>
+
+                            <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #EF5350"
+                                @click="notify(client)" v-if="client.amount_to_pay > 0"
+                            >
+                                NOTIFY
+                            </button>
+
+
                         </div>
                     </div>
 
@@ -74,9 +86,21 @@
                         style="width:100%; border: 1px solid black; border-radius: 5px"
                     >
                         <div>
-                            <label for="name">Name:</label><br>
-                            <input type="text" id="name" name="name" class="--input py-4" v-model="form.name">
-                            <span class="text-xs text-red-500">{{validationError('name', saveError)}} </span>
+                            <label for="name">First Name:</label><br>
+                            <input type="text" id="name" name="name" class="--input py-4" v-model="form.first_name">
+                            <span class="text-xs text-red-500">{{validationError('first_name', saveError)}} </span>
+                        </div>
+
+                        <div>
+                            <label for="name">Middle Name:</label><br>
+                            <input type="text" id="name" name="name" class="--input py-4" v-model="form.middle_name">
+                            <span class="text-xs text-red-500">{{validationError('middle_name', saveError)}} </span>
+                        </div>
+
+                        <div>
+                            <label for="name">Last Name:</label><br>
+                            <input type="text" id="name" name="name" class="--input py-4" v-model="form.last_name">
+                            <span class="text-xs text-red-500">{{validationError('last_name', saveError)}} </span>
                         </div>
 
                         <div class="mt-4">
@@ -117,7 +141,7 @@ export default {
     data(){
         return {
             columns: [
-                'Name', 'Address', 'Penalty', 'Line #'
+                'Name', 'Address', 'Amount To Pay', 'Penalty', 'Line #', 'Due Date'
             ],
             keys : [
                 {
@@ -127,15 +151,23 @@ export default {
                     label: 'address',
                 },
                 {
+                    label: 'amount_to_pay',
+                },
+                {
                     label: 'penalty',
                 },
                 {
                     label: 'reference',
                 },
+                {
+                    label: 'due_date',
+                },
             ],
             clients: [],
             form: {
-                name: null,
+                first_name: null,
+                middle_name: null,
+                last_name: null,
                 address: null
             },
             saveError: null,
@@ -187,6 +219,22 @@ export default {
                     onSuccess: () => { },
                 },
             );
+        },
+
+        markAsPaid(client_id) {
+            axios.post(this.$root.route + "/clients/client/mark-as-paid", {id : client_id})
+				.then(response => {
+                    alert("Succesfully mark as paid.");
+					location.reload()
+				})
+        },
+
+        notify(arg) {
+            axios.post(this.$root.route + "/clients/client/notify", {reference : arg.reference, due_date: arg.due_date})
+				.then(response => {
+                    alert("Client has successfuly notified of his/her payment due date.");
+					location.reload()
+				})
         }
     }
 }

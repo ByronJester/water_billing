@@ -16,7 +16,7 @@
             <div class="w-full h-full mt-5 flex flex-row">
 
                 <div :style="{width: newUser ? '80%' : '100%'}" class="mx-2">
-                    <Table :columns="columns" :rows="users" :keys="keys" :selected.sync="user"/>
+                    <Table :columns="columns" :rows="users" :keys="keys" :selected.sync="user"/> 
                 </div>
 
                 <div style="width: 20%;" 

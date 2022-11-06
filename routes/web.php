@@ -46,10 +46,11 @@ Route::middleware(['cors'])->group(function () {
         Route::get('/', [ClientController::class, 'viewClients'])->name('view.clients');
         Route::get('/{reference}', [ClientController::class, 'viewClient'])->name('view.client'); 
         Route::post('/client/create', [ClientController::class, 'saveClient']);
+        Route::get('/view/utilities', [ClientController::class, 'viewUtilities'])->name('view.utilities');
         Route::post('/client/mark-as-paid', [ClientController::class, 'markAsPaid']);
         Route::post('/client/notify', [ClientController::class, 'notifyClient']);
         Route::post('/deactivate-reactivate', [ClientController::class, 'changeStatus']);
-        
+        Route::post('/incident-report', [ClientController::class, 'generateIncidentReport']);
     });
 
     Route::prefix('announcements')->group(function () {

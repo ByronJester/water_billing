@@ -11,14 +11,14 @@
                 </span>
             </div>
 
-            <div class="w-full flex flex-row mt-10">
-                <div class="w-2/4 px-2 mt-20">
+            <div class="w-full flex flex-col md:flex-row mt-2 md:mt-10">
+                <div class="w-full md:w-2/4 px-2 mt-2 md:mt-20">
                     <Table :columns="columns" :rows="options.payments" :keys="keys" :selected.sync="payment"/>
                 </div>
 
-                <div class="w-3/4">
+                <div class="w-full md:w-3/4 mt-4 md:mt-0">
                     <graph-line
-                            :width="900"
+                            style="w-full"
                             :height="600"
                             :axis-min="0"
                             :axis-max="Math.max( ...options.reports.amount )"

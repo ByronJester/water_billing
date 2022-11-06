@@ -8,7 +8,7 @@
             </div>
 
             <div class="w-full h-full mt-5 flex justify-center items-center">
-                <div class="flex flex-col w-1/4" style="border: 1px solid black; border-radius: 10px">
+                <div class="flex flex-col w-full md:w-1/4" style="border: 1px solid black; border-radius: 10px">
                     <div class="px-5 py-3">
                         <label for="name">Name:</label><br>
                         <input type="text" class="--input py-1" v-model="form.name">

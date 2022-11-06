@@ -23,7 +23,8 @@ class Client extends Model
     protected $appends = [
         'name',
         'amount_to_pay',
-        'due_date'
+        'due_date',
+        'status'
     ];
 
     public function getNameAttribute()
@@ -52,5 +53,15 @@ class Client extends Model
         }
 
         return null;
+    }
+
+
+    public function getStatusAttribute()
+    {
+        if($this->amount_to_pay > 0) {
+            return 'Unpaid';
+        } else {
+            return 'Paid';
+        }
     }
 }

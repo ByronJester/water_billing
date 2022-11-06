@@ -1,16 +1,66 @@
 <template>
     <Navigation :auth="auth">
         <div class="w-full h-full px-2 py-2 flex flex-col">
-            <div class="w-full mt-3">
-                <span class="text-2xl ml-2 font-bold">
-                    <i class="fa-solid fa-users mr-3"> </i>Clients
-                </span>
-            </div>
-
             <div class="w-full h-full mt-5 flex flex-row">
 
                 <div style="width: 80%" class="mx-2">
-                    <Table :columns="columns" :rows="clients" :keys="keys" :selected.sync="client"/>
+                    <!-- <div class="w-full">
+                        <span class="text-2xl ml-2 font-bold float-right mb-2 cursor-pointer">
+                            <i class="fa-sharp fa-solid fa-globe"></i>
+                        </span>
+                    </div> -->
+
+                    <div class="w-full flex flex-row mb-3 font-bold" style="height: 50px; border-bottom: 1px solid black">
+                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'dashboard'" :class="{'bg-blue-300': activeTab == 'dashboard' }">
+                            DASHBOARD
+                        </div>
+
+                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'clients'" :class="{'bg-blue-300': activeTab == 'clients' }">
+                            CLIENTS
+                        </div>
+
+                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'billing'" :class="{'bg-blue-300': activeTab == 'billing' }">
+                            BILLING
+                        </div>
+
+                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'cashiering'" :class="{'bg-blue-300': activeTab == 'cashiering' }">
+                            CASHIERING
+                        </div>
+                    </div>
+
+                    <Table :columns="columns" :rows="clients" :keys="keys" :selected.sync="client" v-if="activeTab != 'dashboard'"/>
+
+                    <div class="w-full flex flex-row justify-center items-center mt-5" v-else>
+                        <div class="w-full flex flex-col mx-2" style="border: 1px solid black; border-radius: 5px">
+                            <div class="w-full text-center" style="font-size: 50px;">
+                                {{ options.clients.length}}
+                            </div>
+
+                            <div class="w-full text-center">
+                                Clients
+                            </div>
+                        </div>
+
+                        <div class="w-full flex flex-col mx-2" style="border: 1px solid black; border-radius: 5px">
+                            <div class="w-full text-center" style="font-size: 50px;">
+                                {{ options.users.length}}
+                            </div>
+
+                            <div class="w-full text-center">
+                                Users
+                            </div>
+                        </div>
+
+                        <div class="w-full flex flex-col mx-2" style="border: 1px solid black; border-radius: 5px">
+                            <div class="w-full text-center" style="font-size: 50px;">
+                                {{ options.incidents.length}}
+                            </div>
+
+                            <div class="w-full text-center">
+                                Incident Reports
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div style="width: 20%" class="mx-2 flex flex-col" v-if="!!client">
@@ -37,7 +87,7 @@
                             </p>
                         </div>
 
-                        <div class="w-full mt-4 flex flex-row pl-2">
+                        <div class="w-full mt-4 flex flex-row pl-2" v-if="activeTab == 'clients'">
                             <div class="w-2/12">
                                 <Toggle :value="client.is_active" :url="'/clients/deactivate-reactivate'" :id="client.id" class="pt-1"/> 
                             </div>
@@ -50,18 +100,19 @@
                         <div class="w-full mt-4 inline-flex justify-center">
                             <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #0288D1"
                                 @click="viewClient(client.reference)" class="mr-1"
+                                v-if="activeTab == 'clients'"
                             >
                                 VIEW
                             </button>
 
                             <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #00897B" 
-                                @click="markAsPaid(client.id)" class="mr-1" v-if="client.amount_to_pay > 0"
+                                @click="markAsPaid(client.id)" class="mr-1" v-if="client.amount_to_pay > 0 && activeTab == 'cashiering'"
                             >
                                 MARK AS PAID
                             </button>
 
                             <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #EF5350"
-                                @click="notify(client)" v-if="client.amount_to_pay > 0"
+                                @click="notify(client)" v-if="client.amount_to_pay > 0 && activeTab == 'cashiering'"
                             >
                                 NOTIFY
                             </button>
@@ -141,7 +192,7 @@ export default {
     data(){
         return {
             columns: [
-                'Name', 'Address', 'Amount To Pay', 'Penalty', 'Line #', 'Due Date'
+                'Name', 'Address', 'Line #'
             ],
             keys : [
                 {
@@ -151,17 +202,8 @@ export default {
                     label: 'address',
                 },
                 {
-                    label: 'amount_to_pay',
-                },
-                {
-                    label: 'penalty',
-                },
-                {
                     label: 'reference',
-                },
-                {
-                    label: 'due_date',
-                },
+                }
             ],
             clients: [],
             form: {
@@ -171,7 +213,8 @@ export default {
                 address: null
             },
             saveError: null,
-            client: null
+            client: null,
+            activeTab: 'dashboard'
         }
     },
 
@@ -182,6 +225,88 @@ export default {
     watch: {
         client(arg) {
             
+        },
+        activeTab(arg){
+            if(arg == 'clients') {
+                this.columns = [
+                    'Name', 'Address', 'Line #'
+                ]
+
+                this.keys = [
+                    {
+                        label: 'name',
+                    },
+                    {
+                        label: 'address',
+                    },
+                    {
+                        label: 'reference',
+                    }
+                ]
+            }
+
+            if(arg == 'billing') {
+                this.columns = [
+                    'Name', 'Line #', 'Amount to Pay'
+                ]
+
+                this.keys = [
+                    {
+                        label: 'name',
+                    },
+                    {
+                        label: 'reference',
+                    },
+                    {
+                        label: 'amount_to_pay',
+                    }
+                ]
+            }
+
+            if(arg == 'billing') {
+                this.columns = [
+                    'Name', 'Line #', 'Amount to Pay', 'Penalty', 'Due Date'
+                ]
+
+                this.keys = [
+                    {
+                        label: 'name',
+                    },
+                    {
+                        label: 'reference',
+                    },
+                    {
+                        label: 'amount_to_pay',
+                    },
+                    {
+                        label: 'penalty',
+                    },
+                    {
+                        label: 'due_date'
+                    }
+                ]
+            }
+
+            if(arg == 'cashiering') {
+                this.columns = [
+                    'Name', 'Line #', 'Amount to Pay', 'Status'
+                ]
+
+                this.keys = [
+                    {
+                        label: 'name',
+                    },
+                    {
+                        label: 'reference',
+                    },
+                    {
+                        label: 'amount_to_pay',
+                    },
+                    {
+                        label: 'status',
+                    },
+                ]
+            }
         }
     },
 

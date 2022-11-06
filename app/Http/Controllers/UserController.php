@@ -29,7 +29,7 @@ class UserController extends Controller
                 }
 
                 if($auth->user_type == 'utility') {
-                    return redirect('/utilities');
+                    return redirect('/clients/view/utilities'); 
                 }
 
                 if($auth->user_type == 'client') {

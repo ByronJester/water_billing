@@ -14,4 +14,24 @@ class ClientUtility extends Model
         'description',
         'status'
     ];
+
+    protected $appends = [
+        'client_name',
+        'client_address'
+    ];
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function getClientNameAttribute()
+    {
+        return $this->client->first_name . ' ' . $this->client->last_name;
+    }
+
+    public function getClientAddressAttribute()
+    {
+        return $this->client->address;
+    }
 }

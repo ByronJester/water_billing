@@ -1,87 +1,84 @@
 <template>
-    <div class="w-screen h-screen flex flex-row">
-        <div class="--left__panel" @mouseover="biggerWidth()" @mouseleave="smallerWidth()"
-            :style="{ 'width': leftPanel}"
-        >
-            <ul class="pl-2 pt-10 --ul__caption text-bold w-full">
-                <li class="mt-1 mb-10 cursor-pointer"
-                    @click="changeActive('/users')"
-                    v-if="auth.user_type == 'admin' || auth.user_type == 'staff'"
-                >
-                    <i class="fa-solid fa-user-group fa-lg mx-2"></i> 
-                    <span v-if="isHover" class="mx-2"
-                        :style="{'border-bottom': active === '/users' ? '1px solid black' : 'none'}"
+    <div class="w-full" style="min-height: 100vh; height: 100%">
+        <div class="w-full flex flex-row --header" style="height: 10%">
+            <div :style="{'width': screenWidth <= 700 ? '20%' : '100%'}">
+                <img src="/images/logo.png" class="p-2 --logo"/>
+            </div>
+
+            <div class="flex justify-end items-center" style="color: #ffffff" :style="{'width': screenWidth <= 700 ? '80%' : '100%' }">
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/users')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
+                    <span class="mr-2"
+                        :style="{'border-bottom': active === '/users' ? '1px solid #ffffff' : 'none'}"
+                        
                     > 
                         USERS
                     </span>
-                </li>
+                </p>
 
-                <li class="mt-1 mb-10 cursor-pointer"
-                    @click="changeActive('/clients')"
-                    v-if="auth.user_type == 'admin' || auth.user_type == 'staff'"
-                >
-                    <i class="fa-sharp fa-solid fa-users-between-lines fa-lg mx-2"></i>
-                    <span v-if="isHover" class="mx-2"
-                        :style="{'border-bottom': active === '/clients' ? '1px solid black' : 'none'}"
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
+                    <span class="mx-2"
+                        :style="{'border-bottom': active === '/clients' ? '1px solid #ffffff' : 'none'}"
                     > 
-                        CLIENTS
+                        DASHBOARD
                     </span>
-                </li>
+                </p>
 
-                <li class="mt-1 mb-10 cursor-pointer"
-                    @click="changeActive('/settings')"
-                    v-if="auth.user_type == 'admin' || auth.user_type == 'staff'"
-                >
-                    <i class="fa-solid fa-gears fa-lg mx-2"></i>
-                    <span v-if="isHover" class="mx-2"
-                        :style="{'border-bottom': active === '/settings' ? '1px solid black' : 'none'}"
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/settings')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
+                    <span  class="mx-2"
+                        :style="{'border-bottom': active === '/settings' ? '1px solid #ffffff' : 'none'}"
                     > 
                         SETTINGS
                     </span>
-                </li>
+                </p>
 
-                <li class="mt-1 mb-10 cursor-pointer"
-                    @click="changeActive('/clients/' + auth.reference)"
-                    v-if="auth.user_type == 'client'"
-                >
-                    <i class="fa-sharp fa-solid fa-hand-holding-droplet fa-lg mx-2"></i>
-                    <span v-if="isHover" class="mx-2"
-                        :style="{'border-bottom': active === '/clients/' + auth.reference ? '1px solid black' : 'none'}"
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients/' + auth.reference)" v-if="auth.user_type == 'client'">
+                    <span class="mx-2"
+                        :style="{'border-bottom': active === '/clients/' + auth.reference ? '1px solid #ffffff' : 'none'}"
                     > 
-                        CONNECTION
+                        BILLING
                     </span>
-                </li>
+                </p>
 
-                <li class="mt-1 mb-10 cursor-pointer"
-                    @click="changeActive('/users/profile')"
-                >
-                    <i class="fa-solid fa-user-pen fa-lg mx-2"></i>
-                    <span v-if="isHover" class="mx-2"
-                        :style="{'border-bottom': active === '/users/profile' ? '1px solid black' : 'none'}"
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients/view/utilities')" v-if="auth.user_type == 'client'">
+                    <span  class="mx-2"
+                        :style="{'border-bottom': active === '/clients/view/utilities'? '1px solid #ffffff' : 'none'}"
+                    > 
+                        INCIDENT REPORTING
+                    </span>
+                </p>
+
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/users/profile')">
+                    <span class="mx-2"
+                        :style="{'border-bottom': active === '/users/profile' ? '1px solid #ffffff' : 'none'}"
                     > 
                         PROFILE
                     </span>
-                </li>
+                </p>
 
-                
-            </ul>
+                <p class="mx-1 --text cursor-pointer">
+                    <span class="mx-2"
+                    > 
+                        MAINTENANCE
+                    </span>
+                </p>
 
-            <ul class="--ul__caption absolute text-bold w-full"
-                style="bottom: 0.2rem;"
-            >
-                <hr>
-                <li class="my-5 px-2 cursor-pointer" @click="logout()">
+                <p class="mx-1 --text cursor-pointer">
+                    <span class="mx-2"
+                    > 
+                        REPORT
+                    </span>
+                </p>
+
+                <p class="mx-1 --text cursor-pointer" @click="logout()" style="border-left: 1px solid #ffffff">
                     <i class="fa-solid fa-door-open fa-lg mx-2"></i> 
-                    <span v-if="isHover" class="mx-2"> LOGOUT </span>
-                </li>
-            </ul>
+                </p>
+            </div>
         </div>
 
-        <div class="--right__panel"
-            :style="{ 'width': rightPanel}"
-        >
+        <div class="w-full" style="height: 90%">
             <slot></slot>
         </div>
+
     </div>
 </template>
 
@@ -96,12 +93,13 @@ export default {
             rightPanel: '97%',
             isHover: false,
             active: window.location.pathname,
-            tabs: []
+            tabs: [],
+            screenWidth: null
         }
 	},
 
     created(){
-
+        this.screenWidth = window.screen.width
     },
 
 	methods: {
@@ -157,6 +155,31 @@ export default {
 .--ul__caption {
     color: black !important;
     font-weight: bold;
+}
+
+.--header {
+    /* background: -webkit-radial-gradient(skyblue, navy); */
+    background: navy;
+}
+
+.--text {
+    font-size: calc(.1em + 1vw)
+}
+
+.--logo {
+    width: 100px;
+    height: 100px;
+}
+
+@media screen and (max-width: 600px) {
+    .--text {
+        font-size: 9px;
+    }
+
+    .--logo {
+        width: 60px;
+        height: 60px;
+    }
 }
 
 </style>

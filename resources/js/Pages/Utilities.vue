@@ -3,21 +3,18 @@
         <div class="w-full h-full px-2 py-2 flex flex-col">
             <div class="w-full mt-3">
                 <span class="text-2xl ml-2 font-bold">
-                    <i class="fa-solid fa-users mr-3"> </i>CUBIC METER
+                    <i class="fa-solid fa-phone mr-3"> </i>INCIDENT REPORTING
                 </span>
             </div>
 
-            <div class="w-full h-full mt-5 flex flex-row">
-                <div style="width: 80%" class="mx-2">
-                    <Table :columns="columns" :rows="bills" :keys="keys" :selected.sync="bill"/>
-                </div>
+            <div class="w-full h-full mt-5 flex flex-col md:flex-row ">
 
-                <div style="width: 20%" class="mx-2 flex flex-col">
+                <div class="mx-2 flex flex-col" :style="{width: screenWidth <= 700 ? '100%': '20%'}">
                     <div class="pb-3"
                         style="width:100%;"
                     >
                         <span class="text-xl">
-                            <i class="fa-solid fa-plus mr-2"></i>PER CUBIC METER
+                            <i class="fa-solid fa-plus mr-2"></i>Generate Incident Report
                         </span>
                         
                     </div>
@@ -26,26 +23,25 @@
                         style="width:100%; border: 1px solid black; border-radius: 5px"
                     >
                         <div>
-                            <label for="name">Amount:</label><br>
-                            <input type="text" class="--input py-4" v-model="form.amount">
-                            <span class="text-xs text-red-500">{{validationError('amount', saveError)}} </span>
-                        </div>
-
-                        <div class="mt-4">
-                            <label for="address">Date:</label><br>
-                            <input type="date" class="--input py-4" v-model="form.date">
-                            <span class="text-xs text-red-500">{{validationError('date', saveError)}} </span>
+                            <label for="name">Description:</label><br>
+                            <textarea :rows="screenWidth <= 700 ? '3' : '10'" cols="50" class="w-full p-2 mt-2"
+                                style="border: 1px solid black;" v-model="form.description"
+                            ></textarea>
+                            <span class="text-xs text-red-500">{{validationError('description', saveError)}} </span>
                         </div>
 
                         <div class="mt-6">
-                            <button class="--btn py-2" @click="createBill()">
-                                Submit
+                            <button class="--btn py-2" @click="generateIncidentReport()">
+                                Generate
                             </button>
                         </div>
                         
                     </div>
                 </div>
-                
+
+                <div class="mx-2" :style="{width: screenWidth <= 700 ? '100%': '80%', 'margin-top': screenWidth <= 700 ? '10px': '0'}">
+                    <Table :columns="columns" :rows="utilities" :keys="keys" :selected.sync="utility"/>
+                </div>
             </div>
         </div>
     </Navigation>
@@ -68,54 +64,56 @@ export default {
         return {
             newBill: false,
             columns: [
-                'Amount', 'Date', 'Personnel'
+                'Name', 'Address', 'Description', 'Status'
             ],
             keys : [
                 {
-                    label: 'amount',
+                    label: 'client_name',
                 },
                 {
-                    label: 'date',
+                    label: 'client_address'
                 },
                 {
-                    label: 'personnel',
+                    label: 'description',
+                },
+                {
+                    label: 'status',
                 },
             ],
-            bills: [],
-            bill: null,
+            utilities: [],
+            utility: null,
+            saveError: null,
+            screenWidth: null,
             form: {
-                amount: 0,
-                date: null
-            },
-            saveError: null
+                user_id: null,
+                description: null
+            }
         }
     },
 
     created(){
-        this.bills = this.options.bills
-        console.log(this.bills)
+        this.screenWidth = window.screen.width;
+
+        this.form.user_id = this.auth.id
+
+        this.utilities = this.options.utilities
     },
 
     methods: {
-        createBill(){
-			axios.post(this.$root.route + "/settings/create-bill", this.form)
+        generateIncidentReport(){
+            axios.post(this.$root.route + "/clients/incident-report", this.form)
 				.then(response => {
 					if(response.data.status == 422) {
 						this.saveError = response.data.errors 
 					} else {
-						this.form = {
-							amount: null,
-							date: null
-						}
-
-						alert("New bill successfully created.");
+						alert("Incident report created.");
 
 						this.saveError = null
 
-						location.reload()
+                        location.reload()
 					}
 				})
-        },
+        }
     }
 }
 </script>

@@ -203,7 +203,7 @@ export default {
                         this.$refs.receipt.generatePdf()
 
                         // location.reload()
-					}
+					}  
 				})
         }
     }

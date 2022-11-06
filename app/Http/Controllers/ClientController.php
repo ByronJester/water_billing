@@ -27,7 +27,9 @@ class ClientController extends Controller
             return Inertia::render('Clients', [ 
                 'auth'    => $auth,
                 'options' => [
-                    'clients' => $clients->get()
+                    'clients' => $clients->get(),
+                    'users' => User::get(),
+                    'incidents' => ClientUtility::get()
                 ]
             ]);
         }
@@ -53,7 +55,7 @@ class ClientController extends Controller
                     'payments' => $payments,
                     'reports' => [
                         'amount' => $payments->pluck('amount'),
-                        'month' => $payments->pluck('month')
+                        'month' => $payments->pluck('month') 
                     ]
                     
                 ]
@@ -169,8 +171,56 @@ class ClientController extends Controller
             $message = 'Due date of your payment is ' . $request->due_date;
             $phone = substr($user->phone, 1);
 
+
             $this->sendSms($phone, $message);
         }
+
+        return response()->json(['status' => 200], 200);  
+    }
+
+    public function viewUtilities(Request $request)
+    {
+        $auth = Auth::user();
+
+        $utilities = ClientUtility::orderBy('created_at', 'desc');
+
+        if($auth) {
+            if($auth->role == 2) {
+                $client = Client::where('reference', $auth->reference)->first();
+
+                $utilities = $utilities->where('client_id', $client->id);
+            } 
+
+            return Inertia::render('Utilities', [
+                'auth'    => $auth,
+                'options' => [
+                    'utilities' => $utilities->get()
+                ]
+            ]);
+        }
+
+        return redirect('/');
+    }
+
+    public function generateIncidentReport(Request $request)
+    {
+        $auth = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'description' => "required",
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);
+        }
+
+        $data = $request->toArray();
+        $client = Client::where('reference', $auth->reference)->first();
+        
+        $data['client_id'] = $client->id;
+        $data['status'] = 'pending';
+
+        ClientUtility::create($data);
 
         return response()->json(['status' => 200], 200);  
     }

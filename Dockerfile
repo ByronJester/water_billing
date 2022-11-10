@@ -68,9 +68,9 @@ WORKDIR /var/www/html/app
 COPY --from=builder --chown=www-data:www-data /app .
 COPY --from=builder /usr/bin/composer /usr/local/bin/composer
 
-RUN mkdir -p /run/nginx
-RUN rm /etc/nginx/conf.d/default.conf
-COPY .docker/nginx/conf.d/app.conf /etc/nginx/conf.d
+# RUN mkdir -p /run/nginx
+# RUN rm /etc/nginx/conf.d/default.conf
+# COPY .docker/nginx/conf.d/app.conf /etc/nginx/conf.d
 
 COPY .docker/php/fpm.d/www.conf /usr/local/etc/php-fpm.d/
 COPY .docker/php/uploads.ini /usr/local/etc/php/conf.d/

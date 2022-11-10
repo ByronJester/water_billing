@@ -39,11 +39,28 @@
                     </span>
                 </p>
 
-                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients/view/utilities')" v-if="auth.user_type == 'client'">
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients/view/utilities')" v-if="auth.user_type == 'client' || auth.user_type == 'utility'">
                     <span  class="mx-2"
                         :style="{'border-bottom': active === '/clients/view/utilities'? '1px solid #ffffff' : 'none'}"
                     > 
                         INCIDENT REPORTING
+                    </span>
+                </p>
+
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/bills')" v-if="auth.user_type == 'reader'">
+                    <span class="mx-2"
+                        :style="{'border-bottom': active === '/bills' ? '1px solid #ffffff' : 'none'}"
+                    > 
+                        METER READING
+                    </span>
+                </p>
+
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/reports')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
+                    <span class="mr-2"
+                        :style="{'border-bottom': active === '/reports' ? '1px solid #ffffff' : 'none'}"
+                        
+                    > 
+                        REPORTS
                     </span>
                 </p>
 
@@ -55,7 +72,7 @@
                     </span>
                 </p>
 
-                <p class="mx-1 --text cursor-pointer">
+                <!-- <p class="mx-1 --text cursor-pointer">
                     <span class="mx-2"
                     > 
                         MAINTENANCE
@@ -74,7 +91,7 @@
                     > 
                         UTILITIES
                     </span>
-                </p>
+                </p> -->
 
                 <p class="mx-1 --text cursor-pointer" @click="logout()" style="border-left: 1px solid #ffffff">
                     <i class="fa-solid fa-door-open fa-lg mx-2"></i> 

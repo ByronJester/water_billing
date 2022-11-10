@@ -48,9 +48,11 @@ Route::middleware(['cors'])->group(function () {
         Route::post('/client/create', [ClientController::class, 'saveClient']);
         Route::get('/view/utilities', [ClientController::class, 'viewUtilities'])->name('view.utilities');
         Route::post('/client/mark-as-paid', [ClientController::class, 'markAsPaid']);
+
         Route::post('/client/notify', [ClientController::class, 'notifyClient']);
         Route::post('/deactivate-reactivate', [ClientController::class, 'changeStatus']);
         Route::post('/incident-report', [ClientController::class, 'generateIncidentReport']);
+        Route::post('/incident-report/change-status', [ClientController::class, 'incidentReportChangeStatus']);
     });
 
     Route::prefix('announcements')->group(function () {
@@ -66,7 +68,10 @@ Route::middleware(['cors'])->group(function () {
     Route::prefix('settings')->group(function () {
         Route::get('/', [SettingController::class, 'viewWaterBill'])->name('view.water.bill');
         Route::post('/create-bill', [SettingController::class, 'saveBill']);
-        
+    });
+
+    Route::prefix('reports')->group(function () {
+        Route::get('/', [UserController::class, 'viewReports'])->name('view.reports');
     });
     
 });

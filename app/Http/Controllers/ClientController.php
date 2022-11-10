@@ -126,7 +126,8 @@ class ClientController extends Controller
 
         $waterBill = WaterBill::orderBy('created_at', 'desc')->first();
 
-        $waterBillAmount = $waterBill->amount * $request->consumed_cubic_meter;
+        $consumed_cubic_meter =  ($request->consumed_cubic_meter - $bills->sum('consumed_cubic_meter'));
+        $waterBillAmount = $consumed_cubic_meter * $waterBill->amount;
 
         $totalAmount = $waterBillAmount;
 
@@ -134,11 +135,14 @@ class ClientController extends Controller
             $totalAmount += $bills->sum('amount');
             $penalty = (5 / 100) * $totalAmount;
             $client->penalty = $client->penalty + $penalty;
-            $client->save();
         }
+
+        $client->payment_date = null;
+        $client->save();
 
         $saveBill = ClientPayment::create([
             'client_id' => $client->id,
+            'consumed_cubic_meter' => $consumed_cubic_meter,
             'amount' => $waterBillAmount,
             'status' => 'unpaid',
             'date' => $request->date
@@ -155,7 +159,10 @@ class ClientController extends Controller
 
     public function markAsPaid(Request $request)
     {
-        Client::where('id', $request->id)->update(['penalty' => 0]);
+        Client::where('id', $request->id)->update([
+            'penalty' => 0,
+            'payment_date' => Carbon::now()
+        ]);
 
         ClientPayment::where('client_id', $request->id)->update(['status' => 'paid']);
 
@@ -223,5 +230,24 @@ class ClientController extends Controller
         ClientUtility::create($data);
 
         return response()->json(['status' => 200], 200);  
+    }
+
+    public function incidentReportChangeStatus(Request $request)
+    {
+        $auth = Auth::user();
+
+        $utilities = ClientUtility::orderBy('created_at', 'desc');
+
+        if($auth->role == 2) {
+            $client = Client::where('reference', $auth->reference)->first();
+
+            $utilities = $utilities->where('client_id', $client->id);
+        } 
+
+        ClientUtility::where('id', $request->id)->update([
+            'status' => $request->status
+        ]);
+
+        return response()->json(['status' => 200, 'utilities' => $utilities->get()], 200);  
     }
 }

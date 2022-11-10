@@ -47,6 +47,7 @@ const pages = {
   'Settings': require('./Pages/Settings.vue').default,
   'Profile': require('./Pages/Profile.vue').default,
   'Utilities': require('./Pages/Utilities.vue').default,
+  'Reports': require('./Pages/Reports.vue').default,
 }
 
 new Vue({

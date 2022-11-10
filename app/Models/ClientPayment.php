@@ -14,7 +14,8 @@ class ClientPayment extends Model
         'client_id',
         'amount',
         'status',
-        'date'
+        'date',
+        'consumed_cubic_meter'
     ];
 
     protected $appends = [

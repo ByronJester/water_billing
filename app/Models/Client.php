@@ -17,7 +17,8 @@ class Client extends Model
         'address',
         'reference',
         'is_active',
-        'penalty'
+        'penalty',
+        'payment_date'
     ];
 
     protected $appends = [
@@ -63,5 +64,14 @@ class Client extends Model
         } else {
             return 'Paid';
         }
+    }
+
+    public function getPaymentDateAttribute($value)
+    {
+        if(!$value) return $value;
+        
+        $date = Carbon::parse($value);
+
+        return $date->isoFormat('LL'); 
     }
 }

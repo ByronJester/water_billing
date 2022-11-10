@@ -16,6 +16,7 @@ class CreateClientPaymentsTable extends Migration
         Schema::create('client_payments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('client_id')->unsigned()->comment('Foreign key from table clients'); 
+            $table->integer('consumed_cubic_meter');
             $table->double('amount', 8, 2);
             $table->date('date');
             $table->string('status');

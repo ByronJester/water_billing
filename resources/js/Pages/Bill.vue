@@ -1,146 +1,140 @@
 <template>
-    <div class="w-full h-screen">
-        <div class="flex flex-col p-4 w-full h-screen justify-center items-center"
-            v-if="!isPrint"
-        >
-            <div class="w-full text-center mb-5">
-                <span class="w-full text-2xl font-bold">
-                    Generate Water Bill
-                </span>
-            </div>
-
-            <div class="w-full">
-                <input type="text" class="w-full  my-2 --login__register--input text-center"
-                    placeholder="Line #" v-model="form.reference"
-                >
-                <span class="text-xs text-red-500">{{validationError('reference', saveError)}} </span>
-            </div>
-
-            <div class="w-full">
-                <input type="number" class="w-full  my-2 --login__register--input text-center"
-                    placeholder="Consumed Cubic Meter" v-model="form.consumed_cubic_meter"
-                >
-                <span class="text-xs text-red-500">{{validationError('consumed_cubic_meter', saveError)}} </span>
-            </div>
-
-            <div class="w-full">
-                <input type="date" class="w-full  my-2 --login__register--input text-center"
-                    v-model="form.date"
-                >
-                <span class="text-xs text-red-500">{{validationError('date', saveError)}} </span>
-            </div>
-
-            <div class="w-full">
-                <button class="w-full  my-2 --login__register--button text-center"
-                    @click="generateBill()"
-                >
-                    Generate Bill
-                </button>
-            </div>
-
-            <div class="w-full">
-                <button class="w-full  my-2 --logout--button text-center"
-                    @click="logout()"
-                >
-                    Logout
-                </button>
-            </div>
-        </div>
-
-        <VueHtml2pdf
-            :show-layout="false"
-            :float-layout="true"
-            :enable-download="true"
-            :preview-modal="true"
-            :paginate-elements-by-height="1000"
-            :filename="Math.random().toString(36).slice(2)"
-            :pdf-quality="2"
-            :manual-pagination="false"
-            pdf-format="a6"
-            pdf-orientation="portrait"
-            pdf-content-width="100vw"
-            ref="receipt"
-        >
-            <section slot="pdf-content">
-                <div class="flex flex-col p-4 w-full h-screen" v-if="clientData">
-                    <div class="w-full text-center text-2xl mt-2 font-bold">
-                        Water Billing System
-                    </div>
-
-                    <div class="w-full mt-8">
-                        <p class="mt-2 text-xl">
-                            <b>Name:</b>
-                        </p>
-
-                        <p class="mt-1 text-lg">
-                            {{ clientData.name }}
-                        </p>
-
-                        <p class="mt-4 text-xl">
-                            <b>Address:</b>
-                        </p>
-
-                        <p class="mt-1 text-lg">
-                            {{ clientData.address }}
-                        </p>
-
-                        <p class="mt-4 text-xl">
-                            <b>Line #:</b>
-                        </p>
-
-                        <p class="mt-1 text-lg">
-                            {{ clientData.reference }}
-                        </p>
-
-                        <p class="mt-4 text-xl">
-                            <b>Due Date:</b>
-                        </p>
-
-                        <p class="mt-1 text-lg">
-                            {{ clientData.date }}
-                        </p>
-
-                        <p class="mt-4 text-xl">
-                            <b>Bill:</b>
-                        </p>
-
-                        <p class="mt-1 text-lg">
-                            ₱ {{ clientData.amount }}
-                        </p>
-
-                        <p class="mt-4 text-xl">
-                            <b>Penalty:</b>
-                        </p>
-
-                         <p class="mt-1 text-lg">
-                            ₱ {{ clientData.penalty }}
-                        </p>
-
-                        <p class="mt-4 text-xl">
-                            <b>Total Bill:</b>
-                        </p>
-
-                        <p class="mt-1 text-lg">
-                            ₱ {{ clientData.amount + clientData.penalty }}
-                        </p>
-                    </div>
+    <Navigation :auth="auth">
+        <div class="w-full h-screen">
+            <div class="flex flex-col p-4 w-full h-full mt-20"
+                v-if="!isPrint"
+            >
+                <div class="w-full text-center mb-5">
+                    <span class="w-full text-2xl font-bold">
+                        Generate Water Bill
+                    </span>
                 </div>
-            </section>
-        </VueHtml2pdf>
 
+                <div class="w-full">
+                    <input type="text" class="w-full  my-2 --login__register--input text-center"
+                        placeholder="Line #" v-model="form.reference"
+                    >
+                    <span class="text-xs text-red-500">{{validationError('reference', saveError)}} </span>
+                </div>
 
-        
-    </div>
+                <div class="w-full">
+                    <input type="number" class="w-full  my-2 --login__register--input text-center"
+                        placeholder="Consumed Cubic Meter" v-model="form.consumed_cubic_meter"
+                    >
+                    <span class="text-xs text-red-500">{{validationError('consumed_cubic_meter', saveError)}} </span>
+                </div>
+
+                <div class="w-full">
+                    <input type="date" class="w-full  my-2 --login__register--input text-center"
+                        v-model="form.date"
+                    >
+                    <span class="text-xs text-red-500">{{validationError('date', saveError)}} </span>
+                </div>
+
+                <div class="w-full">
+                    <button class="w-full  my-2 --login__register--button text-center"
+                        @click="generateBill()"
+                    >
+                        Generate Bill
+                    </button>
+                </div>
+            </div>
+
+            <VueHtml2pdf
+                :show-layout="false"
+                :float-layout="true"
+                :enable-download="true"
+                :preview-modal="true"
+                :paginate-elements-by-height="1000"
+                :filename="Math.random().toString(36).slice(2)"
+                :pdf-quality="2"
+                :manual-pagination="false"
+                pdf-format="a6"
+                pdf-orientation="portrait"
+                pdf-content-width="100vw"
+                ref="receipt"
+            >
+                <section slot="pdf-content">
+                    <div class="flex flex-col p-4 w-full h-screen" v-if="clientData">
+                        <div class="w-full text-center text-2xl mt-2 font-bold">
+                            Water Billing System
+                        </div>
+
+                        <div class="w-full mt-8">
+                            <p class="mt-2 text-xl">
+                                <b>Name:</b>
+                            </p>
+
+                            <p class="mt-1 text-lg">
+                                {{ clientData.name }}
+                            </p>
+
+                            <p class="mt-4 text-xl">
+                                <b>Address:</b>
+                            </p>
+
+                            <p class="mt-1 text-lg">
+                                {{ clientData.address }}
+                            </p>
+
+                            <p class="mt-4 text-xl">
+                                <b>Line #:</b>
+                            </p>
+
+                            <p class="mt-1 text-lg">
+                                {{ clientData.reference }}
+                            </p>
+
+                            <p class="mt-4 text-xl">
+                                <b>Due Date:</b>
+                            </p>
+
+                            <p class="mt-1 text-lg">
+                                {{ clientData.date }}
+                            </p>
+
+                            <p class="mt-4 text-xl">
+                                <b>Bill:</b>
+                            </p>
+
+                            <p class="mt-1 text-lg">
+                                ₱ {{ clientData.amount }}
+                            </p>
+
+                            <p class="mt-4 text-xl">
+                                <b>Penalty:</b>
+                            </p>
+
+                            <p class="mt-1 text-lg">
+                                ₱ {{ clientData.penalty }}
+                            </p>
+
+                            <p class="mt-4 text-xl">
+                                <b>Total Bill:</b>
+                            </p>
+
+                            <p class="mt-1 text-lg">
+                                ₱ {{ clientData.amount + clientData.penalty }}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </VueHtml2pdf>
+        </div>
+    </Navigation>
 </template>
 
 <script>
 import { Inertia } from '@inertiajs/inertia';
 import axios from "axios";
 import VueHtml2pdf from 'vue-html2pdf'
+import Navigation from '../Layouts/Navigation.vue'
 
 export default {
+    props: ['auth', 'options'],
     components: {
-        VueHtml2pdf
+        VueHtml2pdf,
+        Navigation
     },
     data(){
         return {

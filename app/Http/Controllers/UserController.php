@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\ClientUtility;
+use App\Models\Client;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Client;
 
 class UserController extends Controller
 {
@@ -30,7 +31,7 @@ class UserController extends Controller
 
                 if($auth->user_type == 'utility') {
                     return redirect('/clients/view/utilities'); 
-                }
+                } 
 
                 if($auth->user_type == 'client') {
                     $route =  "/clients" . "/" . $auth->reference;
@@ -210,6 +211,23 @@ class UserController extends Controller
         $saveUser = User::where('id', $request->id)->update($data);
         
         return response()->json(['status' => 200], 200);  
+    }
+
+    public function viewReports(Request $request)
+    {
+        $auth = Auth::user();
+
+        if($auth) {
+            return Inertia::render('Reports', [
+                'auth'    => $auth,
+                'options' => [
+                    'ir' => ClientUtility::get(),
+                    'clients' => Client::get()
+                ]
+            ]);
+        }
+
+        return redirect('/');
     }
 } 
  

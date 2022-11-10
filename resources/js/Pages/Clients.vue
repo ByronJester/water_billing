@@ -31,7 +31,7 @@
                     <Table :columns="columns" :rows="clients" :keys="keys" :selected.sync="client" v-if="activeTab != 'dashboard'"/>
 
                     <div class="w-full flex flex-row justify-center items-center mt-5" v-else>
-                        <div class="w-full flex flex-col mx-2" style="border: 1px solid black; border-radius: 5px">
+                        <div class="w-full flex flex-col mx-2 cursor-pointer" style="border: 1px solid black; border-radius: 5px" @click="activeTab = 'clients'">
                             <div class="w-full text-center" style="font-size: 50px;">
                                 {{ options.clients.length}}
                             </div>
@@ -41,7 +41,7 @@
                             </div>
                         </div>
 
-                        <div class="w-full flex flex-col mx-2" style="border: 1px solid black; border-radius: 5px">
+                        <div class="w-full flex flex-col mx-2 cursor-pointer" style="border: 1px solid black; border-radius: 5px" @click="changeActive('/users')">
                             <div class="w-full text-center" style="font-size: 50px;">
                                 {{ options.users.length}}
                             </div>
@@ -247,24 +247,6 @@ export default {
 
             if(arg == 'billing') {
                 this.columns = [
-                    'Name', 'Line #', 'Amount to Pay'
-                ]
-
-                this.keys = [
-                    {
-                        label: 'name',
-                    },
-                    {
-                        label: 'reference',
-                    },
-                    {
-                        label: 'amount_to_pay',
-                    }
-                ]
-            }
-
-            if(arg == 'billing') {
-                this.columns = [
                     'Name', 'Line #', 'Amount to Pay', 'Penalty', 'Due Date'
                 ]
 
@@ -289,7 +271,7 @@ export default {
 
             if(arg == 'cashiering') {
                 this.columns = [
-                    'Name', 'Line #', 'Amount to Pay', 'Status'
+                    'Name', 'Line #', 'Amount to Pay', 'Status', 'Payment Date'
                 ]
 
                 this.keys = [
@@ -304,6 +286,9 @@ export default {
                     },
                     {
                         label: 'status',
+                    },
+                    {
+                        label: 'payment_date',
                     },
                 ]
             }
@@ -360,6 +345,14 @@ export default {
                     alert("Client has successfuly notified of his/her payment due date.");
 					location.reload()
 				})
+        },
+        changeActive(arg){
+            Inertia.get(
+                this.$root.route + arg,
+                {
+                    onSuccess: () => { },
+                },
+            );
         }
     }
 }

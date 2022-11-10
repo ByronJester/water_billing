@@ -9,7 +9,7 @@
 
             <div class="w-full h-full mt-5 flex flex-col md:flex-row ">
 
-                <div class="mx-2 flex flex-col" :style="{width: screenWidth <= 700 ? '100%': '20%'}">
+                <div class="mx-2 flex flex-col" :style="{width: screenWidth <= 700 ? '100%': '20%'}" v-if="auth.role == '2'">
                     <div class="pb-3"
                         style="width:100%;"
                     >
@@ -39,8 +39,43 @@
                     </div>
                 </div>
 
-                <div class="mx-2" :style="{width: screenWidth <= 700 ? '100%': '80%', 'margin-top': screenWidth <= 700 ? '10px': '0'}">
+                <div class="px-2" :style="{width: screenWidth <= 700 || auth.role == 1 ? '100%': '80%', 'margin-top': screenWidth <= 700 ? '10px': '0'}">
                     <Table :columns="columns" :rows="utilities" :keys="keys" :selected.sync="utility"/>
+                </div>
+            </div>
+
+            <div id="statusModal" class="statusModal">
+                <!-- Modal content -->
+                <div class="status-content flex flex-col" :style="{'width': screenWidth <= 700 ? '100%' : '20%'}">
+                    <div class="w-full">
+                        <span class="text-lg font-bold">
+                           Change Status
+                        </span>
+
+                        <span class="float-right cursor-pointer"
+                            @click="closeStatusModal()"
+                        >
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                    </div>
+
+                    <div class="w-full mt-5">
+                        <select v-model="ir.status" class="w-full"
+                            style="height: 40px; padding-left: 10px; border: 1px solid black"
+                        >
+                            <option value="pending">Pending</option>
+                            <option value="ongoing">Ongoing</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+
+                    <div class="w-full mt-5">
+                        <button class="w-full px-4 py-2 text-center" style="background: black; color:white;"
+                            @click="changeStatus()"
+                        >
+                            Submit
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,6 +122,10 @@ export default {
             form: {
                 user_id: null,
                 description: null
+            },
+            ir: {
+                id: null,
+                status: null
             }
         }
     },
@@ -97,6 +136,20 @@ export default {
         this.form.user_id = this.auth.id
 
         this.utilities = this.options.utilities
+    },
+
+    watch: {
+        utility(arg){
+            
+            if(this.auth.role == 1 && arg) {
+                this.openStatusModal()
+                this.ir.id = arg.id
+                this.ir.status = arg.status
+            }
+        },
+        'ir.status'(arg){
+            
+        }
     },
 
     methods: {
@@ -112,6 +165,29 @@ export default {
 
                         location.reload()
 					}
+				})
+        },
+
+        openStatusModal(){
+            var modal = document.getElementById("statusModal");
+            modal.style.display = "block";
+        },
+        closeStatusModal(){
+            this.utility = null
+            this.ir.status = null
+            var modal = document.getElementById("statusModal");
+            modal.style.display = "none";
+        },
+        changeStatus(){
+            axios.post(this.$root.route + "/clients/incident-report/change-status", this.ir)
+				.then(response => {
+					if(response.data.status == 422) {
+						this.saveError = response.data.errors 
+					} else {
+                        this.utilities = response.data.utilities
+					}
+
+                    this.closeStatusModal()
 				})
         }
     }
@@ -133,5 +209,40 @@ export default {
     width: 100%;
     text-align: center;
     color: white;
+}
+
+.statusModal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content */
+.status-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>

@@ -5,7 +5,7 @@ WORKDIR /app
 COPY composer.json composer.lock /app/
 
 # Faster parallel build
-RUN composer global require hirak/prestissimo
+# RUN composer global require hirak/prestissimo
 
 # https://blog.amezmo.com/php-deployment-best-practices-when-using-composer/
 RUN composer install  \

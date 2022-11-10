@@ -1,26 +1,13 @@
 #!/bin/sh
+echo "Running composer"
+composer global require hirak/prestissimo
+composer install --no-dev --working-dir=/var/www/html
 
-if [ -e .env ]
-then
-    echo "Exporting env variables..."
-    set -a
-    . ./.env
-    set +a
-else
-    echo ".env not found. Skipping..."
-fi
-
-cd "$KEY_PATH" && ls -la
-chmod -R 755 "$KEY_PATH" && ls -la
-cd /var/www/html
-
-# composer run-script post-autoload-dump
-# https://laravel.com/docs/7.x/deployment#optimizing-configuration-loading
-
+echo "Caching config..."
 php artisan config:cache
-php artisan route:cache
-# php artisan cache:clear
-php artisan migrate --force
 
-apache2ctl -D FOREGROUND
-# supervisord -c /etc/supervisord.conf
+echo "Caching routes..."
+php artisan route:cache
+
+echo "Running migrations..."
+php artisan migrate --force

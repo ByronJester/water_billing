@@ -4,25 +4,6 @@ WORKDIR /app
 
 COPY composer.json composer.lock /app/
 
-# https://blog.amezmo.com/php-deployment-best-practices-when-using-composer/
-RUN composer install  \
-    --optimize-autoloader \
-    --no-autoloader \
-    --no-ansi \
-    --no-interaction \
-    --no-progress \
-    --no-dev \
-    --profile
-
-COPY . /app
-
-RUN composer dump-autoload \
-    --optimize \
-    --classmap-authoritative \
-    --no-interaction \
-    --no-scripts \
-    --no-dev
-
 FROM php:7.4-fpm-alpine
 
 # https://github.com/docker-library/php/issues/240#issuecomment-305038173

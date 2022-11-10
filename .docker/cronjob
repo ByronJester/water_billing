@@ -1,0 +1,1 @@
+* * * * * date; cd /cron/app && php artisan schedule:run >> /dev/stdout

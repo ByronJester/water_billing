@@ -48,4 +48,4 @@ COPY .docker/start.sh ./start.sh
 
 EXPOSE 8080
 
-CMD ["/start.sh"]
+CMD ["sh", "./start.sh"]

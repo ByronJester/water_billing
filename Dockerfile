@@ -17,6 +17,8 @@ RUN composer install  \
     --no-dev \
     --profile
 
+RUN npm install 
+
 COPY . /app
 
 RUN composer dump-autoload \

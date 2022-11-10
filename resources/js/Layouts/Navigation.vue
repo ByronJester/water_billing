@@ -69,6 +69,13 @@
                     </span>
                 </p>
 
+                <p class="mx-1 --text cursor-pointer">
+                    <span class="mx-2"
+                    > 
+                        UTILITIES
+                    </span>
+                </p>
+
                 <p class="mx-1 --text cursor-pointer" @click="logout()" style="border-left: 1px solid #ffffff">
                     <i class="fa-solid fa-door-open fa-lg mx-2"></i> 
                 </p>

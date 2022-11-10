@@ -2297,6 +2297,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth'],
@@ -46783,6 +46790,8 @@ var render = function() {
               _vm._v(" "),
               _vm._m(1),
               _vm._v(" "),
+              _vm._m(2),
+              _vm._v(" "),
               _c(
                 "p",
                 {
@@ -46828,6 +46837,16 @@ var staticRenderFns = [
     return _c("p", { staticClass: "mx-1 --text cursor-pointer" }, [
       _c("span", { staticClass: "mx-2" }, [
         _vm._v(" \n                    REPORT\n                ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "mx-1 --text cursor-pointer" }, [
+      _c("span", { staticClass: "mx-2" }, [
+        _vm._v(" \n                    UTILITIES\n                ")
       ])
     ])
   }

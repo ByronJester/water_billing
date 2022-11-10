@@ -17,7 +17,7 @@ RUN composer install  \
     --no-dev \
     --profile
 
-RUN npm install 
+# RUN npm install 
 
 COPY . /app
 

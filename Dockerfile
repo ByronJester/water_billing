@@ -25,7 +25,7 @@ RUN composer dump-autoload \
 
 FROM php:7.4-fpm-alpine
 
-RUN apt-get install -y libpq-dev \
+RUN apk add --no-cache libpq-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 

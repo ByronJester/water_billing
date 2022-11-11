@@ -17,6 +17,7 @@ ENV LOG_CHANNEL stderr
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
+RUN mkdir -p /run/nginx
 COPY .docker/nginx/conf.d/app.conf /etc/nginx/conf.d
 
 COPY .docker/php/fpm.d/www.conf /usr/local/etc/php-fpm.d/

@@ -63,6 +63,4 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 
 EXPOSE 8080
 
-# CMD ["sh", "./start.sh"]
-RUN chmod +x start.sh
-ENTRYPOINT []
+CMD ["./start.sh"]

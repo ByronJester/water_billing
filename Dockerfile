@@ -25,8 +25,6 @@ RUN composer dump-autoload \
     --no-scripts \
     --no-dev
 
-COPY . .
-
 # Image config
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/html/public

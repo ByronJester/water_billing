@@ -1,12 +1,13 @@
-#!/bin/sh
+#!/usr/bin/env bash
+echo "Running composer"
+composer global require hirak/prestissimo
+composer install --no-dev --working-dir=/var/www/html
 
-# composer run-script post-autoload-dump
-# https://laravel.com/docs/7.x/deployment#optimizing-configuration-loading
-
+echo "Caching config..."
 php artisan config:cache
-php artisan route:cache
-# php artisan cache:clear
-php artisan migrate --force
 
-# apache2ctl -D FOREGROUND
-# supervisord -c /etc/supervisord.conf
+echo "Caching routes..."
+php artisan route:cache
+
+echo "Running migrations..."
+php artisan migrate --forces

@@ -1,5 +1,7 @@
 FROM composer as builder
 
+FROM richarvey/nginx-php-fpm:1.7.2
+
 WORKDIR /app
 
 COPY composer.json composer.lock /app/
@@ -23,8 +25,7 @@ RUN composer dump-autoload \
     --no-scripts \
     --no-dev
 
-FROM php:7.4-fpm-alpine
-
+# FROM php:7.4-fpm-alpine
 
 WORKDIR /var/www/html/app
 

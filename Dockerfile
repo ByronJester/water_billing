@@ -26,8 +26,7 @@ RUN composer install  \
     --no-interaction \
     --no-progress \
     --no-dev \
-    --profile \
-    --working-dir=/var/www/html
+    --profile
 
 RUN composer dump-autoload \
     --optimize \

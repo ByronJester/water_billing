@@ -17,6 +17,12 @@ ENV LOG_CHANNEL stderr
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
+
+WORKDIR /var/www/html/app
+
+COPY --from=builder --chown=www-data:www-data /app .
+COPY --from=builder /usr/bin/composer /usr/local/bin/composer
+
 RUN mkdir -p /run/nginx
 COPY .docker/nginx/conf.d/app.conf /etc/nginx/conf.d
 

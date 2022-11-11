@@ -4,25 +4,6 @@ FROM composer as builder
 
 COPY . .
 
-RUN composer install  \
-    --optimize-autoloader \
-    --no-autoloader \
-    --no-ansi \
-    --no-interaction \
-    --no-progress \
-    --no-dev \
-    --profile \
-    --working-dir=/var/www/html
-
-COPY . /app
-
-RUN composer dump-autoload \
-    --optimize \
-    --classmap-authoritative \
-    --no-interaction \
-    --no-scripts \
-    --no-dev
-
 # Image config
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/html/public
@@ -37,6 +18,23 @@ ENV LOG_CHANNEL stderr
 
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
+
+RUN composer install  \
+    --optimize-autoloader \
+    --no-autoloader \
+    --no-ansi \
+    --no-interaction \
+    --no-progress \
+    --no-dev \
+    --profile \
+    --working-dir=/var/www/html
+
+RUN composer dump-autoload \
+    --optimize \
+    --classmap-authoritative \
+    --no-interaction \
+    --no-scripts \
+    --no-dev
 
 COPY .scripts/00-laravel-deploy.sh ./start.sh
 

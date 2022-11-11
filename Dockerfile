@@ -80,4 +80,8 @@ COPY .docker/start.sh ./start.sh
 
 EXPOSE 8080
 
-CMD ["sh", "./start.sh"]
+# CMD ["sh", "./start.sh"]
+RUN chmod +x start.sh
+
+# unset default image entrypoint
+ENTRYPOINT []

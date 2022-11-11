@@ -36,6 +36,4 @@ RUN composer dump-autoload \
     --no-scripts \
     --no-dev
 
-COPY .scripts/00-laravel-deploy.sh ./start.sh
-
-CMD ["./start.sh"]
+CMD ["/start.sh"]

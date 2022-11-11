@@ -1,7 +1,5 @@
 FROM composer as builder
 
-FROM php:7.4-fpm-alpine
-
 WORKDIR /app
 
 COPY composer.json composer.lock /app/
@@ -24,6 +22,8 @@ RUN composer dump-autoload \
     --no-interaction \
     --no-scripts \
     --no-dev
+
+FROM php:7.4-fpm-alpine
 
 WORKDIR /var/www/html/app
 

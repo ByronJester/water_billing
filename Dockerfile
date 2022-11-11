@@ -1,7 +1,5 @@
 FROM richarvey/nginx-php-fpm:1.7.2
 
-FROM composer as builder
-
 COPY . .
 
 # Image config
@@ -19,20 +17,6 @@ ENV LOG_CHANNEL stderr
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-RUN composer install  \
-    --optimize-autoloader \
-    --no-autoloader \
-    --no-ansi \
-    --no-interaction \
-    --no-progress \
-    --no-dev \
-    --profile
+COPY .docker/start.sh ./start.sh
 
-RUN composer dump-autoload \
-    --optimize \
-    --classmap-authoritative \
-    --no-interaction \
-    --no-scripts \
-    --no-dev
-
-CMD ["/start.sh"]
+CMD ["sh", "./start.sh"]

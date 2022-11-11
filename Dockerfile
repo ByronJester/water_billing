@@ -31,7 +31,7 @@ RUN apt-get update \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 
-WORKDIR /var/www/html/app
+WORKDIR /var/www/html
 
 # Faster setup for permissions
 # https://blog.programster.org/dockerfile-speed-up-the-setting-of-permissions

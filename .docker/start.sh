@@ -1,13 +1,19 @@
-#!/usr/bin/env bash
-echo "Running composer"
-composer global require hirak/prestissimo
-composer install --no-dev --working-dir=/var/www/html
+if [ -e .env ]
+then
+    echo "Exporting env variables..."
+    set -a
+    . ./.env
+    set +a
+else
+    echo ".env not found. Skipping..."
+fi
 
-echo "Caching config..."
+cd "$KEY_PATH" && ls -la
+chmod -R 755 "$KEY_PATH" && ls -la
+cd /var/www/html
+
 php artisan config:cache
-
-echo "Caching routes..."
 php artisan route:cache
-
-echo "Running migrations..."
+# php artisan cache:clear
 php artisan migrate --force
+

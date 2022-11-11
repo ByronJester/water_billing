@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # composer run-script post-autoload-dump
 # https://laravel.com/docs/7.x/deployment#optimizing-configuration-loading

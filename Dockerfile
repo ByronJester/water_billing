@@ -17,6 +17,4 @@ ENV LOG_CHANNEL stderr
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-COPY .docker/supervisor/conf.d/app.conf /etc/supervisord.conf
-
 CMD ["/start.sh"]

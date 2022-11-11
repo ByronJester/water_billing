@@ -8,5 +8,5 @@ php artisan route:cache
 # php artisan cache:clear
 php artisan migrate --force
 
-apache2ctl -D FOREGROUND
+# apache2ctl -D FOREGROUND
 # supervisord -c /etc/supervisord.conf

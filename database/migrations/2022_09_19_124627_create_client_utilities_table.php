@@ -17,6 +17,7 @@ class CreateClientUtilitiesTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('client_id')->unsigned()->comment('Foreign key from table clients');
             $table->string('description');
+            $table->double('amount', 8, 2);
             $table->string('status');
             
             $table->foreign('client_id')->references('id')->on('clients');

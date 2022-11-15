@@ -25,7 +25,9 @@ class Client extends Model
         'name',
         'amount_to_pay',
         'due_date',
-        'status'
+        'status',
+        'other_fee',
+        'total'
     ];
 
     public function getNameAttribute()
@@ -39,6 +41,18 @@ class Client extends Model
 
         if(count($payments) > 0) {
             return $payments->sum('amount');
+        }
+
+        return 0;
+        
+    }
+
+    public function getOtherFeeAttribute()
+    {
+        $utilities = ClientUtility::where('client_id', $this->id)->where('status', 'completed')->get();
+
+        if(count($utilities) > 0) {
+            return $utilities->sum('amount');
         }
 
         return 0;
@@ -73,5 +87,10 @@ class Client extends Model
         $date = Carbon::parse($value);
 
         return $date->isoFormat('LL'); 
+    }
+
+    public function getTotalAttribute($value)
+    {
+        return $this->amount_to_pay + $this->penalty + $this->other_fee;
     }
 }

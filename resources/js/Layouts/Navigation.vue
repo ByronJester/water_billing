@@ -27,7 +27,7 @@
                     <span  class="mx-2"
                         :style="{'border-bottom': active === '/settings' ? '1px solid #ffffff' : 'none'}"
                     > 
-                        SETTINGS
+                        CUBIC METER
                     </span>
                 </p>
 

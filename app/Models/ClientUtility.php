@@ -12,7 +12,8 @@ class ClientUtility extends Model
     protected $fillable = [
         'client_id',
         'description',
-        'status'
+        'status',
+        'amount'
     ];
 
     protected $appends = [

@@ -2919,7 +2919,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (arg == 'billing') {
-        this.columns = ['Name', 'Line #', 'Amount to Pay', 'Penalty', 'Due Date'];
+        this.columns = ['Name', 'Line #', 'Amount to Pay', 'Penalty', 'Other Fees', 'Due Date'];
         this.keys = [{
           label: 'name'
         }, {
@@ -2929,12 +2929,14 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           label: 'penalty'
         }, {
+          label: 'other_fee'
+        }, {
           label: 'due_date'
         }];
       }
 
       if (arg == 'cashiering') {
-        this.columns = ['Name', 'Line #', 'Amount to Pay', 'Status', 'Payment Date'];
+        this.columns = ['Name', 'Line #', 'Amount to Pay', 'Penalty', 'Other Fees', 'Total'];
         this.keys = [{
           label: 'name'
         }, {
@@ -2942,9 +2944,11 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           label: 'amount_to_pay'
         }, {
-          label: 'status'
+          label: 'penalty'
         }, {
-          label: 'payment_date'
+          label: 'other_fee'
+        }, {
+          label: 'total'
         }];
       }
     }
@@ -2990,8 +2994,7 @@ __webpack_require__.r(__webpack_exports__);
         reference: arg.reference,
         due_date: arg.due_date
       }).then(function (response) {
-        alert("Client has successfuly notified of his/her payment due date.");
-        location.reload();
+        alert("Client has successfuly notified of his/her payment due date."); // location.reload()
       });
     },
     changeActive: function changeActive(arg) {
@@ -4193,6 +4196,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -4227,7 +4234,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       ir: {
         id: null,
-        status: null
+        status: null,
+        amount: 0
       }
     };
   },
@@ -4238,10 +4246,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     utility: function utility(arg) {
-      if (this.auth.role == 1 && arg) {
-        this.openStatusModal();
-        this.ir.id = arg.id;
-        this.ir.status = arg.status;
+      if (arg.status != 'paid') {
+        if (this.auth.role == 1 && arg) {
+          this.openStatusModal();
+          this.ir.id = arg.id;
+          this.ir.status = arg.status;
+          this.ir.amount = arg.amount;
+        }
       }
     },
     'ir.status': function irStatus(arg) {}
@@ -4677,7 +4688,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.--input[data-v-19b042b1] {\r\n    width: 100%;\r\n    height: 30px;\r\n    border: 1px solid black;\r\n    border-radius: 5px;\r\n    text-align: center;\n}\n.--btn[data-v-19b042b1] {\r\n    background: #2B4865;\r\n    border-radius: 10px;\r\n    width: 100%;\r\n    text-align: center;\r\n    color: white;\n}\n.statusModal[data-v-19b042b1] {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  padding-top: 100px; /* Location of the box */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\n}\r\n/* Modal Content */\n.status-content[data-v-19b042b1] {\r\n  background-color: #fefefe;\r\n  margin: auto;\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 80%;\n}\r\n/* The Close Button */\n.close[data-v-19b042b1] {\r\n  color: #aaaaaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\n}\n.close[data-v-19b042b1]:hover,\r\n.close[data-v-19b042b1]:focus {\r\n  color: #000;\r\n  text-decoration: none;\r\n  cursor: pointer;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.--input[data-v-19b042b1] {\r\n    width: 100%;\r\n    height: 40px;\r\n    border: 1px solid black;\r\n    border-radius: 5px;\r\n    text-align: center;\n}\n.--btn[data-v-19b042b1] {\r\n    background: #2B4865;\r\n    border-radius: 10px;\r\n    width: 100%;\r\n    text-align: center;\r\n    color: white;\n}\n.statusModal[data-v-19b042b1] {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  padding-top: 100px; /* Location of the box */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\n}\r\n/* Modal Content */\n.status-content[data-v-19b042b1] {\r\n  background-color: #fefefe;\r\n  margin: auto;\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 80%;\n}\r\n/* The Close Button */\n.close[data-v-19b042b1] {\r\n  color: #aaaaaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\n}\n.close[data-v-19b042b1]:hover,\r\n.close[data-v-19b042b1]:focus {\r\n  color: #000;\r\n  text-decoration: none;\r\n  cursor: pointer;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -47093,7 +47104,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            " \n                    SETTINGS\n                "
+                            " \n                    CUBIC METER\n                "
                           )
                         ]
                       )
@@ -47948,10 +47959,15 @@ var render = function() {
                     _c(
                       "div",
                       {
-                        staticClass: "w-full flex flex-col mx-2",
+                        staticClass: "w-full flex flex-col mx-2 cursor-pointer",
                         staticStyle: {
                           border: "1px solid black",
                           "border-radius": "5px"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.changeActive("/reports")
+                          }
                         }
                       },
                       [
@@ -50608,7 +50624,7 @@ var render = function() {
                       expression: "ir.status"
                     }
                   ],
-                  staticClass: "w-full",
+                  staticClass: "w-full --input",
                   staticStyle: {
                     height: "40px",
                     "padding-left": "10px",
@@ -50648,6 +50664,35 @@ var render = function() {
                   ])
                 ]
               )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-full mt-5" }, [
+              _vm.ir.status == "completed"
+                ? _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.ir.amount,
+                        expression: "ir.amount"
+                      }
+                    ],
+                    staticClass: "--input",
+                    attrs: {
+                      type: "number",
+                      placeholder: "Maintenance Charge"
+                    },
+                    domProps: { value: _vm.ir.amount },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.ir, "amount", $event.target.value)
+                      }
+                    }
+                  })
+                : _vm._e()
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "w-full mt-5" }, [

@@ -51,7 +51,7 @@
                             </div>
                         </div>
 
-                        <div class="w-full flex flex-col mx-2" style="border: 1px solid black; border-radius: 5px">
+                        <div class="w-full flex flex-col mx-2 cursor-pointer" style="border: 1px solid black; border-radius: 5px" @click="changeActive('/reports')">
                             <div class="w-full text-center" style="font-size: 50px;">
                                 {{ options.incidents.length}}
                             </div>
@@ -247,7 +247,7 @@ export default {
 
             if(arg == 'billing') {
                 this.columns = [
-                    'Name', 'Line #', 'Amount to Pay', 'Penalty', 'Due Date'
+                    'Name', 'Line #', 'Amount to Pay', 'Penalty', 'Other Fees', 'Due Date'
                 ]
 
                 this.keys = [
@@ -264,6 +264,9 @@ export default {
                         label: 'penalty',
                     },
                     {
+                        label: 'other_fee',
+                    },
+                    {
                         label: 'due_date'
                     }
                 ]
@@ -271,7 +274,7 @@ export default {
 
             if(arg == 'cashiering') {
                 this.columns = [
-                    'Name', 'Line #', 'Amount to Pay', 'Status', 'Payment Date'
+                    'Name', 'Line #', 'Amount to Pay', 'Penalty', 'Other Fees', 'Total'
                 ]
 
                 this.keys = [
@@ -285,10 +288,13 @@ export default {
                         label: 'amount_to_pay',
                     },
                     {
-                        label: 'status',
+                        label: 'penalty',
                     },
                     {
-                        label: 'payment_date',
+                        label: 'other_fee',
+                    },
+                    {
+                        label: 'total',
                     },
                 ]
             }
@@ -343,7 +349,7 @@ export default {
             axios.post(this.$root.route + "/clients/client/notify", {reference : arg.reference, due_date: arg.due_date})
 				.then(response => {
                     alert("Client has successfuly notified of his/her payment due date.");
-					location.reload()
+					// location.reload()
 				})
         },
         changeActive(arg){

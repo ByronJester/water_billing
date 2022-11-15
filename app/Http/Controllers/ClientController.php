@@ -164,6 +164,8 @@ class ClientController extends Controller
             'payment_date' => Carbon::now()
         ]);
 
+        ClientUtility::where('client_id', $request->id)->update(['status' => 'paid']);
+
         ClientPayment::where('client_id', $request->id)->update(['status' => 'paid']);
 
         return response()->json(['status' => 200], 200);  
@@ -174,15 +176,17 @@ class ClientController extends Controller
 
         $users = User::where('reference', $request->reference)->get();
 
+        $sms = null;
+
         foreach($users as $user) {
             $message = 'Due date of your payment is ' . $request->due_date;
             $phone = substr($user->phone, 1);
 
 
-            $this->sendSms($phone, $message);
+            $sms = $this->sendSms($phone, $message);
         }
 
-        return response()->json(['status' => 200], 200);  
+        return response()->json(['status' => 200, 'sms' => $sms], 200);  
     }
 
     public function viewUtilities(Request $request)
@@ -242,10 +246,11 @@ class ClientController extends Controller
             $client = Client::where('reference', $auth->reference)->first();
 
             $utilities = $utilities->where('client_id', $client->id);
-        } 
+        }
 
         ClientUtility::where('id', $request->id)->update([
-            'status' => $request->status
+            'status' => $request->status,
+            'amount' => $request->amount
         ]);
 
         return response()->json(['status' => 200, 'utilities' => $utilities->get()], 200);  

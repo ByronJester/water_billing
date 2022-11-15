@@ -60,13 +60,17 @@
                     </div>
 
                     <div class="w-full mt-5">
-                        <select v-model="ir.status" class="w-full"
+                        <select v-model="ir.status" class="w-full --input"
                             style="height: 40px; padding-left: 10px; border: 1px solid black"
                         >
                             <option value="pending">Pending</option>
                             <option value="ongoing">Ongoing</option>
                             <option value="completed">Completed</option>
                         </select>
+                    </div>
+
+                    <div class="w-full mt-5">
+                        <input type="number" class="--input" placeholder="Maintenance Charge" v-if="ir.status == 'completed'" v-model="ir.amount">
                     </div>
 
                     <div class="w-full mt-5">
@@ -125,7 +129,8 @@ export default {
             },
             ir: {
                 id: null,
-                status: null
+                status: null,
+                amount: 0
             }
         }
     },
@@ -140,12 +145,15 @@ export default {
 
     watch: {
         utility(arg){
-            
-            if(this.auth.role == 1 && arg) {
-                this.openStatusModal()
-                this.ir.id = arg.id
-                this.ir.status = arg.status
+            if(arg.status != 'paid') {
+                if(this.auth.role == 1 && arg) {
+                    this.openStatusModal()
+                    this.ir.id = arg.id
+                    this.ir.status = arg.status
+                    this.ir.amount = arg.amount
+                }
             }
+            
         },
         'ir.status'(arg){
             
@@ -197,7 +205,7 @@ export default {
 <style scoped>
 .--input {
     width: 100%;
-    height: 30px;
+    height: 40px;
     border: 1px solid black;
     border-radius: 5px;
     text-align: center;

@@ -6,15 +6,6 @@
             </div>
 
             <div class="flex justify-end items-center" style="color: #ffffff" :style="{'width': screenWidth <= 700 ? '80%' : '100%' }">
-                <p class="mx-1 --text cursor-pointer" @click="changeActive('/users')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
-                    <span class="mr-2"
-                        :style="{'border-bottom': active === '/users' ? '1px solid #ffffff' : 'none'}"
-                        
-                    > 
-                        USERS
-                    </span>
-                </p>
-
                 <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
                     <span class="mx-2"
                         :style="{'border-bottom': active === '/clients' ? '1px solid #ffffff' : 'none'}"
@@ -64,6 +55,15 @@
                     </span>
                 </p>
 
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/users')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
+                    <span class="mr-2"
+                        :style="{'border-bottom': active === '/users' ? '1px solid #ffffff' : 'none'}"
+                        
+                    > 
+                        MAINTENANCE
+                    </span>
+                </p>
+
                 <p class="mx-1 --text cursor-pointer" @click="changeActive('/users/profile')">
                     <span class="mx-2"
                         :style="{'border-bottom': active === '/users/profile' ? '1px solid #ffffff' : 'none'}"
@@ -71,6 +71,7 @@
                         PROFILE
                     </span>
                 </p>
+                
 
                 <!-- <p class="mx-1 --text cursor-pointer">
                     <span class="mx-2"

@@ -41,7 +41,8 @@ class User extends Authenticatable
     ];
 
     protected $appends = [
-        'name'
+        'name',
+        'status'
     ];
 
     public function getReferenceAttribute($val)
@@ -56,5 +57,14 @@ class User extends Authenticatable
     public function getNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function getStatusAttribute()
+    {
+        if($this->is_active) {
+            return 'ACTIVE';
+        }
+
+        return 'INACTIVE';
     }
 }

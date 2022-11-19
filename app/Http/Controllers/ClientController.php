@@ -152,9 +152,18 @@ class ClientController extends Controller
             'client' => $client,
             'amount' => $totalAmount,
             'due_date' => $request->date
-        ];
+        ]; 
 
-        return response()->json(['status' => 200, 'data' => $data], 200);  
+        $users = User::where('reference', $request->reference)->get();
+
+        $message = "BILLING FOR THIS MONTH \r\n %s %s - %s \r\n Amount: ₱ %s \r\n Due Date: %s. \r\n For more info please visit water billing system.";
+        $message = sprintf($message, $client->first_name, $client->last_name, $client->reference, $totalAmount + $client->penalty, $request->date);
+        
+        foreach($users as $user) {
+            $this->sendSms($user->phone, $message);
+        }
+
+        return response()->json(['status' => 200, 'data' => $data, 'message' => $message], 200);  
     }
 
     public function markAsPaid(Request $request)
@@ -232,6 +241,14 @@ class ClientController extends Controller
         $data['status'] = 'pending';
 
         ClientUtility::create($data);
+
+        $utilities = User::where('user_type', 'utility')->get();
+
+        foreach($utilities as $utility) {
+            $message = "There's new incident report submitted from client with Line #: " . $client->reference . ". Please visit our system for more information.";
+
+            $this->sendSms($utility->phone, $message);
+        }
 
         return response()->json(['status' => 200], 200);  
     }

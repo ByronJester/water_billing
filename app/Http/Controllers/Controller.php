@@ -17,31 +17,28 @@ class Controller extends BaseController
 
     public function sendSms($to, $message)
     {
-        // $account_sid = 'AC0201237e8b04951bfbcdb9db86613254';
-        // $auth_token = '0c392402a2ec22b5e426f8b0275b80c5';
-        // $twilio_number = "+19123043848";
+        $ch = curl_init();
 
-        // $to = '+63'  . $to;
-
-        // $client = new Client($account_sid, $auth_token);
-
-        // return $client->messages->create(
-        //     $to,
-        //     array(
-        //         'from' => $twilio_number,
-        //         'body' => $message
-        //     )
-        // );
-
-        $basic  = new Basic("81441324", "YE8fsKh1iubGLzwt");
-        $client = new Client($basic);
-
-        $response = $client->sms()->send(
-            new SMS("639771023141", BRAND_NAME, 'A text message sent using the Nexmo SMS API')
+        $parameters = array(
+            'apikey' => '3763c09ae9280c98876389affa1ad5fc', //Your API KEY
+            'number' => $to,
+            'message' => $message,
+            'sendername' => 'SEMAPHORE'
         );
 
-        $message = $response->current();
+        curl_setopt( $ch, CURLOPT_URL,'https://semaphore.co/api/v4/messages' );
+        curl_setopt( $ch, CURLOPT_POST, 1 );
 
-        return $message->getStatus();
+        //Send the parameters set above with the request
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $parameters ) );
+
+        // Receive response from server
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
+
+        $output = curl_exec( $ch );
+
+        curl_close ($ch);
+
+        return $output;
     }
 }

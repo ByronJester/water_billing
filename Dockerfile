@@ -4,6 +4,26 @@ ARG PHP_VERSION=8.1
 ARG COMPOSER_VERSION=latest
 
 ###########################################
+# NODE
+###########################################
+FROM node:16.3.0-alpine as frontend
+
+WORKDIR /frontend
+
+COPY package.json package-lock.json /frontend/
+
+RUN npm install
+
+COPY artisan webpack.mix.js /frontend/
+COPY app ./app
+COPY bootstrap ./bootstrap
+COPY public ./public
+COPY resources ./resources
+
+RUN npm run prod
+############################################
+
+###########################################
 # PHP dependencies
 ###########################################
 
@@ -22,6 +42,7 @@ RUN composer install \
   --audit
 
 ###########################################
+
 
 FROM php:${PHP_VERSION}-cli-buster
 
@@ -277,6 +298,9 @@ RUN apt-get clean \
 COPY . .
 COPY --from=vendor ${ROOT}/vendor vendor
 
+RUN rm -rf ./public/*
+COPY --from=frontend --chown=www-data:www-data /frontend/public ./public
+
 RUN mkdir -p \
   storage/framework/{sessions,views,cache} \
   storage/logs \
@@ -292,6 +316,8 @@ COPY deployment/octane/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 RUN chmod +x deployment/octane/entrypoint.sh
 RUN cat deployment/octane/utilities.sh >> ~/.bashrc
+
+RUN chmod
 
 EXPOSE 9000
 

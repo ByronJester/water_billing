@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\UserPlace;
+use App\Models\Maintenance;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -37,5 +38,9 @@ class UserSeeder extends Seeder
         //     'role' => '2',
         //     'reference' => strtoupper(Str::random(8)) 
         // ]);
+
+        Maintenance::create([
+            'is_active' => false
+        ]);
     }
 }

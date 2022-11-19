@@ -2321,6 +2321,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ['auth'],
@@ -4018,6 +4019,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4031,7 +4078,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      columns: ['Name', 'Email', 'Contact', 'User Type', 'Line #'],
+      columns: ['Name', 'Email', 'Contact', 'User Type', 'Line #', 'Status'],
       keys: [{
         label: 'name'
       }, {
@@ -4042,6 +4089,8 @@ __webpack_require__.r(__webpack_exports__);
         label: 'user_type'
       }, {
         label: 'reference'
+      }, {
+        label: 'status'
       }],
       users: [],
       user: null,
@@ -4057,14 +4106,23 @@ __webpack_require__.r(__webpack_exports__);
         role: 1,
         user_type: 'staff'
       },
-      saveError: null
+      saveError: null,
+      selected: null
     };
   },
   watch: {
-    user: function user(arg) {}
+    user: function user(arg) {
+      if (!arg) {
+        this.selected = null;
+        return;
+      }
+
+      this.selected = Object.assign({}, arg);
+    }
   },
   mounted: function mounted() {
     this.users = this.options.users;
+    console.log(this.options);
   },
   methods: {
     createAccount: function createAccount() {
@@ -4087,6 +4145,17 @@ __webpack_require__.r(__webpack_exports__);
           };
           alert("Account successfully created.");
           _this.saveError = null;
+          location.reload();
+        }
+      });
+    },
+    resetPassword: function resetPassword() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_3___default().post(this.$root.route + "/users/reset-password", this.selected).then(function (response) {
+        if (response.data.status == 422) {
+          _this2.saveError = response.data.errors;
+        } else {
           location.reload();
         }
       });
@@ -4664,7 +4733,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.--login__register--input[data-v-7bbfca2f] {\r\n\theight: 40px;\r\n\tborder-radius: 10px;\r\n    border: 1px solid black;\n}\n.--login__register--button[data-v-7bbfca2f] {\r\n\theight: 40px;\r\n\tborder-radius: 30px;\r\n\tbackground: #2C3333;\r\n\tcolor: white\n}\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.--login__register--input[data-v-7bbfca2f] {\r\n\theight: 40px;\r\n\tborder-radius: 10px;\r\n    border: 1px solid black;\n}\n.--login__register--button[data-v-7bbfca2f] {\r\n\theight: 40px;\r\n\tborder-radius: 30px;\r\n\tbackground: #2C3333;\r\n\tcolor: white\n}\n.userModal[data-v-7bbfca2f] {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  padding-top: 100px; /* Location of the box */\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\r\n  background-color: rgb(0,0,0); /* Fallback color */\r\n  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */\n}\r\n\r\n/* Modal Content */\n.user-content[data-v-7bbfca2f] {\r\n  background-color: #fefefe;\r\n  margin: auto;\r\n  padding: 20px; \r\n  border: 1px solid #888;\r\n  width: 80%;\n}\r\n\r\n/* The Close Button */\n.close[data-v-7bbfca2f] {\r\n  color: #aaaaaa;\r\n  float: right;\r\n  font-size: 28px;\r\n  font-weight: bold;\n}\n.close[data-v-7bbfca2f]:hover,\r\n.close[data-v-7bbfca2f]:focus {\r\n  color: #000;\r\n  text-decoration: none;\r\n  cursor: pointer;\n}\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -47020,39 +47089,6 @@ var render = function() {
                       staticClass: "mx-1 --text cursor-pointer",
                       on: {
                         click: function($event) {
-                          return _vm.changeActive("/users")
-                        }
-                      }
-                    },
-                    [
-                      _c(
-                        "span",
-                        {
-                          staticClass: "mr-2",
-                          style: {
-                            "border-bottom":
-                              _vm.active === "/users"
-                                ? "1px solid #ffffff"
-                                : "none"
-                          }
-                        },
-                        [
-                          _vm._v(
-                            " \n                    USERS\n                "
-                          )
-                        ]
-                      )
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.auth.user_type == "admin" || _vm.auth.user_type == "staff"
-                ? _c(
-                    "p",
-                    {
-                      staticClass: "mx-1 --text cursor-pointer",
-                      on: {
-                        click: function($event) {
                           return _vm.changeActive("/clients")
                         }
                       }
@@ -47239,6 +47275,39 @@ var render = function() {
                         [
                           _vm._v(
                             " \n                    REPORTS\n                "
+                          )
+                        ]
+                      )
+                    ]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.auth.user_type == "admin" || _vm.auth.user_type == "staff"
+                ? _c(
+                    "p",
+                    {
+                      staticClass: "mx-1 --text cursor-pointer",
+                      on: {
+                        click: function($event) {
+                          return _vm.changeActive("/users")
+                        }
+                      }
+                    },
+                    [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "mr-2",
+                          style: {
+                            "border-bottom":
+                              _vm.active === "/users"
+                                ? "1px solid #ffffff"
+                                : "none"
+                          }
+                        },
+                        [
+                          _vm._v(
+                            " \n                    MAINTENANCE\n                "
                           )
                         ]
                       )
@@ -50012,6 +50081,28 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
+      _c("div", { staticClass: "w-full flex flex-row p-2 mt-5" }, [
+        _c(
+          "div",
+          { staticClass: "w-2/12" },
+          [
+            _c("Toggle", {
+              staticClass: "pt-1",
+              attrs: {
+                value: _vm.options.maintenance.is_active,
+                url: "/users/system-maintenance",
+                id: _vm.options.maintenance.id
+              }
+            }),
+            _vm._v(" "),
+            _c("span", { staticClass: "text-lg font-semibold" }, [
+              _vm._v("System Maintenance")
+            ])
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
       _c("div", { staticClass: "w-full h-full mt-5 flex flex-row" }, [
         _c(
           "div",
@@ -50037,7 +50128,7 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _vm.newUser
+        _vm.newUser && !_vm.selected
           ? _c(
               "div",
               { staticClass: "mx-2 h-full", staticStyle: { width: "20%" } },
@@ -50408,6 +50499,110 @@ var render = function() {
                           )
                         ]
                       )
+                    ])
+                  ]
+                )
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.selected
+          ? _c(
+              "div",
+              { staticClass: "mx-2 h-full", staticStyle: { width: "20%" } },
+              [
+                _c(
+                  "div",
+                  {
+                    staticClass: "h-auto flex flex-col",
+                    staticStyle: {
+                      border: "1px solid black",
+                      "border-radius": "10px"
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "w-full p-2 text-xl" }, [
+                      _c("span", { staticClass: "font-bold" }, [
+                        _vm._v(
+                          " \n                            " +
+                            _vm._s(_vm.selected.first_name) +
+                            " " +
+                            _vm._s(_vm.selected.last_name) +
+                            "\n                        "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        {
+                          staticClass: " cursor-pointer float-right",
+                          on: {
+                            click: function($event) {
+                              _vm.user = null
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa-solid fa-xmark" })]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "w-full flex flex-row p-2 mt-5" },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "w-2/12" },
+                          [
+                            _c("Toggle", {
+                              staticClass: "pt-1",
+                              attrs: {
+                                value: _vm.selected.is_active,
+                                url: "/users/deactivate-reactivate",
+                                id: _vm.selected.id
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-10/12 px-2" }, [
+                          _c("span", { staticClass: "text-lg font-semibold" }, [
+                            _vm._v(
+                              _vm._s(
+                                _vm.selected.is_active
+                                  ? "Deactivate"
+                                  : "Reactivate"
+                              )
+                            )
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-full flex flex-col p-2" }, [
+                      _c("div", { staticClass: "w-full" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-red-500 w-full text-white",
+                            staticStyle: {
+                              height: "40px",
+                              "border-radius": "5px"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.resetPassword()
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                RESET PASSWORD\n                            "
+                            )
+                          ]
+                        )
+                      ])
                     ])
                   ]
                 )

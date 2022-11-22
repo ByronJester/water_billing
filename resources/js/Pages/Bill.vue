@@ -12,7 +12,7 @@
 
                 <div class="w-full">
                     <input type="text" class="w-full  my-2 --login__register--input text-center"
-                        placeholder="Line #" v-model="form.reference"
+                        placeholder="Account #" v-model="form.reference"
                     >
                     <span class="text-xs text-red-500">{{validationError('reference', saveError)}} </span>
                 </div>

@@ -29,7 +29,7 @@ class ClientController extends Controller
                 'options' => [
                     'clients' => $clients->get(),
                     'users' => User::get(),
-                    'incidents' => ClientUtility::get()
+                    'incidents' => ClientUtility::where('status', 'pending')->get()
                 ]
             ]);
         }
@@ -168,6 +168,14 @@ class ClientController extends Controller
 
     public function markAsPaid(Request $request)
     {
+        $auth = Auth::user();
+
+        $client = Client::where('id', $request->id)->first();
+
+        $description = $auth->first_name . ' ' . $auth->last_name . ' has mark as paid connection with account #' . $client->reference . '.';
+
+        $this->saveLogs($description);
+
         Client::where('id', $request->id)->update([
             'penalty' => 0,
             'payment_date' => Carbon::now()

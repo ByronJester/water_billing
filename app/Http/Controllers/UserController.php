@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\ClientUtility;
 use App\Models\Client;
 use App\Models\Maintenance;
+use App\Models\AuditTrail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -124,7 +125,7 @@ class UserController extends Controller
             return redirect()->back()->with('message', 'Your account is not verified.');
         }
 
-        if($user->user_type != 'admin') {
+        if($user->user_type != 'admin' && $user->user_type != 'staff') {
             if($maintenance->is_active) {
                 return redirect()->back()->with('message', 'System is under maintenance.');
             }
@@ -132,6 +133,12 @@ class UserController extends Controller
 
         if(Auth::attempt($data)) {
             $auth = Auth::user();
+
+            if($auth->user_type != 'client') {
+                $description = $auth->first_name . ' ' . $auth->last_name . ' has logged in.';
+    
+                $this->saveLogs($description);
+            }
 
             if($auth) {
                 return redirect('/'); 
@@ -175,7 +182,15 @@ class UserController extends Controller
     }
 
     public function logoutAccount()
-    {
+    {   
+        $auth = Auth::user();
+
+        if($auth->user_type != 'client') {
+            $description = $auth->first_name . ' ' . $auth->last_name . ' has logged out.';
+
+            $this->saveLogs($description);
+        }
+        
         Auth::logout();
 
         return redirect('/');;
@@ -262,9 +277,38 @@ class UserController extends Controller
         $maintenance = Maintenance::first();
 
         $maintenance->is_active = $request->is_active;
-        $maintenance->save();
+        $maintenance->save(); 
 
         return redirect()->back();
+    }
+
+    public function notifyMaintenance(Request $request)
+    {
+        $users = User::where('user_type', 'client')->get();
+
+        foreach($users as $user) {
+            $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  Due to scheduled maintenance activity, Water Billing Management System will also not be available on (date). But our office is open everyday. \r\n  We apologize for any inconvenience caused and thank you for continuous support. \r\n  For any inquiries, please contact 09566814383/09657657443.";
+
+        }
+
+        return response()->json(['status' => 200], 200);  
+    }
+
+    public function viewUtilities(Request $request)
+    {
+        $auth = Auth::user();
+
+        if($auth) {
+            return Inertia::render('Utility', [
+                'auth'    => $auth,
+                'options' => [
+                    'trails' => AuditTrail::orderBy('created_at', 'desc')->get(),
+                    'clients' => Client::where('is_active', false)->get()
+                ]
+            ]);
+        }
+
+        return redirect('/');
     }
 } 
  

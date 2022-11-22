@@ -6,7 +6,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-// use Twilio\Rest\Client;
+use Illuminate\Support\Facades\Auth;
+use App\Models\AuditTrail;
 use Vonage\Client\Credentials\Basic;
 use Vonage\Client;
 use Vonage\SMS\Message\SMS;
@@ -40,5 +41,17 @@ class Controller extends BaseController
         curl_close ($ch);
 
         return $output;
+    }
+
+    public function saveLogs($description)
+    {
+        $auth = Auth::user();
+
+        AuditTrail::forceCreate(
+            [
+                'user_id' => $auth->id,
+                'description' => $description
+            ]
+        );
     }
 }

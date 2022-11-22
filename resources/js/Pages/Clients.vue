@@ -3,7 +3,7 @@
         <div class="w-full h-full px-2 py-2 flex flex-col">
             <div class="w-full h-full mt-5 flex flex-row">
 
-                <div style="width: 80%" class="mx-2">
+                <div class="mx-2" :style="{'width': activeTab == 'clients' ? '80%' : '100%'}">
                     <!-- <div class="w-full">
                         <span class="text-2xl ml-2 font-bold float-right mb-2 cursor-pointer">
                             <i class="fa-sharp fa-solid fa-globe"></i>
@@ -28,8 +28,19 @@
                         </div>
                     </div>
 
-                    <Table :columns="columns" :rows="clients" :keys="keys" :selected.sync="client" v-if="activeTab != 'dashboard'"/>
+                    <div class="w-full flex flex-col" v-if="activeTab != 'dashboard'">
+                        <div class="w-full">
+                            <input type="text" style="height: 50px; border: 1px solid black; border-radius: 10px; width: 300px" class="px-5 float-right"
+                                placeholder="Search..." v-model="search"
+                            >
+                        </div>
 
+                        <div class="w-full mt-5">
+                            <Table :columns="columns" :rows="clients" :keys="keys" :selected.sync="client" class="w-full"/>
+                        </div>
+                        
+                    </div>
+                    
                     <div class="w-full flex flex-row justify-center items-center mt-5" v-else>
                         <div class="w-full flex flex-col mx-2 cursor-pointer" style="border: 1px solid black; border-radius: 5px" @click="activeTab = 'clients'">
                             <div class="w-full text-center" style="font-size: 50px;">
@@ -52,7 +63,7 @@
                         </div>
 
                         <div class="w-full flex flex-col mx-2 cursor-pointer" style="border: 1px solid black; border-radius: 5px" @click="changeActive('/reports')">
-                            <div class="w-full text-center" style="font-size: 50px;">
+                            <div class="w-full text-center text-red-600" style="font-size: 50px;">
                                 {{ options.incidents.length}}
                             </div>
 
@@ -123,7 +134,7 @@
 
                 </div>
 
-                <div style="width: 20%" class="mx-2 flex flex-col" v-else>
+                <div style="width: 20%" class="mx-2 flex flex-col" v-if="activeTab == 'clients' && !client">
                     <div class="pb-3"
                         style="width:100%;"
                     >
@@ -192,7 +203,7 @@ export default {
     data(){
         return {
             columns: [
-                'Name', 'Address', 'Line #'
+                'Name', 'Address', 'Account #'
             ],
             keys : [
                 {
@@ -214,7 +225,8 @@ export default {
             },
             saveError: null,
             client: null,
-            activeTab: 'dashboard'
+            activeTab: 'dashboard',
+            search: null
         }
     },
 
@@ -223,13 +235,21 @@ export default {
     },
 
     watch: {
+        search(arg) {
+            this.clients = this.options.clients.filter(x => {
+                var name = x.name.toLowerCase();
+                var search = arg.toLowerCase()
+                return name.includes(search)
+            });
+        },
+
         client(arg) {
             
         },
         activeTab(arg){
             if(arg == 'clients') {
                 this.columns = [
-                    'Name', 'Address', 'Line #'
+                    'Name', 'Address', 'Account #'
                 ]
 
                 this.keys = [
@@ -247,7 +267,7 @@ export default {
 
             if(arg == 'billing') {
                 this.columns = [
-                    'Name', 'Line #', 'Amount to Pay', 'Penalty', 'Other Fees', 'Due Date'
+                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Other Fees', 'Due Date'
                 ]
 
                 this.keys = [
@@ -274,7 +294,7 @@ export default {
 
             if(arg == 'cashiering') {
                 this.columns = [
-                    'Name', 'Line #', 'Amount to Pay', 'Penalty', 'Other Fees', 'Total'
+                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Other Fees', 'Total'
                 ]
 
                 this.keys = [

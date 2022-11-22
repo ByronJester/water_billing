@@ -42,6 +42,7 @@ Route::middleware(['cors'])->group(function () {
         Route::post('/edit-profile', [UserController::class, 'editProfile']);
         Route::post('/reset-password', [UserController::class, 'resetPassword']);
         Route::post('/system-maintenance', [UserController::class, 'systemMaintenance']);
+        Route::post('/notify-maintenance', [UserController::class, 'notifyMaintenance']);
     });
 
     Route::prefix('clients')->group(function () {
@@ -74,6 +75,10 @@ Route::middleware(['cors'])->group(function () {
 
     Route::prefix('reports')->group(function () {
         Route::get('/', [UserController::class, 'viewReports'])->name('view.reports');
+    });
+
+    Route::prefix('utilities')->group(function () {
+        Route::get('/', [UserController::class, 'viewUtilities'])->name('view.utility');
     });
     
 });

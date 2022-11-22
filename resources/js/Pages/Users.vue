@@ -17,6 +17,12 @@
                 <div class="w-2/12">
                     <Toggle :value="options.maintenance.is_active" :url="'/users/system-maintenance'" :id="options.maintenance.id" class="pt-1"/> <span class="text-lg font-semibold">System Maintenance</span>
                 </div>
+
+                <div class="w-2/12">
+                    <button class="w-full bg-red-500 py-2 text-white" style="border-radius: 30px" @click="notify()">
+                        Notify Maintenance
+                    </button>
+                </div>
             </div>
 
             <div class="w-full h-full mt-5 flex flex-row">
@@ -263,6 +269,17 @@ export default {
 						this.saveError = response.data.errors 
 					} else {
                         location.reload()
+					}
+				})
+        },
+
+        notify(){
+            axios.post(this.$root.route + "/users/notify-maintenance", {})
+				.then(response => {
+					if(response.data.status == 422) {
+						this.saveError = response.data.errors 
+					} else {
+                        // location.reload()
 					}
 				})
         }

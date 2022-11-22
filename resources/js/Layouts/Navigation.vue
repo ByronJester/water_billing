@@ -13,12 +13,21 @@
                         DASHBOARD
                     </span>
                 </p>
+                
 
                 <p class="mx-1 --text cursor-pointer" @click="changeActive('/settings')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
                     <span  class="mx-2"
                         :style="{'border-bottom': active === '/settings' ? '1px solid #ffffff' : 'none'}"
                     > 
                         CUBIC METER
+                    </span>
+                </p>
+
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/users/profile')">
+                    <span class="mx-2"
+                        :style="{'border-bottom': active === '/users/profile' ? '1px solid #ffffff' : 'none'}"
+                    > 
+                        PROFILE
                     </span>
                 </p>
 
@@ -46,6 +55,17 @@
                     </span>
                 </p>
 
+                
+
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/users')" v-if="auth.user_type == 'admin'">
+                    <span class="mr-2"
+                        :style="{'border-bottom': active === '/users' ? '1px solid #ffffff' : 'none'}"
+                        
+                    > 
+                        MAINTENANCE
+                    </span>
+                </p>
+
                 <p class="mx-1 --text cursor-pointer" @click="changeActive('/reports')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
                     <span class="mr-2"
                         :style="{'border-bottom': active === '/reports' ? '1px solid #ffffff' : 'none'}"
@@ -55,20 +75,12 @@
                     </span>
                 </p>
 
-                <p class="mx-1 --text cursor-pointer" @click="changeActive('/users')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/utilities')" v-if="auth.user_type == 'admin'">
                     <span class="mr-2"
-                        :style="{'border-bottom': active === '/users' ? '1px solid #ffffff' : 'none'}"
+                        :style="{'border-bottom': active === '/utilities' ? '1px solid #ffffff' : 'none'}"
                         
                     > 
-                        MAINTENANCE
-                    </span>
-                </p>
-
-                <p class="mx-1 --text cursor-pointer" @click="changeActive('/users/profile')">
-                    <span class="mx-2"
-                        :style="{'border-bottom': active === '/users/profile' ? '1px solid #ffffff' : 'none'}"
-                    > 
-                        PROFILE
+                        UTILITIES
                     </span>
                 </p>
                 

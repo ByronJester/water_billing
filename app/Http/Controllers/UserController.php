@@ -214,7 +214,9 @@ class UserController extends Controller
     public function editProfile(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => "required|string",
+            'first_name' => "required|string",
+            'middle_name' => "required|string",
+            'last_name' => "required|string",
             'phone' => "required|numeric|unique:users,phone," . $request->id,
             'email' => "required|email:rfc,dns|unique:users,email," . $request->id, 
             'password' => "sometimes|required|min:8",
@@ -261,7 +263,7 @@ class UserController extends Controller
         
         $password = sprintf("%06d", mt_rand(1, 999999));
 
-        $user->password = Hash::make($password);
+        $user->password = Hash::make($password); 
 
         $user->save();
 
@@ -279,6 +281,14 @@ class UserController extends Controller
         $maintenance->is_active = $request->is_active;
         $maintenance->save(); 
 
+        $users = User::where('user_type', 'client')->get();
+
+        foreach($users as $user) {
+            $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  We will be experiencing server downtime on the (date) from (time) to (time) due to system maintenance. \r\n  Water Billing Management System will not be available during this time. \r\n We apologize for any inconvenience caused and thank you for continuous support. \r\n  For any inquiries, please contact 09566814383/09657657443.";
+
+            $this->sendSms($user->phone, $message);
+        }
+
         return redirect()->back();
     }
 
@@ -289,6 +299,7 @@ class UserController extends Controller
         foreach($users as $user) {
             $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  Due to scheduled maintenance activity, Water Billing Management System will also not be available on (date). But our office is open everyday. \r\n  We apologize for any inconvenience caused and thank you for continuous support. \r\n  For any inquiries, please contact 09566814383/09657657443.";
 
+            $this->sendSms($user->phone, $message);
         }
 
         return response()->json(['status' => 200], 200);  

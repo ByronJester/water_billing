@@ -10,10 +10,24 @@
             <div class="w-full h-full mt-5 flex justify-center items-center">
                 <div class="flex flex-col w-full md:w-1/4" style="border: 1px solid black; border-radius: 10px">
                     <div class="px-5 py-3">
-                        <label for="name">Name:</label><br>
-                        <input type="text" class="--input py-1" v-model="form.name">
-                        <span class="text-xs text-red-500">{{validationError('name', saveError)}} </span>
+                        <label for="name">First Name:</label><br>
+                        <input type="text" class="--input py-1" v-model="form.first_name">
+                        <span class="text-xs text-red-500">{{validationError('first_name', saveError)}} </span>
                     </div>
+
+                    <div class="px-5 py-3">
+                        <label for="name">Middle Name:</label><br>
+                        <input type="text" class="--input py-1" v-model="form.middle_name">
+                        <span class="text-xs text-red-500">{{validationError('middle_name', saveError)}} </span>
+                    </div>
+
+
+                    <div class="px-5 py-3">
+                        <label for="name">Last Name:</label><br>
+                        <input type="text" class="--input py-1" v-model="form.last_name">
+                        <span class="text-xs text-red-500">{{validationError('last_name', saveError)}} </span>
+                    </div>
+
 
                     <div class="px-5 py-3">
                         <label for="name">Contact:</label><br>
@@ -69,7 +83,9 @@ export default {
         return {
             form: {
                 id: null,
-                name: null,
+                first_name: null,
+                middle_name: null,
+                last_name: null,
                 phone: null,
                 email: null,
                 password: null,
@@ -81,7 +97,9 @@ export default {
 
     created(){
         this.form.id = this.auth.id
-        this.form.name = this.auth.name
+        this.form.first_name = this.auth.first_name
+        this.form.middle_name = this.auth.middle_name
+        this.form.last_name = this.auth.last_name
         this.form.phone = this.auth.phone
         this.form.email = this.auth.email
     },

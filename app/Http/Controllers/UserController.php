@@ -299,13 +299,15 @@ class UserController extends Controller
     {
         $users = User::where('user_type', 'client')->get();
 
+        $a = null;
+
         foreach($users as $user) {
             $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  Due to scheduled maintenance activity, Water Billing Management System will also not be available on (date). But our office is open everyday. \r\n  We apologize for any inconvenience caused and thank you for continuous support. \r\n  For any inquiries, please contact 09566814383/09657657443.";
 
-            $this->sendSms($user->phone, $message);
+            $a = $this->sendSms($user->phone, $message);
         }
 
-        return response()->json(['status' => 200], 200);  
+        return response()->json(['status' => 200, 'sms' => $a], 200);  
     }
 
     public function viewUtilities(Request $request)

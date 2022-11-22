@@ -248,6 +248,7 @@ class ClientController extends Controller
         
         $data['client_id'] = $client->id;
         $data['status'] = 'pending';
+        $data['amount'] = 0;
 
         ClientUtility::create($data);
 

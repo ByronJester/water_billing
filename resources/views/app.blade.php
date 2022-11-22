@@ -10,12 +10,27 @@
     <script src="https://kit.fontawesome.com/4865c75cef.js" crossorigin="anonymous"></script>
     <script src="{{ mix('/js/app.js') }}" defer></script>
   </head>
-  
-  <style>
-    body{
-      font-family: 'Poppins', sans-serif;
-    }
-  </style>
+    <style>
+      body {
+        font-family: 'Poppins', sans-serif;
+        overflow-x:hidden;
+        overflow-y:scroll;
+      }
+
+      body::-webkit-scrollbar {
+        width: 0px;
+        background: white;
+      }
+
+      body::-webkit-scrollbar-thumb {
+        background: #ffffff;
+        height:30px;
+      }
+
+      body::-webkit-scrollbar-track-piece{
+        display:none;
+      }
+    </style>
   <body>
     @inertia
   </body>

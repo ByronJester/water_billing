@@ -3353,23 +3353,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3395,7 +3378,7 @@ __webpack_require__.r(__webpack_exports__);
       isRegister: false,
       saveError: null,
       mobile: window.screen.width <= 400,
-      isLogin: null,
+      isLogin: false,
       active: 'home'
     };
   },
@@ -4778,7 +4761,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.--panel[data-v-0004d9e0] {\r\n\tbackground-image: url('/images/bg.jpg');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100vw 100vh;\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tjustify-content: center;\n}\n.--banner[data-v-0004d9e0] {\r\n\tbackground-image: url('/images/banner.png');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100% 100%;\n}\n.--login__register[data-v-0004d9e0] {\r\n\twidth: 380px;\r\n\theight: auto;\r\n\tbackground: #607EAA;\r\n\tborder-radius: 10px;\r\n\tposition: relative;\n}\n.--login__register--input[data-v-0004d9e0] {\r\n\theight: 40px;\r\n\tborder-radius: 10px;\n}\n.--login__register--button[data-v-0004d9e0] {\r\n\theight: 40px;\r\n\tborder-radius: 30px;\r\n\tbackground: #2C3333;\r\n\tcolor: white\n}\r\n\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.--panel[data-v-0004d9e0] {\r\n\tbackground-image: url('/images/bg.jpg');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100vw 100vh;\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tjustify-content: center;\n}\n.--banner[data-v-0004d9e0] {\r\n\tbackground-image: url('/images/banner.png');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100% 100%;\n}\n.--login__register[data-v-0004d9e0] {\r\n\twidth: 380px;\r\n\theight: auto;\r\n\tbackground: #607EAA;\r\n\tborder-radius: 10px;\r\n\tposition: relative;\n}\n.--login__register--input[data-v-0004d9e0] {\r\n\theight: 40px;\r\n\tborder-radius: 10px;\n}\n.--login__register--button[data-v-0004d9e0] {\r\n\theight: 40px;\r\n\tborder-radius: 30px;\r\n\tbackground: navy;\r\n\tcolor: white\n}\n.--xxs[data-v-0004d9e0] {\r\n\tfont-size: 11px;\r\n\tcolor: white;\n}\n.--home[data-v-0004d9e0] {\r\n\tbackground-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)), url('/images/meter1.png');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100vw 100vh;\n}\r\n\r\n\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -48815,677 +48798,550 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-screen h-screen flex flex-row" }, [
-    !!_vm.isLogin || !!_vm.mobile
-      ? _c(
-          "div",
-          {
-            staticClass: "flex justify-center items-center",
-            staticStyle: { background: "#B0BEC5" },
-            style: { width: _vm.mobile ? "100%" : "20%" }
-          },
-          [
-            !_vm.isRegister
-              ? _c(
-                  "div",
-                  {
-                    staticClass: "mx-2",
-                    staticStyle: {
-                      border: "1px solid black",
-                      "border-radius": "5px"
-                    }
-                  },
-                  [
-                    !_vm.mobile
-                      ? _c("div", { staticClass: "w-full" }, [
-                          _c(
-                            "span",
-                            {
-                              staticClass: "float-right mr-3 cursor-pointer",
-                              on: {
-                                click: function($event) {
-                                  _vm.isLogin = false
-                                }
-                              }
-                            },
-                            [
-                              _c("i", {
-                                staticClass: "fa-sharp fa-solid fa-xmark"
-                              })
-                            ]
+  return _c("div", { staticClass: "w-screen h-screen --main" }, [
+    _c("div", { staticClass: "w-full flex flex-col" }, [
+      _c(
+        "div",
+        {
+          staticClass: "w-full flex flex-row",
+          staticStyle: { height: "10vh", background: "navy" }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "flex justify-center items-center pl-1",
+              style: { width: _vm.mobile ? "15%" : "7%" }
+            },
+            [
+              _c("img", {
+                staticClass: "w-full",
+                staticStyle: { height: "8vh" },
+                attrs: { src: "images/logo.png" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "flex flex-row items-center px-2 text-white",
+              class: { "--xxs": _vm.mobile },
+              style: { width: _vm.mobile ? "85%" : "93%" }
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "w-full inline-flex",
+                  class: {
+                    "justify-start": _vm.mobile,
+                    "justify-end": !_vm.mobile
+                  }
+                },
+                [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _vm._m(2),
+                  _vm._v(" "),
+                  _vm._m(3)
+                ]
+              )
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "w-screen h-screen --home flex justify-center items-center",
+          attrs: { id: "home" }
+        },
+        [
+          !_vm.isRegister
+            ? _c(
+                "div",
+                {
+                  staticClass: "p-2",
+                  staticStyle: {
+                    border: "2px solid black",
+                    "border-radius": "5px",
+                    width: "500px"
+                  }
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formloginData.email,
+                        expression: "formloginData.email"
+                      }
+                    ],
+                    staticClass:
+                      "w-full  my-2 --login__register--input text-center",
+                    attrs: { type: "text", placeholder: "Email" },
+                    domProps: { value: _vm.formloginData.email },
+                    on: {
+                      keyup: function($event) {
+                        if (
+                          !$event.type.indexOf("key") &&
+                          _vm._k(
+                            $event.keyCode,
+                            "enter",
+                            13,
+                            $event.key,
+                            "Enter"
                           )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "px-2 py-2" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formloginData.email,
-                            expression: "formloginData.email"
-                          }
-                        ],
-                        staticClass:
-                          "w-full  my-2 --login__register--input text-center",
-                        attrs: { type: "text", placeholder: "Email" },
-                        domProps: { value: _vm.formloginData.email },
-                        on: {
-                          keyup: function($event) {
-                            if (
-                              !$event.type.indexOf("key") &&
-                              _vm._k(
-                                $event.keyCode,
-                                "enter",
-                                13,
-                                $event.key,
-                                "Enter"
-                              )
-                            ) {
-                              return null
-                            }
-                            return _vm.login()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.formloginData,
-                              "email",
-                              $event.target.value
-                            )
-                          }
+                        ) {
+                          return null
                         }
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formloginData.password,
-                            expression: "formloginData.password"
-                          }
-                        ],
-                        staticClass:
-                          "w-full mt-2 --login__register--input text-center",
-                        class: { "mb-2": !_vm.message },
-                        attrs: { type: "password", placeholder: "Password" },
-                        domProps: { value: _vm.formloginData.password },
-                        on: {
-                          keyup: function($event) {
-                            if (
-                              !$event.type.indexOf("key") &&
-                              _vm._k(
-                                $event.keyCode,
-                                "enter",
-                                13,
-                                $event.key,
-                                "Enter"
-                              )
-                            ) {
-                              return null
-                            }
-                            return _vm.login()
-                          },
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.formloginData,
-                              "password",
-                              $event.target.value
-                            )
-                          }
+                        return _vm.login()
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
                         }
-                      }),
-                      _vm._v(" "),
-                      _vm.message
-                        ? _c(
-                            "span",
-                            { staticClass: "text-red-500 text-xs ml-2" },
-                            [
-                              _vm._v(
-                                "\n\t\t\t\t\t" +
-                                  _vm._s(_vm.message) +
-                                  "\n\t\t\t\t"
-                              )
-                            ]
+                        _vm.$set(
+                          _vm.formloginData,
+                          "email",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formloginData.password,
+                        expression: "formloginData.password"
+                      }
+                    ],
+                    staticClass:
+                      "w-full mt-2 --login__register--input text-center",
+                    class: { "mb-2": !_vm.message },
+                    attrs: { type: "password", placeholder: "Password" },
+                    domProps: { value: _vm.formloginData.password },
+                    on: {
+                      keyup: function($event) {
+                        if (
+                          !$event.type.indexOf("key") &&
+                          _vm._k(
+                            $event.keyCode,
+                            "enter",
+                            13,
+                            $event.key,
+                            "Enter"
                           )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "w-full  my-2 --login__register--button text-center",
-                          class: { "cursor-not-allowed": _vm.disableButton() },
-                          attrs: { disabled: _vm.disableButton() },
-                          on: {
-                            click: function($event) {
-                              return _vm.login()
-                            }
-                          }
-                        },
-                        [_vm._v("\n\t\t\t\t\tLogin\n\t\t\t\t")]
-                      ),
-                      _vm._v(" "),
-                      !_vm.mobile
-                        ? _c(
-                            "p",
-                            {
-                              staticClass:
-                                "text-black text-sm ml-14 cursor-pointer hover:underline",
-                              on: {
-                                click: function($event) {
-                                  _vm.isRegister = true
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n\t\t\t\t\tDoesn't have accout ? Sign Up Here!\n\t\t\t\t"
-                              )
-                            ]
-                          )
-                        : _vm._e()
-                    ])
-                  ]
-                )
-              : _c(
-                  "div",
-                  {
-                    staticClass: "mx-2",
-                    staticStyle: {
-                      border: "1px solid black",
-                      "border-radius": "5px"
-                    }
-                  },
-                  [
-                    _c("div", { staticClass: "w-full" }, [
-                      _c(
-                        "span",
-                        {
-                          staticClass: "float-right mr-3 cursor-pointer",
-                          on: {
-                            click: function($event) {
-                              _vm.isLogin = false
-                            }
-                          }
-                        },
-                        [_c("i", { staticClass: "fa-sharp fa-solid fa-xmark" })]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "px-2 py-2" }, [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formRegisterData.first_name,
-                            expression: "formRegisterData.first_name"
-                          }
-                        ],
-                        staticClass:
-                          "w-full  my-2 --login__register--input text-center",
-                        attrs: { type: "text", placeholder: "First Name" },
-                        domProps: { value: _vm.formRegisterData.first_name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.formRegisterData,
-                              "first_name",
-                              $event.target.value
-                            )
-                          }
+                        ) {
+                          return null
                         }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "text-xs text-red-500" }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.validationError("first_name", _vm.saveError)
-                          ) + " "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formRegisterData.middle_name,
-                            expression: "formRegisterData.middle_name"
-                          }
-                        ],
-                        staticClass:
-                          "w-full  my-2 --login__register--input text-center",
-                        attrs: { type: "text", placeholder: "Middle Name" },
-                        domProps: { value: _vm.formRegisterData.middle_name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.formRegisterData,
-                              "middle_name",
-                              $event.target.value
-                            )
-                          }
+                        return _vm.login()
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
                         }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "text-xs text-red-500" }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.validationError("middle_name", _vm.saveError)
-                          ) + " "
+                        _vm.$set(
+                          _vm.formloginData,
+                          "password",
+                          $event.target.value
                         )
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formRegisterData.last_name,
-                            expression: "formRegisterData.last_name"
-                          }
-                        ],
-                        staticClass:
-                          "w-full  my-2 --login__register--input text-center",
-                        attrs: { type: "text", placeholder: "Last Name" },
-                        domProps: { value: _vm.formRegisterData.last_name },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.formRegisterData,
-                              "last_name",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "text-xs text-red-500" }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.validationError("last_name", _vm.saveError)
-                          ) + " "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formRegisterData.email,
-                            expression: "formRegisterData.email"
-                          }
-                        ],
-                        staticClass:
-                          "w-full  my-2 --login__register--input text-center",
-                        attrs: { type: "text", placeholder: "Email" },
-                        domProps: { value: _vm.formRegisterData.email },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.formRegisterData,
-                              "email",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "text-xs text-red-500" }, [
-                        _vm._v(
-                          _vm._s(_vm.validationError("email", _vm.saveError)) +
-                            " "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formRegisterData.phone,
-                            expression: "formRegisterData.phone"
-                          }
-                        ],
-                        staticClass:
-                          "w-full  my-2 --login__register--input text-center",
-                        attrs: { type: "text", placeholder: "Contact" },
-                        domProps: { value: _vm.formRegisterData.phone },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.formRegisterData,
-                              "phone",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "text-xs text-red-500" }, [
-                        _vm._v(
-                          _vm._s(_vm.validationError("phone", _vm.saveError)) +
-                            " "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formRegisterData.reference,
-                            expression: "formRegisterData.reference"
-                          }
-                        ],
-                        staticClass:
-                          "w-full  my-2 --login__register--input text-center",
-                        attrs: { type: "text", placeholder: "Reference" },
-                        domProps: { value: _vm.formRegisterData.reference },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.formRegisterData,
-                              "reference",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "text-xs text-red-500" }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.validationError("reference", _vm.saveError)
-                          ) + " "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formRegisterData.password,
-                            expression: "formRegisterData.password"
-                          }
-                        ],
-                        staticClass:
-                          "w-full mt-2 --login__register--input text-center",
-                        class: { "mb-2": !_vm.message },
-                        attrs: { type: "password", placeholder: "Password" },
-                        domProps: { value: _vm.formRegisterData.password },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.formRegisterData,
-                              "password",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "text-xs text-red-500" }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.validationError("password", _vm.saveError)
-                          ) + " "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.formRegisterData.confirm_password,
-                            expression: "formRegisterData.confirm_password"
-                          }
-                        ],
-                        staticClass:
-                          "w-full mt-2 --login__register--input text-center",
-                        class: { "mb-2": !_vm.message },
-                        attrs: {
-                          type: "password",
-                          placeholder: "Confirm Password"
-                        },
-                        domProps: {
-                          value: _vm.formRegisterData.confirm_password
-                        },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.formRegisterData,
-                              "confirm_password",
-                              $event.target.value
-                            )
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "text-xs text-red-500" }, [
-                        _vm._v(
-                          _vm._s(
-                            _vm.validationError(
-                              "confirm_password",
-                              _vm.saveError
-                            )
-                          ) + " "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass:
-                            "w-full  my-2 --login__register--button text-center",
-                          on: {
-                            click: function($event) {
-                              return _vm.register()
-                            }
-                          }
-                        },
-                        [_vm._v("\n\t\t\t\t\tRegister\n\t\t\t\t")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "p",
-                        {
-                          staticClass:
-                            "text-black text-sm ml-14 cursor-pointer hover:underline",
-                          on: {
-                            click: function($event) {
-                              _vm.isRegister = false
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n\t\t\t\t\tAlready have account ? Login Here!\n\t\t\t\t"
-                          )
-                        ]
-                      )
-                    ])
-                  ]
-                )
-          ]
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    !_vm.mobile
-      ? _c(
-          "div",
-          {
-            staticClass: "relative",
-            style: { width: !_vm.isLogin ? "100%" : "100%" }
-          },
-          [
-            _c(
-              "div",
-              {
-                staticClass: "w-full mt-10 flex flex-row",
-                staticStyle: {
-                  "padding-left": "12rem",
-                  "padding-right": "12rem"
-                }
-              },
-              [
-                _c(
-                  "div",
-                  {
-                    staticClass: "w-full text-center cursor-pointer py-4",
-                    class: { "font-bold": _vm.active == "home" },
-                    staticStyle: { background: "#2596be" },
-                    on: {
-                      click: function($event) {
-                        return _vm.changeActive("home")
                       }
                     }
-                  },
-                  [_vm._v("\n\t\t\t\tHOME\t\n\t\t\t")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "w-full text-center cursor-pointer py-4",
-                    class: { "font-bold": _vm.active == "client" },
-                    staticStyle: { background: "#2596be" },
-                    on: {
-                      click: function($event) {
-                        return _vm.changeActive("client")
-                      }
-                    }
-                  },
-                  [_vm._v("\n\t\t\t\tREQUIREMENTS\n\t\t\t")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "w-full text-center cursor-pointer py-4",
-                    class: { "font-bold": _vm.active == "about" },
-                    staticStyle: { background: "#2596be" },
-                    on: {
-                      click: function($event) {
-                        return _vm.changeActive("about")
-                      }
-                    }
-                  },
-                  [_vm._v("\n\t\t\t\tABOUT US\n\t\t\t")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "w-full text-center cursor-pointer py-4",
-                    class: { "font-bold": _vm.active == "contact" },
-                    staticStyle: { background: "#2596be" },
-                    on: {
-                      click: function($event) {
-                        return _vm.changeActive("contact")
-                      }
-                    }
-                  },
-                  [_vm._v("\n\t\t\t\tCONTACT US\n\t\t\t")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "w-full text-center cursor-pointer py-4",
-                    staticStyle: { background: "#2596be" },
-                    on: {
-                      click: function($event) {
-                        _vm.isLogin = true
-                      }
-                    }
-                  },
-                  [_vm._v("\n\t\t\t\tLOGIN\n\t\t\t")]
-                )
-              ]
-            ),
-            _vm._v(" "),
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "w-full flex justify-center items-center",
-                staticStyle: {
-                  "padding-left": "12rem",
-                  "padding-right": "12rem"
-                }
-              },
-              [
-                _c("div", { staticClass: "w-4/5 h-full" }, [
-                  _vm.active == "client"
-                    ? _c("div", { staticClass: "w-full flex flex-row" }, [
-                        _vm._m(1),
-                        _vm._v(" "),
-                        _vm._m(2),
-                        _vm._v(" "),
-                        _vm._m(3)
+                  }),
+                  _vm._v(" "),
+                  _vm.message
+                    ? _c("span", { staticClass: "text-red-500 text-xs ml-2" }, [
+                        _vm._v(
+                          "\n\t\t\t\t\t" + _vm._s(_vm.message) + "\n\t\t\t\t"
+                        )
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm.active == "about"
-                    ? _c(
-                        "div",
-                        {
-                          staticClass:
-                            "w-full mt-8 flex justify-center items-center"
-                        },
-                        [_vm._m(4)]
-                      )
-                    : _vm._e(),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "w-full  my-2 --login__register--button text-center",
+                      class: { "cursor-not-allowed": _vm.disableButton() },
+                      attrs: { disabled: _vm.disableButton() },
+                      on: {
+                        click: function($event) {
+                          return _vm.login()
+                        }
+                      }
+                    },
+                    [_vm._v("\n\t\t\t\t\tLogin\n\t\t\t\t")]
+                  ),
                   _vm._v(" "),
-                  _vm.active == "contact"
-                    ? _c("div", { staticClass: "w-full" }, [
-                        _vm._v("\n\t\t\t\t\tContact\n\t\t\t\t")
-                      ])
-                    : _vm._e()
-                ])
-              ]
-            )
-          ]
-        )
-      : _vm._e()
+                  _c(
+                    "p",
+                    {
+                      staticClass:
+                        "text-black text-sm cursor-pointer hover:underline text-center",
+                      on: {
+                        click: function($event) {
+                          _vm.isRegister = true
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n\t\t\t\t\tDoesn't have accout ? Sign Up Here!\n\t\t\t\t"
+                      )
+                    ]
+                  )
+                ]
+              )
+            : _c(
+                "div",
+                {
+                  staticClass: "p-2",
+                  staticStyle: {
+                    border: "2px solid black",
+                    "border-radius": "5px",
+                    width: "500px"
+                  }
+                },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formRegisterData.first_name,
+                        expression: "formRegisterData.first_name"
+                      }
+                    ],
+                    staticClass:
+                      "w-full  my-2 --login__register--input text-center",
+                    attrs: { type: "text", placeholder: "First Name" },
+                    domProps: { value: _vm.formRegisterData.first_name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formRegisterData,
+                          "first_name",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(
+                      _vm._s(_vm.validationError("first_name", _vm.saveError)) +
+                        " "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formRegisterData.middle_name,
+                        expression: "formRegisterData.middle_name"
+                      }
+                    ],
+                    staticClass:
+                      "w-full  my-2 --login__register--input text-center",
+                    attrs: { type: "text", placeholder: "Middle Name" },
+                    domProps: { value: _vm.formRegisterData.middle_name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formRegisterData,
+                          "middle_name",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.validationError("middle_name", _vm.saveError)
+                      ) + " "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formRegisterData.last_name,
+                        expression: "formRegisterData.last_name"
+                      }
+                    ],
+                    staticClass:
+                      "w-full  my-2 --login__register--input text-center",
+                    attrs: { type: "text", placeholder: "Last Name" },
+                    domProps: { value: _vm.formRegisterData.last_name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formRegisterData,
+                          "last_name",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(
+                      _vm._s(_vm.validationError("last_name", _vm.saveError)) +
+                        " "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formRegisterData.email,
+                        expression: "formRegisterData.email"
+                      }
+                    ],
+                    staticClass:
+                      "w-full  my-2 --login__register--input text-center",
+                    attrs: { type: "text", placeholder: "Email" },
+                    domProps: { value: _vm.formRegisterData.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formRegisterData,
+                          "email",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(
+                      _vm._s(_vm.validationError("email", _vm.saveError)) + " "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formRegisterData.phone,
+                        expression: "formRegisterData.phone"
+                      }
+                    ],
+                    staticClass:
+                      "w-full  my-2 --login__register--input text-center",
+                    attrs: { type: "text", placeholder: "Contact" },
+                    domProps: { value: _vm.formRegisterData.phone },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formRegisterData,
+                          "phone",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(
+                      _vm._s(_vm.validationError("phone", _vm.saveError)) + " "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formRegisterData.reference,
+                        expression: "formRegisterData.reference"
+                      }
+                    ],
+                    staticClass:
+                      "w-full  my-2 --login__register--input text-center",
+                    attrs: { type: "text", placeholder: "Reference" },
+                    domProps: { value: _vm.formRegisterData.reference },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formRegisterData,
+                          "reference",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(
+                      _vm._s(_vm.validationError("reference", _vm.saveError)) +
+                        " "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formRegisterData.password,
+                        expression: "formRegisterData.password"
+                      }
+                    ],
+                    staticClass:
+                      "w-full mt-2 --login__register--input text-center",
+                    class: { "mb-2": !_vm.message },
+                    attrs: { type: "password", placeholder: "Password" },
+                    domProps: { value: _vm.formRegisterData.password },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formRegisterData,
+                          "password",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(
+                      _vm._s(_vm.validationError("password", _vm.saveError)) +
+                        " "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formRegisterData.confirm_password,
+                        expression: "formRegisterData.confirm_password"
+                      }
+                    ],
+                    staticClass:
+                      "w-full mt-2 --login__register--input text-center",
+                    class: { "mb-2": !_vm.message },
+                    attrs: {
+                      type: "password",
+                      placeholder: "Confirm Password"
+                    },
+                    domProps: { value: _vm.formRegisterData.confirm_password },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formRegisterData,
+                          "confirm_password",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(
+                      _vm._s(
+                        _vm.validationError("confirm_password", _vm.saveError)
+                      ) + " "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "w-full  my-2 --login__register--button text-center",
+                      on: {
+                        click: function($event) {
+                          return _vm.register()
+                        }
+                      }
+                    },
+                    [_vm._v("\n\t\t\t\t\tRegister\n\t\t\t\t")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    {
+                      staticClass:
+                        "text-black text-sm text-center cursor-pointer hover:underline",
+                      on: {
+                        click: function($event) {
+                          _vm.isRegister = false
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n\t\t\t\t\tAlready have account ? Login Here!\n\t\t\t\t"
+                      )
+                    ]
+                  )
+                ]
+              )
+        ]
+      ),
+      _vm._v(" "),
+      _vm._m(4),
+      _vm._v(" "),
+      _vm._m(5),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass:
+            "w-screen h-full --contactus text-center mt-10 flex flex-col justify-center items-center text-xs md:text-2xl",
+          staticStyle: { background: "navy", color: "white !important" },
+          style: { height: _vm.mobile ? "100%" : "20vh" },
+          attrs: { id: "contactus" }
+        },
+        [_vm._m(6), _vm._v(" "), _vm._m(7)]
+      )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -49493,17 +49349,248 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "mx-1 cursor-pointer" }, [
+      _c("a", { attrs: { href: "#home" } }, [_vm._v("HOME")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "mx-1 cursor-pointer" }, [
+      _c("a", { attrs: { href: "#requirements" } }, [_vm._v("REQUIREMENTS")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "mx-1 cursor-pointer" }, [
+      _c("a", { attrs: { href: "#aboutus" } }, [_vm._v("ABOUT US")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "mx-1 cursor-pointer" }, [
+      _c("a", { attrs: { href: "#contactus" } }, [_vm._v("CONTACT US")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c(
       "div",
       {
-        staticClass: "w-full flex justify-center items-center",
-        staticStyle: { "padding-left": "12rem", "padding-right": "12rem" }
+        staticClass:
+          "w-screen h-full --requirements flex justify-center items-center",
+        attrs: { id: "requirements" }
       },
       [
-        _c("div", {
-          staticClass: "w-full --banner",
-          staticStyle: { height: "250px" }
-        })
+        _c(
+          "div",
+          {
+            staticClass: "flex flex-col md:flex-row",
+            staticStyle: { width: "80%" }
+          },
+          [
+            _c("div", { staticClass: "w-full" }, [
+              _c("p", { staticClass: "text-xl font-bold mb-5 mt-5" }, [
+                _vm._v(
+                  "\n\t\t\t\t\t\tAPPLICATION FOR NEW CONNECTION\n\t\t\t\t\t"
+                )
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-3" }, [
+                _c("b", [_vm._v("Schedule of Availability of Service")]),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\tMonday to Friday"),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t8:00 A.M. to 5:00 P.M."),
+                _c("br")
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-5" }, [
+                _c("b", [_vm._v("Who may avail of the service?")]),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\tApplicants covered by the service areas."
+                ),
+                _c("br"),
+                _c("br"),
+                _vm._v(" "),
+                _c("b", [_vm._v("What is the requirement?")]),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t- Company I.D. "),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t- Current School I.D."),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t- Voter’s I.D."),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t- Driver’s License"),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t- Updated Postal I.D."),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t- Passport"),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t- One (1) copy any of 1×1/2×2 ID Picture"
+                ),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t- Photocopy of Brgy. Clearance"),
+                _c("br"),
+                _c("br"),
+                _vm._v(" "),
+                _c("b", [_vm._v("How to avail of the service:")]),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t1.Visit the office;"),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t2. Tell your purpose;"),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t3. Wait to be entertained by the staff;"),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t4. Staff to advise the applicant for schedule of inspection and field survey;"
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t5. Staff to get the complete address and contact number of the applicant;"
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t6. The applicant must be sure to get list of requirements."
+                ),
+                _c("br")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-full" }, [
+              _c("p", { staticClass: "text-xl font-bold mb-5 mt-5" }, [
+                _vm._v("\n\t\t\t\t\t\tAPPLICATION FOR RECONNECTION\n\t\t\t\t\t")
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-3" }, [
+                _c("b", [_vm._v("Schedule of Availability of Service")]),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\tMonday to Friday"),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t8:00 A.M. to 5:00 P.M."),
+                _c("br")
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-5" }, [
+                _c("b", [_vm._v("Who may avail of the service?")]),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\tThose connections who were disconnected."
+                ),
+                _c("br"),
+                _c("br"),
+                _vm._v(" "),
+                _c("b", [_vm._v("What is the requirement?")]),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\tFull payment of unpaid water bills, re-connection fee and other charges if any"
+                ),
+                _c("br"),
+                _c("br"),
+                _vm._v(" "),
+                _c("b", [_vm._v("How to avail of the service:")]),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t1. Visit the office;"),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t2. Tell your purpose;"),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t3. Wait to be entertained by the in-charge;"
+                ),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t4. Submit your residence certificate;"),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t5. Staff to verify record of accounts and status of connection;"
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t6. Signing of Service Application and Construction Order and cost estimates;"
+                ),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t7. Forward to the Admin for approval;"),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t8. Payment to cashier and wait for the issuance of Official Receipt;"
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t9. Signing of Application and Agreement for Water Service Connection;"
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t10. Staff will indicate schedule of installation."
+                ),
+                _c("br")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-full" }, [
+              _c("p", { staticClass: "text-xl font-bold mb-5 mt-5" }, [
+                _vm._v(
+                  "\n\t\t\t\t\t\tAPPLICATION FOR DISCONNECTION\n\t\t\t\t\t"
+                )
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-3" }, [
+                _c("b", [_vm._v("Schedule of Availability of Service")]),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\tMonday to Friday"),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t8:00 A.M. to 5:00 P.M."),
+                _c("br")
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-5" }, [
+                _c("b", [_vm._v("Who may avail of the service?")]),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\tThose who wish to temporarily disconnect their water service installed through\n\t\t\t\t\t\tpull-out water meter due to any valid reason that service needs to be disconnected.\n\t\t\t\t\t\t"
+                ),
+                _c("br"),
+                _c("br"),
+                _vm._v(" "),
+                _c("b", [_vm._v("What is the requirement?")]),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\tRequest for disconnection of service line."
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\tFull payment of outstanding water bills and materials under Promissory Note if any"
+                ),
+                _c("br"),
+                _c("br"),
+                _vm._v(" "),
+                _c("b", [_vm._v("How to avail of the service:")]),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t1.Proceeds to customer service and requests disconnection"
+                ),
+                _c("br"),
+                _vm._v("\n\t\t\t\t\t\t2.Signs Disconnection Logbook"),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t3. Pays all unpaid water bills and other charges under installment scheme (if any)"
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n\t\t\t\t\t\t4. Accepts work done, signs Maintenance Order"
+                ),
+                _c("br")
+              ])
+            ])
+          ]
+        )
       ]
     )
   },
@@ -49511,229 +49598,137 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-full" }, [
-      _c("p", { staticClass: "text-xl font-bold mb-5 mt-5 text-center" }, [
-        _vm._v("\n\t\t\t\t\t\t\tAPPLICATION FOR NEW CONNECTION\n\t\t\t\t\t\t")
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "mb-3" }, [
-        _c("b", [_vm._v("Schedule of Availability of Service")]),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\tMonday to Friday"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t8:00 A.M. to 5:00 P.M."),
-        _c("br")
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "mb-5" }, [
-        _c("b", [_vm._v("Who may avail of the service?")]),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\tApplicants covered by the service areas."),
-        _c("br"),
-        _c("br"),
-        _vm._v(" "),
-        _c("b", [_vm._v("What is the requirement?")]),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t- Company I.D. "),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t- Current School I.D."),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t- Voter’s I.D."),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t- Driver’s License"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t- Updated Postal I.D."),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t- Passport"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t- One (1) copy any of 1×1/2×2 ID Picture"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t- Photocopy of Brgy. Clearance"),
-        _c("br"),
-        _c("br"),
-        _vm._v(" "),
-        _c("b", [_vm._v("How to avail of the service:")]),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t1.Visit the office;"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t2. Tell your purpose;"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t3. Wait to be entertained by the staff;"),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\t4. Staff to advise the applicant for schedule of inspection and field survey;"
-        ),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\t5. Staff to get the complete address and contact number of the applicant;"
-        ),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\t6. The applicant must be sure to get list of requirements."
-        ),
-        _c("br")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-full" }, [
-      _c("p", { staticClass: "text-xl font-bold mb-5 mt-5 text-center" }, [
-        _vm._v("\n\t\t\t\t\t\t\tAPPLICATION FOR RECONNECTION\n\t\t\t\t\t\t")
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "mb-3" }, [
-        _c("b", [_vm._v("Schedule of Availability of Service")]),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\tMonday to Friday"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t8:00 A.M. to 5:00 P.M."),
-        _c("br")
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "mb-5" }, [
-        _c("b", [_vm._v("Who may avail of the service?")]),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\tThose connections who were disconnected."),
-        _c("br"),
-        _c("br"),
-        _vm._v(" "),
-        _c("b", [_vm._v("What is the requirement?")]),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\tFull payment of unpaid water bills, re-connection fee and other charges if any"
-        ),
-        _c("br"),
-        _c("br"),
-        _vm._v(" "),
-        _c("b", [_vm._v("How to avail of the service:")]),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t1. Visit the office;"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t2. Tell your purpose;"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t3. Wait to be entertained by the in-charge;"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t4. Submit your residence certificate;"),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\t5. Staff to verify record of accounts and status of connection;"
-        ),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\t6. Signing of Service Application and Construction Order and cost estimates;"
-        ),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t7. Forward to the Admin for approval;"),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\t8. Payment to cashier and wait for the issuance of Official Receipt;"
-        ),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\t9. Signing of Application and Agreement for Water Service Connection;"
-        ),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\t10. Staff will indicate schedule of installation."
-        ),
-        _c("br")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-full" }, [
-      _c("p", { staticClass: "text-xl font-bold mb-5 mt-5 text-center" }, [
-        _vm._v("\n\t\t\t\t\t\t\tAPPLICATION FOR DISCONNECTION\n\t\t\t\t\t\t")
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "mb-3" }, [
-        _c("b", [_vm._v("Schedule of Availability of Service")]),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\tMonday to Friday"),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t8:00 A.M. to 5:00 P.M."),
-        _c("br")
-      ]),
-      _vm._v(" "),
-      _c("p", { staticClass: "mb-5" }, [
-        _c("b", [_vm._v("Who may avail of the service?")]),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\tThose who wish to temporarily disconnect their water service installed through\n\t\t\t\t\t\t\tpull-out water meter due to any valid reason that service needs to be disconnected.\n\t\t\t\t\t\t\t"
-        ),
-        _c("br"),
-        _c("br"),
-        _vm._v(" "),
-        _c("b", [_vm._v("What is the requirement?")]),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\tRequest for disconnection of service line."),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\tFull payment of outstanding water bills and materials under Promissory Note if any"
-        ),
-        _c("br"),
-        _c("br"),
-        _vm._v(" "),
-        _c("b", [_vm._v("How to avail of the service:")]),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\t1.Proceeds to customer service and requests disconnection"
-        ),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t2.Signs Disconnection Logbook"),
-        _c("br"),
-        _vm._v(
-          "\n\t\t\t\t\t\t\t3. Pays all unpaid water bills and other charges under installment scheme (if any)"
-        ),
-        _c("br"),
-        _vm._v("\n\t\t\t\t\t\t\t4. Accepts work done, signs Maintenance Order"),
-        _c("br")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "w-6/12 flex flex-col" }, [
-      _c("div", { staticClass: "w-full mt-2" }, [
-        _c("p", { staticClass: "text-xl font-bold" }, [
-          _vm._v("\n\t\t\t\t\t\t\t\tAbout Us\n\t\t\t\t\t\t\t")
+    return _c(
+      "div",
+      {
+        staticClass:
+          "w-screen h-full --aboutus flex justify-center items-center text-center mt-10 flex flex-col",
+        attrs: { id: "aboutus" }
+      },
+      [
+        _c("div", { staticClass: "w-full" }, [
+          _c("p", { staticClass: "text-center w-full" }, [
+            _c("span", { staticClass: "text-4xl" }, [
+              _vm._v("\n\t\t\t\t\t\tABOUT US\n\t\t\t\t\t")
+            ]),
+            _c("br"),
+            _c("br"),
+            _vm._v(" "),
+            _c("span", { staticClass: "text-lg" }, [
+              _vm._v(
+                "\n\t\t\t\t\t\tWater Billing System is a website that helps consumer to monitor their water usage,"
+              ),
+              _c("br"),
+              _vm._v(
+                " \n\t\t\t\t\t\talso consumers can see future announcement about the water billing.\n\t\t\t\t\t"
+              )
+            ])
+          ])
         ]),
         _vm._v(" "),
-        _c("p", { staticClass: "text-lg font-semibold text-justify mt-4" }, [
-          _vm._v(
-            "\n\t\t\t\t\t\t\t\tWater Billing System is a website that helps consumer to monitor their water usage, also consumers can see future announcemnt about the water billing.\n\t\t\t\t\t\t\t"
-          )
+        _c("div", { staticClass: "w-full" }, [
+          _c("p", { staticClass: "text-center mt-10 w-full" }, [
+            _c("span", { staticClass: "text-4xl" }, [
+              _vm._v("\n\t\t\t\t\t\tVISION\n\t\t\t\t\t")
+            ]),
+            _c("br"),
+            _c("br"),
+            _vm._v(" "),
+            _c("span", { staticClass: "text-lg" }, [
+              _vm._v(
+                "\n\t\t\t\t\t\tThere's a perception that you have to be brutal to grow a business management."
+              ),
+              _c("br"),
+              _vm._v(
+                "\n\t\t\t\t\t\tBut we are aware that there is a better method to develop one in which what's "
+              ),
+              _c("br"),
+              _vm._v(
+                "\n\t\t\t\t\t\tgood for the client’s satisfactory and also benefits the bottom line. "
+              ),
+              _c("br"),
+              _vm._v(
+                "\n\t\t\t\t\t\tWe think that companies can develop a conscience and thrive with a soul. "
+              ),
+              _c("br"),
+              _vm._v(
+                "\n\t\t\t\t\t\tTechnology is being used more effectively, we made the decision to come \n\t\t\t\t\t\tup with a better way to handle water services, simplify client payment "
+              ),
+              _c("br"),
+              _vm._v(
+                "\n\t\t\t\t\t\tprocesses, and streamline the work of water readers.\n\t\t\t\t\t"
+              )
+            ])
+          ])
         ]),
         _vm._v(" "),
-        _c("p", { staticClass: "text-xl font-bold mt-8" }, [
-          _vm._v("\n\t\t\t\t\t\t\t\tMission\n\t\t\t\t\t\t\t")
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "text-lg font-semibold text-justify mt-4" }, [
-          _vm._v(
-            "\n\t\t\t\t\t\t\t\tThere's a perception that you have to be brutal to grow a business management. But we are aware that there is a better method to develop one in which what's good for the client’s satisfactory and also benefits the bottom line. We think that companies can develop a conscience and thrive with a soul. Because technology is being used more effectively, we made the decision to come up with a better way to handle water services, simplify client payment processes, and streamline the work of water readers.\n\t\t\t\t\t\t\t"
-          )
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "text-xl font-bold mt-8" }, [
-          _vm._v("\n\t\t\t\t\t\t\t\tVision\n\t\t\t\t\t\t\t")
-        ]),
-        _vm._v(" "),
-        _c("p", { staticClass: "text-lg font-semibold text-justify mt-4" }, [
-          _vm._v(
-            "\n\t\t\t\t\t\t\t\tThe approach we developed will enable us to prioritize client’s satisfaction while speeding up workers productivity.\n\t\t\t\t\t\t\t"
-          )
+        _c("div", { staticClass: "w-full" }, [
+          _c("p", { staticClass: "text-center mt-10 w-full" }, [
+            _c("span", { staticClass: "text-4xl" }, [
+              _vm._v("\n\t\t\t\t\t\tMISSION\n\t\t\t\t\t")
+            ]),
+            _c("br"),
+            _c("br"),
+            _vm._v(" "),
+            _c("span", { staticClass: "text-lg" }, [
+              _vm._v(
+                "\n\t\t\t\t\t\tThe approach we developed will enable us to prioritize client’s "
+              ),
+              _c("br"),
+              _vm._v(
+                "\n\t\t\t\t\t\tsatisfaction while speeding up workers productivity\n\t\t\t\t\t"
+              )
+            ])
+          ])
         ])
-      ])
-    ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "flex flex-col md:flex-row",
+        staticStyle: { width: "100%" }
+      },
+      [
+        _c("div", { staticClass: "w-full mt-5 md:mt-0" }, [
+          _c("i", { staticClass: "fa-solid fa-envelope" }),
+          _c("p", [_vm._v("waterbillingsystem1@gmail.com")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "w-full mt-5 md:mt-0" }, [
+          _c("i", { staticClass: "fa-brands fa-facebook" }),
+          _c("p", [_vm._v("Water Billing System")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "w-full mt-5 md:mt-0" }, [
+          _c("i", { staticClass: "fa-sharp fa-solid fa-phone" }),
+          _c("p", [_vm._v("0991-702-1532/0965-765-7443")])
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "flex flex-col md:flex-row mt-5 md:mt-10",
+        staticStyle: { width: "100%" }
+      },
+      [
+        _c("div", { staticClass: "w-full text-center" }, [
+          _c("i", { staticClass: "fa-regular fa-copyright" }),
+          _c("p", [_vm._v("All Rights Reserve 2022")])
+        ])
+      ]
+    )
   }
 ]
 render._withStripped = true

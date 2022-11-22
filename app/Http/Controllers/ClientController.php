@@ -243,7 +243,7 @@ class ClientController extends Controller
             return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);
         }
 
-        $data = $request->toArray();
+        $data = $request->except(['user_id']);
         $client = Client::where('reference', $auth->reference)->first();
         
         $data['client_id'] = $client->id;

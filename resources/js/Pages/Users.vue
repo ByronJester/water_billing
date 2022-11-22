@@ -177,7 +177,7 @@ export default {
     data() {
         return {
             columns: [
-                'Name', 'Email', 'Contact', 'User Type', 'Line #', 'Status'
+                'Name', 'Email', 'Contact', 'User Type', 'Account #', 'Status'
             ],
             keys : [
                 {

@@ -89,7 +89,7 @@
 					<span class="text-xs text-red-500">{{validationError('phone', saveError)}} </span>
 
 					<input type="text" class="w-full  my-2 --login__register--input text-center"
-						placeholder="Reference" v-model="formRegisterData.reference"
+						placeholder="Account #" v-model="formRegisterData.reference"
 					>
 					<span class="text-xs text-red-500">{{validationError('reference', saveError)}} </span>
 

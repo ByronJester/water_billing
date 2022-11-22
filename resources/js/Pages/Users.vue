@@ -279,7 +279,9 @@ export default {
 					if(response.data.status == 422) {
 						this.saveError = response.data.errors 
 					} else {
-                        // location.reload()
+                        alert('Notify all client successfully')
+                        
+                        location.reload()
 					}
 				})
         }

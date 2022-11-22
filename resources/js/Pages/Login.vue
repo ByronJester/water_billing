@@ -55,7 +55,7 @@
 						Login
 					</button>
 
-					<p class="text-black text-sm cursor-pointer hover:underline text-center"
+					<p class="text-white text-sm cursor-pointer hover:underline text-center"
 						@click="isRegister = true"
 					>
 						Doesn't have accout ? Sign Up Here!
@@ -111,7 +111,7 @@
 						Register
 					</button>
 
-					<p class="text-black text-sm text-center cursor-pointer hover:underline"
+					<p class="text-white text-sm text-center cursor-pointer hover:underline"
 						@click="isRegister = false"
 					>
 						Already have account ? Login Here!

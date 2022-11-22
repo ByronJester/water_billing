@@ -56,12 +56,12 @@
             >
                 <section slot="pdf-content">
                     <div class="flex flex-col p-4 w-full h-screen" v-if="clientData">
-                        <div class="w-full text-center text-2xl mt-2 font-bold">
+                        <div class="w-full text-center text-xl mt-2 font-bold">
                             Water Billing System
                         </div>
 
-                        <div class="w-full mt-8">
-                            <p class="mt-2 text-xl">
+                        <div class="w-full mt-4">
+                            <p class="mt-2 text-lg">
                                 <b>Name:</b>
                             </p>
 
@@ -69,7 +69,7 @@
                                 {{ clientData.name }}
                             </p>
 
-                            <p class="mt-4 text-xl">
+                            <p class="mt-2 text-lg">
                                 <b>Address:</b>
                             </p>
 
@@ -77,7 +77,7 @@
                                 {{ clientData.address }}
                             </p>
 
-                            <p class="mt-4 text-xl">
+                            <p class="mt-2 text-lg">
                                 <b>Line #:</b>
                             </p>
 
@@ -85,7 +85,7 @@
                                 {{ clientData.reference }}
                             </p>
 
-                            <p class="mt-4 text-xl">
+                            <p class="mt-2 text-lg">
                                 <b>Due Date:</b>
                             </p>
 
@@ -93,28 +93,28 @@
                                 {{ clientData.date }}
                             </p>
 
-                            <p class="mt-4 text-xl">
+                            <p class="mt-2 text-lg">
                                 <b>Bill:</b>
                             </p>
 
                             <p class="mt-1 text-lg">
-                                ₱ {{ clientData.amount }}
+                                ₱ {{ clientData.amount.toFixed(2) }}
                             </p>
 
-                            <p class="mt-4 text-xl">
+                            <p class="mt-2 text-lg">
                                 <b>Penalty:</b>
                             </p>
 
                             <p class="mt-1 text-lg">
-                                ₱ {{ clientData.penalty }}
+                                ₱ {{ clientData.penalty.toFixed(2) }}
                             </p>
 
-                            <p class="mt-4 text-xl">
+                            <p class="mt-2 text-lg">
                                 <b>Total Bill:</b>
                             </p>
 
                             <p class="mt-1 text-lg">
-                                ₱ {{ clientData.amount + clientData.penalty }}
+                                ₱ {{ clientData.total.toFixed(2) }}
                             </p>
                         </div>
                     </div>
@@ -181,7 +181,8 @@ export default {
                             reference: data.client.reference,
                             penalty: data.client.penalty,
                             amount: data.amount,
-                            date: data.due_date
+                            date: data.due_date,
+                            total: data.total
                         }
 
                         this.form = {

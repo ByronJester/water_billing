@@ -151,7 +151,8 @@ class ClientController extends Controller
         $data = [
             'client' => $client,
             'amount' => $totalAmount,
-            'due_date' => $request->date
+            'due_date' => $request->date,
+            'total' => $totalAmount + $client->penalty
         ]; 
 
         $users = User::where('reference', $request->reference)->get();

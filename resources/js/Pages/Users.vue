@@ -281,7 +281,7 @@ export default {
 					} else {
                         alert('Notify all client successfully')
                         
-                        location.reload()
+                        // location.reload()
 					}
 				})
         }

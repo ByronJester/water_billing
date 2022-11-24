@@ -55,7 +55,7 @@
                 ref="receipt"
             >
                 <section slot="pdf-content">
-                    <div class="flex flex-col p-4 w-full h-screen">
+                    <div class="flex flex-col p-4 w-full h-screen" v-if="clientData">
                         <div class="w-full text-center text-xl mt-2 font-bold">
                             Water Billing System
                         </div>

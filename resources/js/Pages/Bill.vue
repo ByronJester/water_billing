@@ -55,7 +55,7 @@
                 ref="receipt"
             >
                 <section slot="pdf-content">
-                    <div class="flex flex-col p-4 w-full h-screen" v-if="clientData">
+                    <div class="flex flex-col p-4 w-full h-screen">
                         <div class="w-full text-center text-xl mt-2 font-bold">
                             Water Billing System
                         </div>
@@ -195,11 +195,16 @@ export default {
 
 						this.saveError = null
 
-                        this.$refs.receipt.generatePdf()
+                        
 
                         // location.reload()
 					}  
 				})
+        }
+    },
+    watch: {
+        clientData(arg) {
+            this.$refs.receipt.generatePdf()
         }
     }
 }

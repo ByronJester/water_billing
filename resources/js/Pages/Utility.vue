@@ -12,7 +12,11 @@
             </div>
 
             <div class="w-full" v-if="activeTab == 'archive'">
-                <table class="w-full">
+                <div class="w-full mt-5" v-if="client">
+                    <Toggle :value="client.is_active" :url="'/clients/deactivate-reactivate'" :id="client.id" class="mr-1 pt-1"/> <span class="font-bold"> RECONNECT ACCOUNT #: {{client.reference}} </span>
+                </div>
+
+                <table class="w-full mt-5">
                     <tr class="text-center">
                         <th v-for="column in ['FIRST NAME', 'LAST NAME', 'ADDRESS', 'ACCOUNT #']" :key="column">
                             {{ column }}
@@ -22,12 +26,15 @@
                     <tr class="text-center"
                         v-for="(l, index) in options.clients" :key="index"
                     >
-                        <td v-for="(k, i) in [{label: 'first_name'}, {label: 'last_name'}, {label: 'address'}, {label: 'reference'},]" :key="i" class="cursor-pointer">
+                        <td v-for="(k, i) in [{label: 'first_name'}, {label: 'last_name'}, {label: 'address'}, {label: 'reference'},]" :key="i" class="cursor-pointer"
+                            :class="{'--active__color': !!client && client.id == l.id }"
+                             @click="client = l"
+                        >
                             <span>{{options.clients[index][k.label] }}</span> 
                         </td>
                     </tr>
 
-                </table>
+                </table> 
             </div>
 
             <div class="w-full" v-if="activeTab == 'trail'">
@@ -68,6 +75,7 @@ export default {
     data(){
         return {
             activeTab: 'archive',
+            client: null
         }
     },
 
@@ -76,7 +84,8 @@ export default {
     },
 
     watch: {
-        
+        client(arg) {
+        }
     },
 
     methods: {

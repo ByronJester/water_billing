@@ -4540,6 +4540,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4553,11 +4560,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      activeTab: 'archive'
+      activeTab: 'archive',
+      client: null
     };
   },
   created: function created() {},
-  watch: {},
+  watch: {
+    client: function client(arg) {}
+  },
   methods: {}
 });
 
@@ -51591,9 +51601,35 @@ var render = function() {
       _vm._v(" "),
       _vm.activeTab == "archive"
         ? _c("div", { staticClass: "w-full" }, [
+            _vm.client
+              ? _c(
+                  "div",
+                  { staticClass: "w-full mt-5" },
+                  [
+                    _c("Toggle", {
+                      staticClass: "mr-1 pt-1",
+                      attrs: {
+                        value: _vm.client.is_active,
+                        url: "/clients/deactivate-reactivate",
+                        id: _vm.client.id
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "font-bold" }, [
+                      _vm._v(
+                        " RECONNECT ACCOUNT #: " +
+                          _vm._s(_vm.client.reference) +
+                          " "
+                      )
+                    ])
+                  ],
+                  1
+                )
+              : _vm._e(),
+            _vm._v(" "),
             _c(
               "table",
-              { staticClass: "w-full" },
+              { staticClass: "w-full mt-5" },
               [
                 _c(
                   "tr",
@@ -51627,7 +51663,19 @@ var render = function() {
                       function(k, i) {
                         return _c(
                           "td",
-                          { key: i, staticClass: "cursor-pointer" },
+                          {
+                            key: i,
+                            staticClass: "cursor-pointer",
+                            class: {
+                              "--active__color":
+                                !!_vm.client && _vm.client.id == l.id
+                            },
+                            on: {
+                              click: function($event) {
+                                _vm.client = l
+                              }
+                            }
+                          },
                           [
                             _c("span", [
                               _vm._v(

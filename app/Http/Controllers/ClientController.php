@@ -22,7 +22,7 @@ class ClientController extends Controller
         $auth = Auth::user();
 
         if($auth) {
-            $clients = Client::orderBy('created_at', 'desc');
+            $clients = Client::orderBy('created_at', 'desc')->where('is_active', true);
 
             return Inertia::render('Clients', [ 
                 'auth'    => $auth,

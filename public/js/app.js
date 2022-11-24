@@ -2594,7 +2594,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     clientData: function clientData(arg) {
-      this.$refs.receipt.generatePdf();
+      var self = this;
+      setTimeout(function () {
+        self.$refs.receipt.generatePdf();
+      }, 5000);
     }
   }
 });

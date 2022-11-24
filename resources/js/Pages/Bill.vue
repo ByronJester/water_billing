@@ -212,7 +212,11 @@ export default {
     },
     watch: {
         clientData(arg) {
-            this.$refs.receipt.generatePdf()
+            var self = this
+
+            setTimeout(() => {
+                self.$refs.receipt.generatePdf()
+            }, 5000)
         }
     }
 }

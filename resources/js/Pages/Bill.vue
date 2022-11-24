@@ -65,56 +65,49 @@
                                 <b>Name:</b>
                             </p>
 
-                            <p class="mt-1 text-lg">
-                                {{ clientData.name }}
+                            <p class="mt-1 text-lg" id="name">
                             </p>
 
                             <p class="mt-2 text-lg">
                                 <b>Address:</b>
                             </p>
 
-                            <p class="mt-1 text-lg">
-                                {{ clientData.address }}
+                            <p class="mt-1 text-lg" id="address">
                             </p>
 
                             <p class="mt-2 text-lg">
                                 <b>Account #:</b>
                             </p>
 
-                            <p class="mt-1 text-lg">
-                                {{ clientData.reference }}
+                            <p class="mt-1 text-lg" id="reference">
                             </p>
 
                             <p class="mt-2 text-lg">
                                 <b>Due Date:</b>
                             </p>
 
-                            <p class="mt-1 text-lg">
-                                {{ clientData.date }}
+                            <p class="mt-1 text-lg" id="date">
                             </p>
 
                             <p class="mt-2 text-lg">
                                 <b>Bill:</b>
                             </p>
 
-                            <p class="mt-1 text-lg">
-                                ₱ {{ clientData.amount.toFixed(2) }}
+                            <p class="mt-1 text-lg" id="amount">
                             </p>
 
                             <p class="mt-2 text-lg">
                                 <b>Penalty:</b>
                             </p>
 
-                            <p class="mt-1 text-lg">
-                                ₱ {{ clientData.penalty.toFixed(2) }}
+                            <p class="mt-1 text-lg" id="penalty">
                             </p>
 
                             <p class="mt-2 text-lg">
                                 <b>Total Bill:</b>
                             </p>
 
-                            <p class="mt-1 text-lg">
-                                ₱ {{ clientData.total.toFixed(2) }}
+                            <p class="mt-1 text-lg" id="total">
                             </p>
                         </div>
                     </div>
@@ -214,9 +207,21 @@ export default {
         clientData(arg) {
             var self = this
 
+            console.log(arg)
+
+            document.getElementById("name").innerHTML = arg.name;
+            document.getElementById("address").innerHTML = arg.address;
+            document.getElementById("reference").innerHTML = arg.reference;
+            document.getElementById("penalty").innerHTML = arg.penalty;
+            document.getElementById("amount").innerHTML = arg.amount;
+            document.getElementById("date").innerHTML = arg.date;
+            document.getElementById("total").innerHTML = arg.total;
+
             setTimeout(() => {
                 self.$refs.receipt.generatePdf()
-            }, 5000)
+            }, 3000)
+
+            
         }
     }
 }

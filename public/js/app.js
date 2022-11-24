@@ -2515,13 +2515,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2595,9 +2588,17 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     clientData: function clientData(arg) {
       var self = this;
+      console.log(arg);
+      document.getElementById("name").innerHTML = arg.name;
+      document.getElementById("address").innerHTML = arg.address;
+      document.getElementById("reference").innerHTML = arg.reference;
+      document.getElementById("penalty").innerHTML = arg.penalty;
+      document.getElementById("amount").innerHTML = arg.amount;
+      document.getElementById("date").innerHTML = arg.date;
+      document.getElementById("total").innerHTML = arg.total;
       setTimeout(function () {
         self.$refs.receipt.generatePdf();
-      }, 5000);
+      }, 3000);
     }
   }
 });
@@ -47952,85 +47953,64 @@ var render = function() {
                         _c("b", [_vm._v("Name:")])
                       ]),
                       _vm._v(" "),
-                      _c("p", { staticClass: "mt-1 text-lg" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.clientData.name) +
-                            "\n                        "
-                        )
-                      ]),
+                      _c("p", {
+                        staticClass: "mt-1 text-lg",
+                        attrs: { id: "name" }
+                      }),
                       _vm._v(" "),
                       _c("p", { staticClass: "mt-2 text-lg" }, [
                         _c("b", [_vm._v("Address:")])
                       ]),
                       _vm._v(" "),
-                      _c("p", { staticClass: "mt-1 text-lg" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.clientData.address) +
-                            "\n                        "
-                        )
-                      ]),
+                      _c("p", {
+                        staticClass: "mt-1 text-lg",
+                        attrs: { id: "address" }
+                      }),
                       _vm._v(" "),
                       _c("p", { staticClass: "mt-2 text-lg" }, [
                         _c("b", [_vm._v("Account #:")])
                       ]),
                       _vm._v(" "),
-                      _c("p", { staticClass: "mt-1 text-lg" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.clientData.reference) +
-                            "\n                        "
-                        )
-                      ]),
+                      _c("p", {
+                        staticClass: "mt-1 text-lg",
+                        attrs: { id: "reference" }
+                      }),
                       _vm._v(" "),
                       _c("p", { staticClass: "mt-2 text-lg" }, [
                         _c("b", [_vm._v("Due Date:")])
                       ]),
                       _vm._v(" "),
-                      _c("p", { staticClass: "mt-1 text-lg" }, [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(_vm.clientData.date) +
-                            "\n                        "
-                        )
-                      ]),
+                      _c("p", {
+                        staticClass: "mt-1 text-lg",
+                        attrs: { id: "date" }
+                      }),
                       _vm._v(" "),
                       _c("p", { staticClass: "mt-2 text-lg" }, [
                         _c("b", [_vm._v("Bill:")])
                       ]),
                       _vm._v(" "),
-                      _c("p", { staticClass: "mt-1 text-lg" }, [
-                        _vm._v(
-                          "\n                            ₱ " +
-                            _vm._s(_vm.clientData.amount.toFixed(2)) +
-                            "\n                        "
-                        )
-                      ]),
+                      _c("p", {
+                        staticClass: "mt-1 text-lg",
+                        attrs: { id: "amount" }
+                      }),
                       _vm._v(" "),
                       _c("p", { staticClass: "mt-2 text-lg" }, [
                         _c("b", [_vm._v("Penalty:")])
                       ]),
                       _vm._v(" "),
-                      _c("p", { staticClass: "mt-1 text-lg" }, [
-                        _vm._v(
-                          "\n                            ₱ " +
-                            _vm._s(_vm.clientData.penalty.toFixed(2)) +
-                            "\n                        "
-                        )
-                      ]),
+                      _c("p", {
+                        staticClass: "mt-1 text-lg",
+                        attrs: { id: "penalty" }
+                      }),
                       _vm._v(" "),
                       _c("p", { staticClass: "mt-2 text-lg" }, [
                         _c("b", [_vm._v("Total Bill:")])
                       ]),
                       _vm._v(" "),
-                      _c("p", { staticClass: "mt-1 text-lg" }, [
-                        _vm._v(
-                          "\n                            ₱ " +
-                            _vm._s(_vm.clientData.total.toFixed(2)) +
-                            "\n                        "
-                        )
-                      ])
+                      _c("p", {
+                        staticClass: "mt-1 text-lg",
+                        attrs: { id: "total" }
+                      })
                     ])
                   ]
                 )

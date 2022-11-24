@@ -18,7 +18,8 @@ class Client extends Model
         'reference',
         'is_active',
         'penalty',
-        'payment_date'
+        'payment_date',
+        'phone'
     ];
 
     protected $appends = [

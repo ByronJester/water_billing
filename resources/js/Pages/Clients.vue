@@ -171,6 +171,12 @@
                             <span class="text-xs text-red-500">{{validationError('address', saveError)}} </span>
                         </div>
 
+                        <div class="mt-4">
+                            <label for="address">Contant #:</label><br>
+                            <input type="text" id="address" name="address" class="--input py-4" v-model="form.phone">
+                            <span class="text-xs text-red-500">{{validationError('address', saveError)}} </span>
+                        </div>
+
                         <div class="mt-6">
                             <button class="--btn py-2" @click="createClient()">
                                 Submit
@@ -221,7 +227,8 @@ export default {
                 first_name: null,
                 middle_name: null,
                 last_name: null,
-                address: null
+                address: null,
+                phone: null
             },
             saveError: null,
             client: null,

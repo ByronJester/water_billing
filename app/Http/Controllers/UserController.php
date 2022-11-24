@@ -11,6 +11,7 @@ use App\Models\ClientUtility;
 use App\Models\Client;
 use App\Models\Maintenance;
 use App\Models\AuditTrail;
+use App\Models\Verification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -69,15 +70,44 @@ class UserController extends Controller
             return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);
         }
 
-        $password = $request->password;
+        if($request->code == null) {
+            $code = sprintf("%06d", mt_rand(1, 999999));
 
-        $data = $request->except(['confirm_password']);
+            Verification::forceCreate([ 
+                'code' => $code
+            ]);
 
-        $data['password'] = Hash::make($password);
-        
-        $saveUser = User::create($data);
-        
-        return response()->json(['status' => 200], 200);  
+            $client = Client::where('reference', $request->reference)->first();
+
+            $phone = $client->phone;
+            $message = 'Your verification code is' . ' ' . $code;
+
+            $this->sendSms($phone, $message);
+
+            return response()->json(['status' => 200], 200);  
+        } else {
+            $otpRules = [
+                'code' => 'required|exists:verifications,code'
+            ];
+    
+            $otpValidator = Validator::make($request->all(), $otpRules);
+    
+            if ($otpValidator->fails()) {
+                return response()->json(['errors' => $otpValidator->messages(), 'status' => 422], 200);
+            }
+
+            $password = $request->password;
+
+            $data = $request->except(['confirm_password']);
+    
+            $data['password'] = Hash::make($password);
+            
+            $saveUser = User::create($data);
+
+            Verification::where('code', $request->code)->delete();
+            
+            return response()->json(['status' => 200], 200);
+        }
     }
 
     public function saveUser(Request $request)
@@ -118,16 +148,18 @@ class UserController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if(!$user) {
-            return redirect()->back()->with('message', 'No account found.');
+            return response()->json(['status' => 422, 'message' => 'No account found.' ], 200); 
         }
 
         if(!$user->is_active) {
-            return redirect()->back()->with('message', 'Your account is not verified.');
+            return response()->json(['status' => 422, 'message' => 'Your account is not deactivated.' ], 200); 
         }
 
         if($user->user_type != 'admin' && $user->user_type != 'staff') {
             if($maintenance->is_active) {
-                return redirect()->back()->with('message', 'System is under maintenance.');
+                // return redirect()->back()->with('message', 'System is under maintenance.');
+
+                return response()->json(['status' => 422, 'message' => 'System is under maintenance.' ], 200);
             }
         }
 
@@ -141,11 +173,11 @@ class UserController extends Controller
             }
 
             if($auth) {
-                return redirect('/'); 
+                return response()->json(['status' => 200, 'message' => 'success' ], 200);
             }
 
         } else {
-            return redirect()->back()->with('message', 'Invalid Credentials.');
+            return response()->json(['status' => 422, 'message' => 'Invalid Credentials.' ], 200);
         }
     }
 

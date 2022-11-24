@@ -72,6 +72,7 @@ class ClientController extends Controller
             'first_name' => "required|string",
             'last_name' => "required|string",
             'address' => "required|string",
+            'phone' => "required|numeric|digits:11"
         ]);
 
         if ($validator->fails()) {

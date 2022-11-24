@@ -2892,6 +2892,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2919,7 +2925,8 @@ __webpack_require__.r(__webpack_exports__);
         first_name: null,
         middle_name: null,
         last_name: null,
-        address: null
+        address: null,
+        phone: null
       },
       saveError: null,
       client: null,
@@ -3354,10 +3361,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['message'],
+  props: [],
   data: function data() {
     return {
       formloginData: {
@@ -3374,13 +3413,15 @@ __webpack_require__.r(__webpack_exports__);
         confirm_password: null,
         role: 2,
         user_type: 'client',
-        reference: null
+        reference: null,
+        code: null
       },
       isRegister: false,
       saveError: null,
       mobile: window.screen.width <= 400,
       isLogin: false,
-      active: 'home'
+      active: 'home',
+      message: null
     };
   },
   watch: {
@@ -3392,9 +3433,21 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {},
   methods: {
     login: function login() {
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__.Inertia.post(this.$root.route + "/users/login", this.formloginData, {
-        onSuccess: function onSuccess(res) {},
-        orError: function orError(err) {}
+      var _this = this;
+
+      // Inertia.post(this.$root.route + "/users/login", this.formloginData,
+      // {
+      // 	onSuccess: (res) => {
+      // 	},
+      // 	orError: (err) => {
+      // 	}
+      // });
+      axios__WEBPACK_IMPORTED_MODULE_1___default().post(this.$root.route + "/users/login", this.formloginData).then(function (response) {
+        if (response.data.status == 422) {
+          _this.message = response.data.message;
+        } else {
+          location.reload();
+        }
       });
     },
     disableButton: function disableButton() {
@@ -3409,32 +3462,31 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     },
     register: function register() {
-      var _this = this;
+      var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_1___default().post(this.$root.route + "/users/create-client-account", this.formRegisterData).then(function (response) {
         if (response.data.status == 422) {
-          _this.saveError = response.data.errors;
+          _this2.saveError = response.data.errors;
         } else {
-          _this.formRegisterData = {
-            first_name: null,
-            middle_name: null,
-            last_name: null,
-            phone: null,
-            email: null,
-            password: null,
-            confirm_password: null,
-            role: 2,
-            user_type: 'client',
-            reference: null
-          };
-          alert("Account successfully created.");
-          _this.saveError = null;
-          _this.isRegister = false;
+          if (_this2.formRegisterData.code == null) {
+            _this2.openRegisterModal();
+          } else {
+            alert("Account successfully created.");
+            location.reload();
+          }
         }
       });
     },
     changeActive: function changeActive(arg) {
       this.active = arg;
+    },
+    openRegisterModal: function openRegisterModal() {
+      var modal = document.getElementById("registerModal");
+      modal.style.display = "block";
+    },
+    closeRegisterModal: function closeRegisterModal() {
+      var modal = document.getElementById("registerModal");
+      modal.style.display = "none";
     }
   }
 });
@@ -3511,6 +3563,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3526,7 +3592,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       form: {
         id: null,
-        name: null,
+        first_name: null,
+        middle_name: null,
+        last_name: null,
         phone: null,
         email: null,
         password: null,
@@ -3537,7 +3605,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.form.id = this.auth.id;
-    this.form.name = this.auth.name;
+    this.form.first_name = this.auth.first_name;
+    this.form.middle_name = this.auth.middle_name;
+    this.form.last_name = this.auth.last_name;
     this.form.phone = this.auth.phone;
     this.form.email = this.auth.email;
   },
@@ -4099,7 +4169,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      columns: ['Name', 'Email', 'Contact', 'User Type', 'Line #', 'Status'],
+      columns: ['Name', 'Email', 'Contact', 'User Type', 'Account #', 'Status'],
       keys: [{
         label: 'name'
       }, {
@@ -4187,7 +4257,8 @@ __webpack_require__.r(__webpack_exports__);
       axios__WEBPACK_IMPORTED_MODULE_3___default().post(this.$root.route + "/users/notify-maintenance", {}).then(function (response) {
         if (response.data.status == 422) {
           _this3.saveError = response.data.errors;
-        } else {// location.reload()
+        } else {
+          alert('Notify all client successfully'); // location.reload()
         }
       });
     }
@@ -4762,7 +4833,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.--panel[data-v-0004d9e0] {\r\n\tbackground-image: url('/images/bg.jpg');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100vw 100vh;\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tjustify-content: center;\n}\n.--banner[data-v-0004d9e0] {\r\n\tbackground-image: url('/images/banner.png');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100% 100%;\n}\n.--login__register[data-v-0004d9e0] {\r\n\twidth: 380px;\r\n\theight: auto;\r\n\tbackground: #607EAA;\r\n\tborder-radius: 10px;\r\n\tposition: relative;\n}\n.--login__register--input[data-v-0004d9e0] {\r\n\theight: 40px;\r\n\tborder-radius: 10px;\n}\n.--login__register--button[data-v-0004d9e0] {\r\n\theight: 40px;\r\n\tborder-radius: 30px;\r\n\tbackground: navy;\r\n\tcolor: white\n}\n.--xxs[data-v-0004d9e0] {\r\n\tfont-size: 11px;\r\n\tcolor: white;\n}\n.--home[data-v-0004d9e0] {\r\n\tbackground-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)), url('/images/meter1.png');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100vw 100vh;\n}\r\n\r\n\r\n\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.--panel[data-v-0004d9e0] {\r\n\tbackground-image: url('/images/bg.jpg');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100vw 100vh;\r\n\tdisplay: flex;\r\n\talign-items: center;\r\n\tjustify-content: center;\n}\n.--banner[data-v-0004d9e0] {\r\n\tbackground-image: url('/images/banner.png');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100% 100%;\n}\n.--login__register[data-v-0004d9e0] {\r\n\twidth: 380px;\r\n\theight: auto;\r\n\tbackground: #607EAA;\r\n\tborder-radius: 10px;\r\n\tposition: relative;\n}\n.--login__register--input[data-v-0004d9e0] {\r\n\theight: 40px;\r\n\tborder-radius: 10px;\n}\n.--login__register--button[data-v-0004d9e0] {\r\n\theight: 40px;\r\n\tborder-radius: 30px;\r\n\tbackground: navy;\r\n\tcolor: white\n}\n.--xxs[data-v-0004d9e0] {\r\n\tfont-size: 11px;\r\n\tcolor: white;\n}\n.--home[data-v-0004d9e0] {\r\n\tbackground-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)), url('/images/meter1.png');\r\n\tbackground-repeat: no-repeat;\r\n \tbackground-size: 100vw 100vh;\n}\n.registerModal[data-v-0004d9e0] {\r\n  display: none; /* Hidden by default */\r\n  position: fixed; /* Stay in place */\r\n  z-index: 1; /* Sit on top */\r\n  left: 0;\r\n  top: 40%;\r\n  width: 100%; /* Full width */\r\n  height: 100%; /* Full height */\r\n  overflow: auto; /* Enable scroll if needed */\n}\r\n/* Modal Content */\n.register-content[data-v-0004d9e0] {\r\n  background-color: #fefefe;\r\n  margin: auto;\r\n  padding: 20px;\r\n  border: 1px solid #888;\r\n  width: 80%;\n}\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -47695,7 +47766,7 @@ var render = function() {
                     ],
                     staticClass:
                       "w-full  my-2 --login__register--input text-center",
-                    attrs: { type: "text", placeholder: "Line #" },
+                    attrs: { type: "text", placeholder: "Account #" },
                     domProps: { value: _vm.form.reference },
                     on: {
                       input: function($event) {
@@ -48747,6 +48818,43 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
+                    _c("div", { staticClass: "mt-4" }, [
+                      _c("label", { attrs: { for: "address" } }, [
+                        _vm._v("Contant #:")
+                      ]),
+                      _c("br"),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form.phone,
+                            expression: "form.phone"
+                          }
+                        ],
+                        staticClass: "--input py-4",
+                        attrs: { type: "text", id: "address", name: "address" },
+                        domProps: { value: _vm.form.phone },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.form, "phone", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "text-xs text-red-500" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.validationError("address", _vm.saveError)
+                          ) + " "
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
                     _c("div", { staticClass: "mt-6" }, [
                       _c(
                         "button",
@@ -48848,6 +48956,86 @@ var render = function() {
                   _vm._m(3)
                 ]
               )
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "registerModal", attrs: { id: "registerModal" } },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "register-content flex flex-col",
+              staticStyle: { border: "2px solid navy" },
+              style: { width: _vm.mobile ? "80%" : "30%" }
+            },
+            [
+              _c("div", { staticClass: "w-full" }, [
+                _c("span", { staticClass: "text-sm font-bold" }, [
+                  _vm._v(
+                    "\n\t\t\t\t\t\tVERIFICATION CODE WAS SENT TO CONTACT NO. OF ACCOUNT #:" +
+                      _vm._s(_vm.formRegisterData.reference) +
+                      "\n\t\t\t\t\t"
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-full flex flex-col mt-4" }, [
+                _c("div", { staticClass: "w-full" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.formRegisterData.code,
+                        expression: "formRegisterData.code"
+                      }
+                    ],
+                    staticClass:
+                      "w-full  my-2 --login__register--input text-center",
+                    staticStyle: { border: "1px solid black" },
+                    attrs: { type: "text", placeholder: "Verification Code" },
+                    domProps: { value: _vm.formRegisterData.code },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.formRegisterData,
+                          "code",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "text-xs text-red-500" }, [
+                    _vm._v(
+                      _vm._s(_vm.validationError("code", _vm.saveError)) + " "
+                    )
+                  ]),
+                  _c("br")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-full flex flex-col mt-4" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "w-full --login__register--button",
+                    on: {
+                      click: function($event) {
+                        return _vm.register()
+                      }
+                    }
+                  },
+                  [_vm._v("\n\t\t\t\t\t\tProceed\n\t\t\t\t\t")]
+                )
+              ])
             ]
           )
         ]
@@ -49192,7 +49380,7 @@ var render = function() {
                     ],
                     staticClass:
                       "w-full  my-2 --login__register--input text-center",
-                    attrs: { type: "text", placeholder: "Reference" },
+                    attrs: { type: "text", placeholder: "Account #" },
                     domProps: { value: _vm.formRegisterData.reference },
                     on: {
                       input: function($event) {
@@ -49776,7 +49964,9 @@ var render = function() {
             },
             [
               _c("div", { staticClass: "px-5 py-3" }, [
-                _c("label", { attrs: { for: "name" } }, [_vm._v("Name:")]),
+                _c("label", { attrs: { for: "name" } }, [
+                  _vm._v("First Name:")
+                ]),
                 _c("br"),
                 _vm._v(" "),
                 _c("input", {
@@ -49784,26 +49974,97 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.form.name,
-                      expression: "form.name"
+                      value: _vm.form.first_name,
+                      expression: "form.first_name"
                     }
                   ],
                   staticClass: "--input py-1",
                   attrs: { type: "text" },
-                  domProps: { value: _vm.form.name },
+                  domProps: { value: _vm.form.first_name },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.form, "name", $event.target.value)
+                      _vm.$set(_vm.form, "first_name", $event.target.value)
                     }
                   }
                 }),
                 _vm._v(" "),
                 _c("span", { staticClass: "text-xs text-red-500" }, [
                   _vm._v(
-                    _vm._s(_vm.validationError("name", _vm.saveError)) + " "
+                    _vm._s(_vm.validationError("first_name", _vm.saveError)) +
+                      " "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "px-5 py-3" }, [
+                _c("label", { attrs: { for: "name" } }, [
+                  _vm._v("Middle Name:")
+                ]),
+                _c("br"),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.middle_name,
+                      expression: "form.middle_name"
+                    }
+                  ],
+                  staticClass: "--input py-1",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.form.middle_name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "middle_name", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-xs text-red-500" }, [
+                  _vm._v(
+                    _vm._s(_vm.validationError("middle_name", _vm.saveError)) +
+                      " "
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "px-5 py-3" }, [
+                _c("label", { attrs: { for: "name" } }, [_vm._v("Last Name:")]),
+                _c("br"),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.last_name,
+                      expression: "form.last_name"
+                    }
+                  ],
+                  staticClass: "--input py-1",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.form.last_name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "last_name", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "text-xs text-red-500" }, [
+                  _vm._v(
+                    _vm._s(_vm.validationError("last_name", _vm.saveError)) +
+                      " "
                   )
                 ])
               ]),

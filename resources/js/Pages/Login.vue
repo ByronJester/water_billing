@@ -29,6 +29,38 @@
 
 			</div>
 
+			<div id="registerModal" class="registerModal">
+				<!-- Modal content -->
+				<div class="register-content flex flex-col" style="border: 2px solid navy" :style="{'width' : mobile ? '80%' : '30%'}">
+					<div class="w-full">
+						<span class="text-sm font-bold">
+							VERIFICATION CODE WAS SENT TO CONTACT NO. OF ACCOUNT #:{{ formRegisterData.reference }}
+						</span>
+
+						<!-- <span class="float-right cursor-pointer"
+							@click="closeRegisterModal()"
+						>
+							<i class="fa-solid fa-xmark"></i>
+						</span> -->
+					</div>
+
+					<div class="w-full flex flex-col mt-4">
+						<div class="w-full">
+							<input type="text" class="w-full  my-2 --login__register--input text-center" style="border: 1px solid black"
+								placeholder="Verification Code" v-model="formRegisterData.code"
+							>
+							<span class="text-xs text-red-500">{{validationError('code', saveError)}} </span><br>
+						</div>
+					</div>
+
+					<div class="w-full flex flex-col mt-4">
+						<button class="w-full --login__register--button" @click="register()">
+							Proceed
+						</button>
+					</div>
+				</div>
+			</div>
+
 			<div class="w-screen h-screen --home flex justify-center items-center" id="home">
 
 				<div class="p-2" style="border: 2px solid black; border-radius: 5px; width: 500px" v-if="!isRegister">
@@ -303,7 +335,7 @@ import { Inertia } from '@inertiajs/inertia';
 import axios from "axios";
 
 export default {
-	props:['message'],
+	props:[],
 	data(){
 		return {
 			formloginData : {
@@ -320,13 +352,15 @@ export default {
 				confirm_password: null,
 				role: 2,
 				user_type: 'client',
-				reference: null
+				reference: null,
+				code: null
 			},
 			isRegister: false,
 			saveError: null,
 			mobile: window.screen.width <= 400,
 			isLogin: false,
-			active: 'home'
+			active: 'home',
+			message: null
 		}
 	},
 
@@ -343,13 +377,22 @@ export default {
 
 	methods: {
 		login() {
-			Inertia.post(this.$root.route + "/users/login", this.formloginData,
-			{
-				onSuccess: (res) => {
-				},
-				orError: (err) => {
-				}
-			});
+			// Inertia.post(this.$root.route + "/users/login", this.formloginData,
+			// {
+			// 	onSuccess: (res) => {
+			// 	},
+			// 	orError: (err) => {
+			// 	}
+			// });
+
+			axios.post(this.$root.route + "/users/login", this.formloginData)
+				.then(response => {
+					if(response.data.status == 422) {
+						this.message = response.data.message
+					} else {
+						location.reload()
+					}
+				})
 		},
 
 		disableButton(){
@@ -370,30 +413,29 @@ export default {
 					if(response.data.status == 422) {
 						this.saveError = response.data.errors 
 					} else {
-						this.formRegisterData = {
-							first_name: null,
-							middle_name: null,
-							last_name: null,
-							phone: null,
-							email: null,
-							password: null,
-							confirm_password: null,
-							role: 2,
-							user_type: 'client',
-							reference: null
+						
+						if(this.formRegisterData.code == null) {
+							this.openRegisterModal()
+						} else {
+							alert("Account successfully created.");
+
+							location.reload()
 						}
-
-						alert("Account successfully created.");
-
-						this.saveError = null
-
-						this.isRegister = false
 					}
 				})
 		},
 		changeActive(arg){
 			this.active = arg
-		}
+		},
+
+		openRegisterModal(){
+            var modal = document.getElementById("registerModal");
+            modal.style.display = "block";
+        },
+        closeRegisterModal(){
+            var modal = document.getElementById("registerModal");
+            modal.style.display = "none";
+        },
 	}
 }
 
@@ -446,6 +488,23 @@ export default {
  	background-size: 100vw 100vh;
 }
 
-
+.registerModal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 40%;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+}
+/* Modal Content */
+.register-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
 
 </style>

@@ -15,6 +15,7 @@ use App\Models\Verification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -316,8 +317,11 @@ class UserController extends Controller
         if($request->is_active) {
             $users = User::where('user_type', 'client')->get();
 
+            $now = Carbon::now();
+
             foreach($users as $user) {
-                $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  We will be experiencing server downtime on the (date) from (time) to (time) due to system maintenance. \r\n  Water Billing Management System will not be available during this time. \r\n We apologize for any inconvenience caused and thank you for continuous support. \r\n  For any inquiries, please contact 09566814383/09657657443.";
+                $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  We will be experiencing server downtime on the %s due to system maintenance. \r\n  Water Billing Management System will not be available during this time. \r\n We apologize for any inconvenience caused and thank you for continuous support. \r\n  For any inquiries, please contact 09566814383/09657657443.";
+                $message = sprintf($message, $now->isoFormat('LL'));
 
                 $this->sendSms($user->phone, $message);
             }
@@ -333,10 +337,14 @@ class UserController extends Controller
 
         $a = null;
 
-        foreach($users as $user) {
-            $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  Due to scheduled maintenance activity, Water Billing Management System will also not be available on (date). But our office is open everyday. \r\n  We apologize for any inconvenience caused and thank you for continuous support. \r\n  For any inquiries, please contact 09566814383/09657657443.";
+        $now = Carbon::now();
+        $now->addDays(1);
 
-            $a = $this->sendSms($user->phone, $message);
+        foreach($users as $user) {
+            $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  Due to scheduled maintenance activity, Water Billing Management System will also not be available on %s. But our office is open everyday. \r\n  We apologize for any inconvenience caused and thank you for continuous support. \r\n  For any inquiries, please contact 09566814383/09657657443.";
+            $message = sprintf($message, $now->isoFormat('LL'));
+
+            $a = $this->sendSms($user->phone, $message); 
         }
 
         return response()->json(['status' => 200, 'sms' => $a], 200);  

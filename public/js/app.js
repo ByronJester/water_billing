@@ -3768,7 +3768,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (arg == 'billing') {
         this.rows = this.options.clients;
-        this.columns = ['Name', 'Line #', 'Amount to Pay', 'Penalty', 'Due Date'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
         this.keys = [{
           label: 'name'
         }, {
@@ -3784,7 +3784,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (arg == 'payment') {
         this.rows = this.options.clients;
-        this.columns = ['Name', 'Line #', 'Amount to Pay', 'Status', 'Payment Date'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'];
         this.keys = [{
           label: 'name'
         }, {
@@ -3802,7 +3802,7 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Line #', 'Address'];
+        this.columns = ['Name', 'Account #', 'Address'];
         this.keys = [{
           label: 'name'
         }, {
@@ -3816,7 +3816,7 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !x.is_active;
         });
-        this.columns = ['Name', 'Line #', 'Address'];
+        this.columns = ['Name', 'Account #', 'Address'];
         this.keys = [{
           label: 'name'
         }, {
@@ -47962,7 +47962,7 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("p", { staticClass: "mt-2 text-lg" }, [
-                            _c("b", [_vm._v("Line #:")])
+                            _c("b", [_vm._v("Account #:")])
                           ]),
                           _vm._v(" "),
                           _c("p", { staticClass: "mt-1 text-lg" }, [

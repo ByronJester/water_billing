@@ -126,7 +126,7 @@ export default {
                 this.rows = this.options.clients
 
                 this.columns = [
-                    'Name', 'Line #', 'Amount to Pay', 'Penalty', 'Due Date'
+                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'
                 ]
 
                 this.keys = [
@@ -152,7 +152,7 @@ export default {
                 this.rows = this.options.clients
 
                 this.columns = [
-                    'Name', 'Line #', 'Amount to Pay', 'Status', 'Payment Date'
+                    'Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'
                 ]
 
                 this.keys = [
@@ -178,7 +178,7 @@ export default {
                 this.rows = this.options.clients.filter( x => {return !!x.is_active})
                 
                 this.columns = [
-                    'Name', 'Line #', 'Address'
+                    'Name', 'Account #', 'Address'
                 ]
 
                 this.keys = [
@@ -198,7 +198,7 @@ export default {
                 this.rows = this.options.clients.filter( x => { return!x.is_active})
                 
                 this.columns = [
-                    'Name', 'Line #', 'Address'
+                    'Name', 'Account #', 'Address'
                 ]
 
                 this.keys = [

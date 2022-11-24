@@ -78,7 +78,7 @@
                             </p>
 
                             <p class="mt-2 text-lg">
-                                <b>Line #:</b>
+                                <b>Account #:</b>
                             </p>
 
                             <p class="mt-1 text-lg">

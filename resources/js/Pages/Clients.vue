@@ -111,7 +111,7 @@
                         <div class="w-full mt-4 inline-flex justify-center">
                             <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #0288D1"
                                 @click="viewClient(client.reference)" class="mr-1"
-                                v-if="activeTab == 'clients'"
+                                v-if="activeTab == 'billing'"
                             >
                                 VIEW
                             </button>
@@ -174,7 +174,7 @@
                         <div class="mt-4">
                             <label for="address">Contant #:</label><br>
                             <input type="text" id="address" name="address" class="--input py-4" v-model="form.phone">
-                            <span class="text-xs text-red-500">{{validationError('address', saveError)}} </span>
+                            <span class="text-xs text-red-500">{{validationError('phone', saveError)}} </span>
                         </div>
 
                         <div class="mt-6">

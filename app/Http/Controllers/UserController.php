@@ -55,8 +55,8 @@ class UserController extends Controller
     public function saveClientUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => "required|string",
-            'last_name' => "required|string",
+            'first_name' => "required|alpha_spaces",
+            'last_name' => "required|alpha_spaces",
             'phone' => "required|numeric|unique:users,phone",
             'email' => "required|unique:users,email|email:rfc,dns", 
             'user_type' => "required",
@@ -114,8 +114,8 @@ class UserController extends Controller
     public function saveUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => "required|string",
-            'last_name' => "required|string",
+            'first_name' => "required|alpha_spaces",
+            'last_name' => "required|alpha_spaces",
             'phone' => "required|numeric|unique:users,phone",
             'email' => "required|unique:users,email|email:rfc,dns", 
             'user_type' => "required",
@@ -247,9 +247,8 @@ class UserController extends Controller
     public function editProfile(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => "required|string",
-            'middle_name' => "required|string",
-            'last_name' => "required|string",
+            'first_name' => "required|string|alpha_spaces",
+            'last_name' => "required|string|alpha_spaces",
             'phone' => "required|numeric|unique:users,phone," . $request->id,
             'email' => "required|email:rfc,dns|unique:users,email," . $request->id, 
             'password' => "sometimes|required|min:8",
@@ -282,7 +281,7 @@ class UserController extends Controller
                 'auth'    => $auth,
                 'options' => [
                     'ir' => ClientUtility::get(),
-                    'clients' => Client::get()
+                    'clients' => Client::where('is_active', true)->get()
                 ]
             ]);
         }
@@ -321,6 +320,17 @@ class UserController extends Controller
 
             foreach($users as $user) {
                 $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  We will be experiencing server downtime on the %s due to system maintenance. \r\n  Water Billing Management System will not be available during this time. \r\n We apologize for any inconvenience caused and thank you for continuous support. \r\n  For any inquiries, please contact 09566814383/09657657443.";
+                $message = sprintf($message, $now->isoFormat('LL'));
+
+                $this->sendSms($user->phone, $message);
+            }
+        } else {
+            $users = User::where('user_type', 'client')->get();
+
+            $now = Carbon::now();
+
+            foreach($users as $user) {
+                $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  We will be resuming normal hours starting today. You can now access our website https://water-billing-6mb6.onrender.com  \r\n  Thank you for understanding. \r\n  For any inquiries, please contact 09566814383/09657657443.";
                 $message = sprintf($message, $now->isoFormat('LL'));
 
                 $this->sendSms($user->phone, $message);

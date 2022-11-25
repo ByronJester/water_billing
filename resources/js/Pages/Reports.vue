@@ -49,7 +49,11 @@
             >
                 <section slot="pdf-content">
                     <div class="w-full p-5">
-                        <table class="w-full">
+                        <div class="w-full text-lg font-bold">
+                            {{ getReportLabel(activeTab) }}
+                        </div>
+
+                        <table class="w-full mt-2">
                             <tr class="text-center">
                                 <th v-for="column in columns" :key="column">
                                     {{ column }}
@@ -244,6 +248,28 @@ export default {
     methods: {
         printReport(){
             this.$refs.report.generatePdf()
+        },
+        
+        getReportLabel(arg){
+            if(arg == 'ir') {
+                return 'Incident Report'
+            }
+
+            if(arg == 'billing') {
+                return 'Billing Report'
+            }
+
+            if(arg == 'payment') {
+                return 'Payment Report'
+            }
+
+            if(arg == 'reconnection') {
+                return 'Activated Connection Report'
+            }
+
+            if(arg == 'deactivation') {
+                return 'Deactivated Connection Report'
+            }
         }
     }
 }

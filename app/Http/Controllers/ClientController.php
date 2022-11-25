@@ -69,8 +69,8 @@ class ClientController extends Controller
     public function saveClient(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => "required|string",
-            'last_name' => "required|string",
+            'first_name' => "required|alpha_spaces",
+            'last_name' => "required|alpha_spaces",
             'address' => "required|string",
             'phone' => "required|numeric|digits:11"
         ]);

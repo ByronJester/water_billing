@@ -19,7 +19,7 @@ class CreateClientsTable extends Migration
             $table->string('middle_name')->nullable();
             $table->string('last_name');
             $table->string('address');
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->string('reference');
             $table->double('penalty', 8, 2)->default(0);
             $table->date('payment_date')->nullable();

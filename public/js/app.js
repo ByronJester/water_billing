@@ -3742,6 +3742,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -3859,6 +3863,27 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     printReport: function printReport() {
       this.$refs.report.generatePdf();
+    },
+    getReportLabel: function getReportLabel(arg) {
+      if (arg == 'ir') {
+        return 'Incident Report';
+      }
+
+      if (arg == 'billing') {
+        return 'Billing Report';
+      }
+
+      if (arg == 'payment') {
+        return 'Payment Report';
+      }
+
+      if (arg == 'reconnection') {
+        return 'Activated Connection Report';
+      }
+
+      if (arg == 'deactivation') {
+        return 'Deactivated Connection Report';
+      }
     }
   }
 });
@@ -48549,7 +48574,7 @@ var render = function() {
                       "div",
                       { staticClass: "w-full mt-4 inline-flex justify-center" },
                       [
-                        _vm.activeTab == "clients"
+                        _vm.activeTab == "billing"
                           ? _c(
                               "button",
                               {
@@ -48848,9 +48873,8 @@ var render = function() {
                       _vm._v(" "),
                       _c("span", { staticClass: "text-xs text-red-500" }, [
                         _vm._v(
-                          _vm._s(
-                            _vm.validationError("address", _vm.saveError)
-                          ) + " "
+                          _vm._s(_vm.validationError("phone", _vm.saveError)) +
+                            " "
                         )
                       ])
                     ]),
@@ -50408,9 +50432,17 @@ var render = function() {
               { attrs: { slot: "pdf-content" }, slot: "pdf-content" },
               [
                 _c("div", { staticClass: "w-full p-5" }, [
+                  _c("div", { staticClass: "w-full text-lg font-bold" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.getReportLabel(_vm.activeTab)) +
+                        "\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "table",
-                    { staticClass: "w-full" },
+                    { staticClass: "w-full mt-2" },
                     [
                       _c(
                         "tr",

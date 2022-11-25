@@ -172,7 +172,7 @@
                         </div>
 
                         <div class="mt-4">
-                            <label for="address">Contant #:</label><br>
+                            <label for="address">Contact #:</label><br>
                             <input type="text" id="address" name="address" class="--input py-4" v-model="form.phone">
                             <span class="text-xs text-red-500">{{validationError('phone', saveError)}} </span>
                         </div>

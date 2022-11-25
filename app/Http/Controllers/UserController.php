@@ -56,6 +56,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'first_name' => "required|alpha_spaces",
+            'middle_name' => "nullable|alpha_spaces",
             'last_name' => "required|alpha_spaces",
             'phone' => "required|numeric|unique:users,phone",
             'email' => "required|unique:users,email|email:rfc,dns", 
@@ -115,6 +116,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'first_name' => "required|alpha_spaces",
+            'middle_name' => "nullable|alpha_spaces",
             'last_name' => "required|alpha_spaces",
             'phone' => "required|numeric|unique:users,phone",
             'email' => "required|unique:users,email|email:rfc,dns", 
@@ -247,8 +249,9 @@ class UserController extends Controller
     public function editProfile(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'first_name' => "required|string|alpha_spaces",
-            'last_name' => "required|string|alpha_spaces",
+            'first_name' => "required|alpha_spaces",
+            'middle_name' => "nullable|alpha_spaces",
+            'last_name' => "required|alpha_spaces",
             'phone' => "required|numeric|unique:users,phone," . $request->id,
             'email' => "required|email:rfc,dns|unique:users,email," . $request->id, 
             'password' => "sometimes|required|min:8",

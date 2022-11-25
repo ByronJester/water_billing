@@ -70,9 +70,10 @@ class ClientController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'first_name' => "required|alpha_spaces",
+            'middle_name' => "nullable|alpha_spaces",
             'last_name' => "required|alpha_spaces",
             'address' => "required|string",
-            'phone' => "required|numeric|digits:11"
+            'phone' => "required|numeric|digits:11|unique:clients,phone,"
         ]);
 
         if ($validator->fails()) {

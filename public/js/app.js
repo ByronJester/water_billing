@@ -2962,11 +2962,13 @@ __webpack_require__.r(__webpack_exports__);
     client: function client(arg) {},
     activeTab: function activeTab(arg) {
       if (arg == 'clients') {
-        this.columns = ['Name', 'Address', 'Account #'];
+        this.columns = ['Name', 'Address', 'Contact #', 'Account #'];
         this.keys = [{
           label: 'name'
         }, {
           label: 'address'
+        }, {
+          label: 'phone'
         }, {
           label: 'reference'
         }];

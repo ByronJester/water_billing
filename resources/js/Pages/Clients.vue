@@ -256,7 +256,7 @@ export default {
         activeTab(arg){
             if(arg == 'clients') {
                 this.columns = [
-                    'Name', 'Address', 'Account #'
+                    'Name', 'Address', 'Contact #', 'Account #'
                 ]
 
                 this.keys = [
@@ -265,6 +265,9 @@ export default {
                     },
                     {
                         label: 'address',
+                    },
+                     {
+                        label: 'phone',
                     },
                     {
                         label: 'reference',

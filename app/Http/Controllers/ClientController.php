@@ -68,13 +68,24 @@ class ClientController extends Controller
 
     public function saveClient(Request $request)
     {
+        $clients = CLient::get();
+
         $validator = Validator::make($request->all(), [
             'first_name' => "required|alpha_spaces",
             'middle_name' => "nullable|alpha_spaces",
             'last_name' => "required|alpha_spaces",
-            'address' => "required|string",
-            'phone' => "required|numeric|digits:11|unique:clients,phone,"
+            'address' => "required|string"
         ]);
+
+        if(count($clients) > 0) {
+            $validator = Validator::make($request->all(), [
+                'first_name' => "required|alpha_spaces",
+                'middle_name' => "nullable|alpha_spaces",
+                'last_name' => "required|alpha_spaces",
+                'address' => "required|string",
+                'phone' => "required|numeric|digits:11|unique:clients,phone,"
+            ]);
+        }
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);

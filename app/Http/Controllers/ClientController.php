@@ -84,7 +84,7 @@ class ClientController extends Controller
         
         $data['reference'] = strtoupper(Str::random(8));
 
-        $saveClient = Client::create($data);
+        $saveClient = Client::forceCreate($data);
         
         return response()->json(['status' => 200], 200);  
     }

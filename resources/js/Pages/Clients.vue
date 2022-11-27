@@ -422,10 +422,13 @@ export default {
 					if(response.data.status == 422) {
 						this.saveError = response.data.errors 
 					} else {
-						this.form = {
-							name: null,
-							address: null
-						}
+						 this.form = {
+                            first_name: null,
+                            middle_name: null,
+                            last_name: null,
+                            address: null,
+                            phone: null
+                        }
 
 						alert("New connection successfully created.");
 

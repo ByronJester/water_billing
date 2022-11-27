@@ -3132,8 +3132,11 @@ __webpack_require__.r(__webpack_exports__);
           _this.saveError = response.data.errors;
         } else {
           _this.form = {
-            name: null,
-            address: null
+            first_name: null,
+            middle_name: null,
+            last_name: null,
+            address: null,
+            phone: null
           };
           alert("New connection successfully created.");
           _this.saveError = null;

@@ -34,6 +34,6 @@ class WaterBill extends Model
     {
         $date = Carbon::parse($this->created_at);
 
-        return $date->isoFormat('LL');  
+        return $date->isoFormat('LLL');  
     }
 }

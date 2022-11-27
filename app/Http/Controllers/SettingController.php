@@ -33,8 +33,7 @@ class SettingController extends Controller
     public function saveBill(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'amount' => "required|numeric|min:1",
-            'date' => "required",
+            'amount' => "required|numeric|min:1"
         ]);
 
         if ($validator->fails()) {

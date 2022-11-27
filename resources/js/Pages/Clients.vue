@@ -4,12 +4,6 @@
             <div class="w-full h-full mt-5 flex flex-row">
 
                 <div class="mx-2" :style="{'width': activeTab == 'clients' ? '80%' : '100%'}">
-                    <!-- <div class="w-full">
-                        <span class="text-2xl ml-2 font-bold float-right mb-2 cursor-pointer">
-                            <i class="fa-sharp fa-solid fa-globe"></i>
-                        </span>
-                    </div> -->
-
                     <div class="w-full flex flex-row mb-3 font-bold" style="height: 50px; border-bottom: 1px solid black">
                         <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'dashboard'" :class="{'bg-blue-300': activeTab == 'dashboard' }">
                             DASHBOARD
@@ -184,9 +178,91 @@
                         </div>
                         
                     </div>
-                </div>
-                
+                </div>   
             </div>
+
+            <VueHtml2pdf
+                :show-layout="false"
+                :float-layout="true"
+                :enable-download="true"
+                :preview-modal="true"
+                :paginate-elements-by-height="2000"
+                :filename="Math.random().toString(36).slice(2)"
+                :pdf-quality="2"
+                :manual-pagination="false"
+                pdf-format="a4"
+                pdf-orientation="landscape"
+                pdf-content-width="100%"
+                @hasDownloaded="hasDownloaded($event)"
+                ref="or"
+            >
+                <section slot="pdf-content">
+                    <div class="flex flex-col p-4 w-full h-screen">
+                        <div class="w-full flex flex-col" v-if="!!client">
+                            <div class="w-full text-center text-xl">
+                                WATER BILLING MANAGEMENT SYSTEM
+                            </div>
+
+                            <div class="w-full text-center font-bold text-lg">
+                                OFFICIAL WATER RECEIPT
+                            </div>
+
+                            <div class="w-full text-md font-bold mt-10">
+                                {{ client.name }}
+                            </div>
+
+                            <div class="w-full text-md">
+                                <b>ACCOUNT #:</b> {{ client.reference }}
+                            </div>
+
+                            <div class="w-full text-md">
+                                <b>BILLING PERIOD:</b> {{ client.due_date }}
+                            </div>
+
+                            <div class="w-full">
+                                <span class="float-left ml-20">
+                                    Total Cubic Meter Consumed
+                                </span>
+
+                                <span class="float-right mr-5">
+                                    {{client.cubic_meter_consumed }}
+                                </span>
+                            </div>
+
+                            <div class="w-full">
+                                <span class="float-left ml-20">
+                                    Service Charge
+                                </span>
+
+                                <span class="float-right mr-5">
+                                    {{client.other_fee }}
+                                </span>
+                            </div>
+
+                            <div class="w-full">
+                                <span class="float-left ml-20">
+                                    Penalty
+                                </span>
+
+                                <span class="float-right mr-5">
+                                    {{ client.penalty }}
+                                </span>
+                            </div>
+
+                            <div class="w-full">
+                                <span class="float-left font-bold">
+                                    TOTAL AMOUNT DUE:
+                                </span>
+
+                                <span class="float-right mr-5">
+                                    ₱ {{ parseFloat(client.amount_to_pay).toFixed() }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </VueHtml2pdf>
+
         </div>
     </Navigation>
     
@@ -198,13 +274,15 @@ import Table from "../Components/Table";
 import { Inertia } from '@inertiajs/inertia';
 import axios from "axios";
 import Toggle from '../Components/Toggle.vue';
+import VueHtml2pdf from 'vue-html2pdf';
 
 export default {
     props: ['auth', 'options'],
     components: {
         Navigation,
         Table,
-        Toggle
+        Toggle,
+        VueHtml2pdf
     },
     data(){
         return {
@@ -371,7 +449,9 @@ export default {
             axios.post(this.$root.route + "/clients/client/mark-as-paid", {id : client_id})
 				.then(response => {
                     alert("Succesfully mark as paid.");
-					location.reload()
+					// location.reload()
+
+                    this.$refs.or.generatePdf()
 				})
         },
 
@@ -389,6 +469,10 @@ export default {
                     onSuccess: () => { },
                 },
             );
+        },
+
+        hasDownloaded(evt) {
+            location.reload()
         }
     }
 }

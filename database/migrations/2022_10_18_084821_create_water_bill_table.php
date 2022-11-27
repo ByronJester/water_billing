@@ -17,7 +17,6 @@ class CreateWaterBillTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
             $table->double('amount', 8, 2);
-            $table->date('date');
             
             $table->foreign('user_id')->references('id')->on('users');
             $table->softDeletes();

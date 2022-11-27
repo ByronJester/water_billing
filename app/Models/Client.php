@@ -28,7 +28,8 @@ class Client extends Model
         'due_date',
         'status',
         'other_fee',
-        'total'
+        'total',
+        'cubic_meter_consumed'
     ];
 
     public function getNameAttribute()
@@ -46,6 +47,18 @@ class Client extends Model
 
         if(count($payments) > 0) {
             return $payments->sum('amount');
+        }
+
+        return 0;
+        
+    }
+
+    public function getCubicMeterConsumedAttribute()
+    {
+        $payments = ClientPayment::where('client_id', $this->id)->where('status', 'unpaid')->get();
+
+        if(count($payments) > 0) {
+            return $payments->sum('consumed_cubic_meter');
         }
 
         return 0;

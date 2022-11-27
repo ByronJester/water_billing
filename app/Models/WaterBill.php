@@ -12,12 +12,12 @@ class WaterBill extends Model
 
     protected $fillable = [
         'user_id',
-        'amount',
-        'date'
+        'amount'
     ];
 
     protected $appends = [
-        'personnel'
+        'personnel',
+        'date'
     ];
 
     public function user()
@@ -30,9 +30,9 @@ class WaterBill extends Model
         return $this->user->name;
     }
 
-    public function getDateAttribute($value)
+    public function getDateAttribute()
     {
-        $date = Carbon::parse($value);
+        $date = Carbon::parse($this->created_at);
 
         return $date->isoFormat('LL');  
     }

@@ -31,12 +31,6 @@
                             <span class="text-xs text-red-500">{{validationError('amount', saveError)}} </span>
                         </div>
 
-                        <div class="mt-4">
-                            <label for="address">Date:</label><br>
-                            <input type="date" class="--input py-4" v-model="form.date">
-                            <span class="text-xs text-red-500">{{validationError('date', saveError)}} </span>
-                        </div>
-
                         <div class="mt-6">
                             <button class="--btn py-2" @click="createBill()">
                                 Submit
@@ -84,8 +78,7 @@ export default {
             bills: [],
             bill: null,
             form: {
-                amount: 0,
-                date: null
+                amount: 0
             },
             saveError: null
         }

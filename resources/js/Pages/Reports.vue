@@ -49,11 +49,15 @@
             >
                 <section slot="pdf-content">
                     <div class="w-full p-5">
-                        <div class="w-full text-lg font-bold">
+                        <div class="w-full text-xl text-center">
+                            WATER BILLING MANAGEMENT SYSTEM
+                        </div>
+
+                        <div class="w-full text-lg font-bold text-center mt-6">
                             {{ getReportLabel(activeTab) }}
                         </div>
 
-                        <table class="w-full mt-2">
+                        <table class="w-full mt-4">
                             <tr class="text-center">
                                 <th v-for="column in columns" :key="column">
                                     {{ column }}
@@ -252,23 +256,23 @@ export default {
         
         getReportLabel(arg){
             if(arg == 'ir') {
-                return 'Incident Report'
+                return 'INCIDENT REPORT'
             }
 
             if(arg == 'billing') {
-                return 'Billing Report'
+                return 'BILLING REPORT'
             }
 
             if(arg == 'payment') {
-                return 'Payment Report'
+                return 'PAYMENT REPORT'
             }
 
             if(arg == 'reconnection') {
-                return 'Activated Connection Report'
+                return 'ACTIVATED CONNECTION REPORT'
             }
 
             if(arg == 'deactivation') {
-                return 'Deactivated Connection Report'
+                return 'DEACTIVATED CONNECTION REPORT'
             }
         }
     }

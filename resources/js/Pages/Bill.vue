@@ -51,7 +51,7 @@
                 :manual-pagination="false"
                 pdf-format="a6"
                 pdf-orientation="portrait"
-                pdf-content-width="100vw"
+                pdf-content-width="100%"
                 ref="receipt"
             >
                 <section slot="pdf-content">
@@ -60,55 +60,85 @@
                             Water Billing System
                         </div>
 
-                        <div class="w-full mt-4">
-                            <p class="mt-2 text-lg">
-                                <b>Name:</b>
-                            </p>
+                        <div class="w-full flex flex-col mt-4">
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Name:</b>
+                                </span>
 
-                            <p class="mt-1 text-lg" id="name">
-                            </p>
+                                <span class="float-right mr-2" id="name">
 
-                            <p class="mt-2 text-lg">
-                                <b>Address:</b>
-                            </p>
+                                </span>
+                            </div>
 
-                            <p class="mt-1 text-lg" id="address">
-                            </p>
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Address:</b>
+                                </span>
 
-                            <p class="mt-2 text-lg">
-                                <b>Account #:</b>
-                            </p>
+                                <span class="float-right mr-2" id="address">
 
-                            <p class="mt-1 text-lg" id="reference">
-                            </p>
+                                </span>
+                            </div>
 
-                            <p class="mt-2 text-lg">
-                                <b>Due Date:</b>
-                            </p>
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Account #:</b>
+                                </span>
 
-                            <p class="mt-1 text-lg" id="date">
-                            </p>
+                                <span class="float-right mr-2" id="reference">
 
-                            <p class="mt-2 text-lg">
-                                <b>Bill:</b>
-                            </p>
+                                </span>
+                            </div>
 
-                            <p class="mt-1 text-lg" id="amount">
-                            </p>
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Due Date: </b>
+                                </span>
 
-                            <p class="mt-2 text-lg">
-                                <b>Penalty:</b>
-                            </p>
+                                <span class="float-right mr-2" id="date">
 
-                            <p class="mt-1 text-lg" id="penalty">
-                            </p>
+                                </span>
+                            </div>
 
-                            <p class="mt-2 text-lg">
-                                <b>Total Bill:</b>
-                            </p>
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Bill: </b>
+                                </span>
 
-                            <p class="mt-1 text-lg" id="total">
-                            </p>
+                                <span class="float-right mr-2" id="amount">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Penalty: </b>
+                                </span>
+
+                                <span class="float-right mr-2" id="penalty">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Total Bill: </b>
+                                </span>
+
+                                <span class="float-right mr-2" id="total">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-md w-full">
+                                You may check your bill online @https://water-billing-6mb6.onrender.com
+                            </div>
+
+                            <div class="mt-2 text-md w-full">
+                                For any inquiries, please contact 09566814383/09657657443
+                            </div>
+
                         </div>
                     </div>
                 </section>

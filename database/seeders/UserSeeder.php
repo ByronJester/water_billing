@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\UserPlace;
 use App\Models\Maintenance;
+use App\Models\WaterBill;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -41,6 +42,11 @@ class UserSeeder extends Seeder
 
         Maintenance::create([
             'is_active' => false
+        ]);
+
+        WaterBill::create([
+            'user_id' => 1,
+            'amount' => 10
         ]);
     }
 }

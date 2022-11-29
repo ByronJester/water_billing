@@ -143,13 +143,13 @@
                     >
                         <div>
                             <label for="name">First Name:</label><br>
-                            <input type="text" id="name" name="name" class="--input py-4" v-model="form.first_name">
+                            <input type="text" id="name" name="name" class="--input py-4" v-model="form.first_name" style="text-transform: capitalize;">
                             <span class="text-xs text-red-500">{{validationError('first_name', saveError)}} </span>
                         </div>
 
                         <div>
                             <label for="name">Middle Name:</label><br>
-                            <input type="text" id="name" name="name" class="--input py-4" v-model="form.middle_name">
+                            <input type="text" id="name" name="name" class="--input py-4" v-model="form.middle_name" style="text-transform: capitalize;">
                             <span class="text-xs text-red-500">{{validationError('middle_name', saveError)}} </span>
                         </div>
 
@@ -161,7 +161,7 @@
 
                         <div class="mt-4">
                             <label for="address">Address:</label><br>
-                            <input type="text" id="address" name="address" class="--input py-4" v-model="form.address">
+                            <input type="text" id="address" name="address" class="--input py-4" v-model="form.address" style="text-transform: capitalize;">
                             <span class="text-xs text-red-500">{{validationError('address', saveError)}} </span>
                         </div>
 
@@ -199,65 +199,104 @@
                 <section slot="pdf-content">
                     <div class="flex flex-col p-4 w-full h-screen">
                         <div class="w-full flex flex-col" v-if="!!client">
-                            <div class="w-full text-center text-xl">
+                            <div class="w-full text-center text-xl pt-4 pb-10" style="border-bottom: dashed black;">
                                 WATER BILLING MANAGEMENT SYSTEM
                             </div>
 
-                            <div class="w-full text-center font-bold text-lg">
+                            <div class="w-full text-center font-bold text-lg my-5">
                                 OFFICIAL WATER RECEIPT
                             </div>
 
-                            <div class="w-full text-md font-bold mt-10">
-                                {{ client.name }}
-                            </div>
-
-                            <div class="w-full text-md">
-                                <b>ACCOUNT #:</b> {{ client.reference }}
-                            </div>
-
-                            <div class="w-full text-md">
-                                <b>BILLING PERIOD:</b> {{ client.due_date }}
-                            </div>
 
                             <div class="w-full">
-                                <span class="float-left ml-20">
-                                    Total Cubic Meter Consumed
+                                <span class="float-left ml-5">
+                                    Account No.
                                 </span>
 
                                 <span class="float-right mr-5">
-                                    {{client.cubic_meter_consumed }}
+                                    {{client.reference }}
                                 </span>
                             </div>
 
                             <div class="w-full">
-                                <span class="float-left ml-20">
+                                <span class="float-left ml-5">
+                                    Name
+                                </span>
+
+                                <span class="float-right mr-5">
+                                    {{client.name }}
+                                </span>
+                            </div>
+
+                            <div class="w-full">
+                                <span class="float-left ml-5">
+                                    Due Date
+                                </span>
+
+                                <span class="float-right mr-5">
+                                    {{client.due_date }}
+                                </span>
+                            </div>
+
+                            <div class="w-full">
+                                <span class="float-left ml-5">
+                                    Consumption
+                                </span>
+
+                                <span class="float-right mr-5">
+                                    {{client.cubic_meter_consumed }} Cubic Meter
+                                </span>
+                            </div>
+
+                            <div class="w-full">
+                                <span class="float-left ml-5">
                                     Service Charge
                                 </span>
 
                                 <span class="float-right mr-5">
-                                    {{client.other_fee }}
+                                    {{ parseFloat(client.other_fee).toFixed(2) }}
                                 </span>
                             </div>
 
                             <div class="w-full">
-                                <span class="float-left ml-20">
+                                <span class="float-left ml-5">
                                     Penalty
                                 </span>
 
                                 <span class="float-right mr-5">
-                                    {{ client.penalty }}
+                                    {{ parseFloat(client.penalty).toFixed(2) }}
                                 </span>
                             </div>
 
                             <div class="w-full">
-                                <span class="float-left font-bold">
-                                    TOTAL AMOUNT DUE:
+                                <span class="float-left ml-5">
+                                    Water Bill
                                 </span>
 
                                 <span class="float-right mr-5">
-                                    ₱ {{ parseFloat(client.amount_to_pay).toFixed() }}
+                                    {{ parseFloat(client.amount_to_pay).toFixed(2) }}
                                 </span>
                             </div>
+
+                            <div class="w-full py-10 my-5" style="border-bottom: dashed black; border-top: dashed black">
+                                <span class="float-left ml-5">
+                                    Total Bill
+                                </span>
+
+                                <span class="float-right mr-5">
+                                    {{ parseFloat(client.total).toFixed(2) }}
+                                </span>
+                            </div>
+
+                            <div class="w-full">
+                                <p>
+                                    You may check your bill online @ water-billing-6mb6.onrender.com <br>
+                                    For any inquiries, please contact <br>
+                                    09566814383/09657657443 <br>
+                                </p>
+                            </div>
+
+   
                         </div>
                     </div>
                 </section>
@@ -422,7 +461,7 @@ export default {
 					if(response.data.status == 422) {
 						this.saveError = response.data.errors 
 					} else {
-						 this.form = {
+						this.form = {
                             first_name: null,
                             middle_name: null,
                             last_name: null,

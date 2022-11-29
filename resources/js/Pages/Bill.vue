@@ -45,7 +45,7 @@
                 :float-layout="true"
                 :enable-download="true"
                 :preview-modal="true"
-                :paginate-elements-by-height="1000"
+                :paginate-elements-by-height="2000"
                 :filename="Math.random().toString(36).slice(2)"
                 :pdf-quality="2"
                 :manual-pagination="false"
@@ -55,12 +55,16 @@
                 ref="receipt"
             >
                 <section slot="pdf-content">
-                    <div class="flex flex-col p-4 w-full h-screen">
+                    <div class="flex flex-col p-2 w-full h-screen">
                         <div class="w-full text-center text-xl mt-2 font-bold">
-                            Water Billing System
+                           Billing Notice
                         </div>
 
-                        <div class="w-full flex flex-col mt-4">
+                        <div class="w-full text-center text-xl mt-2 font-bold inline-flex">
+                           FOR THE MONTH OF <span id="month" class="mx-1"></span> <span id="year"></span>
+                        </div>
+
+                        <div class="w-full flex flex-col mt-3">
                             <div class="mt-2 text-lg w-full">
                                 <span class="float-left">
                                     <b>Name:</b>
@@ -76,12 +80,12 @@
                                     <b>Address:</b>
                                 </span>
 
-                                <span class="float-right mr-2" id="address">
+                                <span class="float-right mr-1 text-md" id="address">
 
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full">
+                            <div class="mt-2 text-lg w-full mb-1 pb-1" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Account #:</b>
                                 </span>
@@ -93,27 +97,37 @@
 
                             <div class="mt-2 text-lg w-full">
                                 <span class="float-left">
-                                    <b>Due Date: </b>
+                                    <b>Previous Reading:</b>
                                 </span>
 
-                                <span class="float-right mr-2" id="date">
-
-                                </span>
-                            </div>
-
-                            <div class="mt-2 text-lg w-full">
-                                <span class="float-left">
-                                    <b>Bill: </b>
-                                </span>
-
-                                <span class="float-right mr-2" id="amount">
+                                <span class="float-right mr-2" id="prev">
 
                                 </span>
                             </div>
 
                             <div class="mt-2 text-lg w-full">
                                 <span class="float-left">
-                                    <b>Penalty: </b>
+                                    <b>Present Reading:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="pres">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Consumption:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="consumption">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Penalty(10%):</b>
                                 </span>
 
                                 <span class="float-right mr-2" id="penalty">
@@ -123,12 +137,56 @@
 
                             <div class="mt-2 text-lg w-full">
                                 <span class="float-left">
+                                    <b>Unpaid Month:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="count">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full mb-1 pb-1" style="border-bottom: dashed black;">
+                                <span class="float-left">
+                                    <b>Due Date: </b>
+                                </span>
+
+                                <span class="float-right mr-2" id="due_date">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full mb-1 pb-1" style="border-bottom: dashed black;">
+                                <span class="float-left">
                                     <b>Total Bill: </b>
                                 </span>
 
                                 <span class="float-right mr-2" id="total">
 
                                 </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Meter Reader Name: </b>
+                                </span>
+
+                                <span class="float-right mr-2" id="reader">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full mb-1 pb-1" style="border-bottom: dashed black;">
+                                <span class="float-left">
+                                    <b>Date Read: </b>
+                                </span>
+
+                                <span class="float-right mr-2" id="date">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-md w-full font-bold" id="message">
+
                             </div>
 
                             <div class="mt-2 text-md w-full">
@@ -138,6 +196,7 @@
                             <div class="mt-2 text-md w-full">
                                 For any inquiries, please contact 09566814383/09657657443
                             </div>
+
 
                         </div>
                     </div>
@@ -167,15 +226,7 @@ export default {
                 date: null
             },
             saveError: null,
-            clientData: {
-                name: null,
-                address: null,
-                reference: null,
-                penalty: 0,
-                amount: 0,
-                date: null,
-                total: 0
-            },
+            clientData: null,
             isPrint: false
         }
     },
@@ -189,7 +240,7 @@ export default {
 
     methods: {
         logout(){
-            Inertia.post(this.$root.route + "/users/logout", {},
+            Inertia.post(this.$root.route + "/users/logout", {}, 
 			{
 				onSuccess: (res) => {
 				},
@@ -206,15 +257,7 @@ export default {
 					} else {
                         var data = response.data.data
 
-                        this.clientData = {
-                            name: data.client.name,
-                            address: data.client.address,
-                            reference: data.client.reference,
-                            penalty: data.client.penalty,
-                            amount: data.amount,
-                            date: data.due_date,
-                            total: data.total
-                        }
+                        this.clientData = data
 
                         this.form = {
 							reference: null,
@@ -235,17 +278,25 @@ export default {
     },
     watch: {
         clientData(arg) {
-            var self = this
+            var self = this 
 
-            console.log(arg)
+            // ₱
 
-            document.getElementById("name").innerHTML = arg.name;
-            document.getElementById("address").innerHTML = arg.address;
-            document.getElementById("reference").innerHTML = arg.reference;
-            document.getElementById("penalty").innerHTML = arg.penalty;
-            document.getElementById("amount").innerHTML = arg.amount;
+            document.getElementById("month").innerHTML = arg.month;
+            document.getElementById("year").innerHTML = arg.year;
+            document.getElementById("name").innerHTML = arg.client.name;
+            document.getElementById("address").innerHTML = arg.client.address;
+            document.getElementById("reference").innerHTML = arg.client.reference;
+            document.getElementById("penalty").innerHTML = '₱ ' + (parseFloat(arg.client.penalty).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("pres").innerHTML = '₱ ' + (parseFloat(arg.pres).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("prev").innerHTML = '₱ ' + (parseFloat(arg.prev).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("due_date").innerHTML = arg.client.due_date;
+            document.getElementById("total").innerHTML = '₱ ' + (parseFloat(arg.total).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("reader").innerHTML = arg.reader;
             document.getElementById("date").innerHTML = arg.date;
-            document.getElementById("total").innerHTML = arg.total;
+            document.getElementById("consumption").innerHTML = arg.consumption + ' mᶟ';
+            document.getElementById("message").innerHTML = arg.message;
+            document.getElementById("count").innerHTML = arg.count;
 
             setTimeout(() => {
                 self.$refs.receipt.generatePdf()

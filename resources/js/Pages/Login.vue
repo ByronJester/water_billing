@@ -90,22 +90,22 @@
 					<p class="text-white text-sm cursor-pointer hover:underline text-center"
 						@click="isRegister = true"
 					>
-						Doesn't have accout ? Sign Up Here!
+						Doesn't have account ? Sign Up Here! 
 					</p>
 				</div>
 
 				<div class="p-2" style="border: 2px solid black; border-radius: 5px; width: 500px" v-else>
-					<input type="text" class="w-full  my-2 --login__register--input text-center"
+					<input type="text" class="w-full  my-2 --login__register--input text-center" style="text-transform: capitalize;"
 						placeholder="First Name" v-model="formRegisterData.first_name"
 					>
 					<span class="text-xs text-red-500">{{validationError('first_name', saveError)}} </span>
 
-					<input type="text" class="w-full  my-2 --login__register--input text-center"
+					<input type="text" class="w-full  my-2 --login__register--input text-center" style="text-transform: capitalize;"
 						placeholder="Middle Name" v-model="formRegisterData.middle_name"
 					>
 					<span class="text-xs text-red-500">{{validationError('middle_name', saveError)}} </span>
 
-					<input type="text" class="w-full  my-2 --login__register--input text-center"
+					<input type="text" class="w-full  my-2 --login__register--input text-center" style="text-transform: capitalize;"
 						placeholder="Last Name" v-model="formRegisterData.last_name"
 					>
 					<span class="text-xs text-red-500">{{validationError('last_name', saveError)}} </span>

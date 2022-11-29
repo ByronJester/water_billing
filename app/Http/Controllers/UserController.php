@@ -155,7 +155,7 @@ class UserController extends Controller
         }
 
         if(!$user->is_active) {
-            return response()->json(['status' => 422, 'message' => 'Your account is not deactivated.' ], 200); 
+            return response()->json(['status' => 422, 'message' => 'Your account is deactivated.' ], 200); 
         }
 
         if($user->user_type != 'admin' && $user->user_type != 'staff') {

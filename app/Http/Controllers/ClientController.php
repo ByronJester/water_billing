@@ -90,15 +90,19 @@ class ClientController extends Controller
     }
 
     public function changeStatus(Request $request)
-    {
-        Client::where('id', $request->id)->update([
+    {   
+        $client = Client::where('id', $request->id)->first();
+        $client->is_active = $request->is_active;
+        $client->save();
+
+        User::where('reference', $client->reference)->update([
             'is_active' => $request->is_active
         ]);
 
         return redirect()->back();
     }
 
-    public function viewBill(Request $request)
+    public function viewBill(Request $request) 
     {
         $auth = Auth::user();
 
@@ -111,7 +115,9 @@ class ClientController extends Controller
     }
 
     public function generateBill(Request $request)
-    {
+    {   
+        $auth = Auth::user();
+
         $validator = Validator::make($request->all(), [
             'reference' => "required|exists:clients,reference",
             'consumed_cubic_meter' => "required|numeric|min:1",
@@ -135,7 +141,7 @@ class ClientController extends Controller
 
         if(count($bills) > 0) {
             $totalAmount += $bills->sum('amount');
-            $penalty = (5 / 100) * $totalAmount;
+            $penalty = (10 / 100) * $totalAmount;
             $client->penalty = $client->penalty + $penalty;
         }
 
@@ -150,11 +156,78 @@ class ClientController extends Controller
             'date' => $request->date
         ]);
 
+        $now = Carbon::now();
+
+        $month = null;
+        $year = $now->year;
+        
+        switch ($now->month) {
+            case 1:
+                $month = 'January';
+                break;
+
+            case 2:
+                $month = 'February';
+                break;
+
+            case 3:
+                $month = 'March';
+                break;
+
+            case 4:
+                $month = 'April';
+                break;
+
+            case 5:
+                $month = 'May';
+                break;
+            
+            case 6:
+                $month = 'June';
+                break;
+            
+            case 7:
+                $month = 'July';
+                break;
+
+            case 8:
+                $month = 'August';
+                break;
+
+            case 9:
+                $month = 'September';
+                break;
+
+            case 10:
+                $month = 'October';
+                break;
+
+            case 11:
+                $month = 'November';
+                break;
+
+            case 12:
+                $month = 'December';
+                break;
+            
+        }
+        
+
+        $date = Carbon::parse($saveBill->created_at);
+
         $data = [
             'client' => $client,
-            'amount' => $totalAmount,
+            'prev' => $bills->sum('amount'),
+            'pres' => $waterBillAmount,
+            'consumption' => $consumed_cubic_meter,
             'due_date' => $request->date,
-            'total' => $totalAmount + $client->penalty
+            'total' => $totalAmount + $client->penalty,
+            'date' => $date->isoFormat('LLL'),
+            'reader' => $auth->name,
+            'month' => $month,
+            'year' => $year,
+            'count' => (count($bills) + 1) . ' month(s)',
+            'message' => count($bills) > 2  ? "WARNING FOR DISCONNECTION. Please settle your balance." : ''
         ]; 
 
         $users = User::where('reference', $request->reference)->get();

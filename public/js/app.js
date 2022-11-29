@@ -2545,6 +2545,65 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2563,15 +2622,7 @@ __webpack_require__.r(__webpack_exports__);
         date: null
       },
       saveError: null,
-      clientData: {
-        name: null,
-        address: null,
-        reference: null,
-        penalty: 0,
-        amount: 0,
-        date: null,
-        total: 0
-      },
+      clientData: null,
       isPrint: false
     };
   },
@@ -2595,15 +2646,7 @@ __webpack_require__.r(__webpack_exports__);
           _this.saveError = response.data.errors;
         } else {
           var data = response.data.data;
-          _this.clientData = {
-            name: data.client.name,
-            address: data.client.address,
-            reference: data.client.reference,
-            penalty: data.client.penalty,
-            amount: data.amount,
-            date: data.due_date,
-            total: data.total
-          };
+          _this.clientData = data;
           _this.form = {
             reference: null,
             consumed_cubic_meter: 0,
@@ -2617,15 +2660,23 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     clientData: function clientData(arg) {
-      var self = this;
-      console.log(arg);
-      document.getElementById("name").innerHTML = arg.name;
-      document.getElementById("address").innerHTML = arg.address;
-      document.getElementById("reference").innerHTML = arg.reference;
-      document.getElementById("penalty").innerHTML = arg.penalty;
-      document.getElementById("amount").innerHTML = arg.amount;
+      var self = this; // ₱
+
+      document.getElementById("month").innerHTML = arg.month;
+      document.getElementById("year").innerHTML = arg.year;
+      document.getElementById("name").innerHTML = arg.client.name;
+      document.getElementById("address").innerHTML = arg.client.address;
+      document.getElementById("reference").innerHTML = arg.client.reference;
+      document.getElementById("penalty").innerHTML = '₱ ' + parseFloat(arg.client.penalty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("pres").innerHTML = '₱ ' + parseFloat(arg.pres).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("prev").innerHTML = '₱ ' + parseFloat(arg.prev).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("due_date").innerHTML = arg.client.due_date;
+      document.getElementById("total").innerHTML = '₱ ' + parseFloat(arg.total).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("reader").innerHTML = arg.reader;
       document.getElementById("date").innerHTML = arg.date;
-      document.getElementById("total").innerHTML = arg.total;
+      document.getElementById("consumption").innerHTML = arg.consumption + ' mᶟ';
+      document.getElementById("message").innerHTML = arg.message;
+      document.getElementById("count").innerHTML = arg.count;
       setTimeout(function () {
         self.$refs.receipt.generatePdf();
       }, 3000);
@@ -2749,6 +2800,45 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _Components_Toggle_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Components/Toggle.vue */ "./resources/js/Components/Toggle.vue");
 /* harmony import */ var vue_html2pdf__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-html2pdf */ "./node_modules/vue-html2pdf/dist/vue-html2pdf.esm.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -48058,7 +48148,7 @@ var render = function() {
               "float-layout": true,
               "enable-download": true,
               "preview-modal": true,
-              "paginate-elements-by-height": 1000,
+              "paginate-elements-by-height": 2000,
               filename: Math.random()
                 .toString(36)
                 .slice(2),
@@ -48076,7 +48166,7 @@ var render = function() {
               [
                 _c(
                   "div",
-                  { staticClass: "flex flex-col p-4 w-full h-screen" },
+                  { staticClass: "flex flex-col p-2 w-full h-screen" },
                   [
                     _c(
                       "div",
@@ -48085,12 +48175,29 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                        Water Billing System\n                    "
+                          "\n                       Billing Notice\n                    "
                         )
                       ]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-full flex flex-col mt-4" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "w-full text-center text-xl mt-2 font-bold inline-flex"
+                      },
+                      [
+                        _vm._v("\n                       FOR THE MONTH OF "),
+                        _c("span", {
+                          staticClass: "mx-1",
+                          attrs: { id: "month" }
+                        }),
+                        _vm._v(" "),
+                        _c("span", { attrs: { id: "year" } })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-full flex flex-col mt-3" }, [
                       _c("div", { staticClass: "mt-2 text-lg w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Name:")])
@@ -48108,47 +48215,65 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("span", {
-                          staticClass: "float-right mr-2",
+                          staticClass: "float-right mr-1 text-md",
                           attrs: { id: "address" }
                         })
                       ]),
                       _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-lg w-full mb-1 pb-1",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Account #:")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "reference" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-lg w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
-                          _c("b", [_vm._v("Account #:")])
+                          _c("b", [_vm._v("Previous Reading:")])
                         ]),
                         _vm._v(" "),
                         _c("span", {
                           staticClass: "float-right mr-2",
-                          attrs: { id: "reference" }
+                          attrs: { id: "prev" }
                         })
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-lg w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
-                          _c("b", [_vm._v("Due Date: ")])
+                          _c("b", [_vm._v("Present Reading:")])
                         ]),
                         _vm._v(" "),
                         _c("span", {
                           staticClass: "float-right mr-2",
-                          attrs: { id: "date" }
+                          attrs: { id: "pres" }
                         })
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-lg w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
-                          _c("b", [_vm._v("Bill: ")])
+                          _c("b", [_vm._v("Consumption:")])
                         ]),
                         _vm._v(" "),
                         _c("span", {
                           staticClass: "float-right mr-2",
-                          attrs: { id: "amount" }
+                          attrs: { id: "consumption" }
                         })
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-lg w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
-                          _c("b", [_vm._v("Penalty: ")])
+                          _c("b", [_vm._v("Penalty(10%):")])
                         ]),
                         _vm._v(" "),
                         _c("span", {
@@ -48159,14 +48284,84 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-lg w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
-                          _c("b", [_vm._v("Total Bill: ")])
+                          _c("b", [_vm._v("Unpaid Month:")])
                         ]),
                         _vm._v(" "),
                         _c("span", {
                           staticClass: "float-right mr-2",
-                          attrs: { id: "total" }
+                          attrs: { id: "count" }
                         })
                       ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-lg w-full mb-1 pb-1",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Due Date: ")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "due_date" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-lg w-full mb-1 pb-1",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Total Bill: ")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "total" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Meter Reader Name: ")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "reader" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-lg w-full mb-1 pb-1",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Date Read: ")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "date" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", {
+                        staticClass: "mt-2 text-md w-full font-bold",
+                        attrs: { id: "message" }
+                      }),
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-md w-full" }, [
                         _vm._v(
@@ -48858,6 +49053,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "--input py-4",
+                          staticStyle: { "text-transform": "capitalize" },
                           attrs: { type: "text", id: "name", name: "name" },
                           domProps: { value: _vm.form.first_name },
                           on: {
@@ -48899,6 +49095,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "--input py-4",
+                          staticStyle: { "text-transform": "capitalize" },
                           attrs: { type: "text", id: "name", name: "name" },
                           domProps: { value: _vm.form.middle_name },
                           on: {
@@ -48981,6 +49178,7 @@ var render = function() {
                             }
                           ],
                           staticClass: "--input py-4",
+                          staticStyle: { "text-transform": "capitalize" },
                           attrs: {
                             type: "text",
                             id: "address",
@@ -49110,7 +49308,11 @@ var render = function() {
                       ? _c("div", { staticClass: "w-full flex flex-col" }, [
                           _c(
                             "div",
-                            { staticClass: "w-full text-center text-xl" },
+                            {
+                              staticClass:
+                                "w-full text-center text-xl pt-4 pb-10",
+                              staticStyle: { "border-bottom": "dashed black" }
+                            },
                             [
                               _vm._v(
                                 "\n                            WATER BILLING MANAGEMENT SYSTEM\n                        "
@@ -49122,7 +49324,7 @@ var render = function() {
                             "div",
                             {
                               staticClass:
-                                "w-full text-center font-bold text-lg"
+                                "w-full text-center font-bold text-lg my-5"
                             },
                             [
                               _vm._v(
@@ -49131,40 +49333,58 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "w-full text-md font-bold mt-10" },
-                            [
+                          _c("div", { staticClass: "w-full" }, [
+                            _c("span", { staticClass: "float-left ml-5" }, [
                               _vm._v(
-                                "\n                            " +
-                                  _vm._s(_vm.client.name) +
-                                  "\n                        "
+                                "\n                                Account No.\n                            "
                               )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-full text-md" }, [
-                            _c("b", [_vm._v("ACCOUNT #:")]),
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.client.reference) +
-                                "\n                        "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-full text-md" }, [
-                            _c("b", [_vm._v("BILLING PERIOD:")]),
-                            _vm._v(
-                              " " +
-                                _vm._s(_vm.client.due_date) +
-                                "\n                        "
-                            )
+                            ]),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "float-right mr-5" }, [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(_vm.client.reference) +
+                                  "\n                            "
+                              )
+                            ])
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "w-full" }, [
-                            _c("span", { staticClass: "float-left ml-20" }, [
+                            _c("span", { staticClass: "float-left ml-5" }, [
                               _vm._v(
-                                "\n                                Total Cubic Meter Consumed\n                            "
+                                "\n                                Name\n                            "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "float-right mr-5" }, [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(_vm.client.name) +
+                                  "\n                            "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-full" }, [
+                            _c("span", { staticClass: "float-left ml-5" }, [
+                              _vm._v(
+                                "\n                                Due Date\n                            "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "float-right mr-5" }, [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(_vm.client.due_date) +
+                                  "\n                            "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-full" }, [
+                            _c("span", { staticClass: "float-left ml-5" }, [
+                              _vm._v(
+                                "\n                                Consumption\n                            "
                               )
                             ]),
                             _vm._v(" "),
@@ -49172,13 +49392,13 @@ var render = function() {
                               _vm._v(
                                 "\n                                " +
                                   _vm._s(_vm.client.cubic_meter_consumed) +
-                                  "\n                            "
+                                  " Cubic Meter\n                            "
                               )
                             ])
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "w-full" }, [
-                            _c("span", { staticClass: "float-left ml-20" }, [
+                            _c("span", { staticClass: "float-left ml-5" }, [
                               _vm._v(
                                 "\n                                Service Charge\n                            "
                               )
@@ -49187,14 +49407,16 @@ var render = function() {
                             _c("span", { staticClass: "float-right mr-5" }, [
                               _vm._v(
                                 "\n                                " +
-                                  _vm._s(_vm.client.other_fee) +
+                                  _vm._s(
+                                    parseFloat(_vm.client.other_fee).toFixed(2)
+                                  ) +
                                   "\n                            "
                               )
                             ])
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "w-full" }, [
-                            _c("span", { staticClass: "float-left ml-20" }, [
+                            _c("span", { staticClass: "float-left ml-5" }, [
                               _vm._v(
                                 "\n                                Penalty\n                            "
                               )
@@ -49203,33 +49425,76 @@ var render = function() {
                             _c("span", { staticClass: "float-right mr-5" }, [
                               _vm._v(
                                 "\n                                " +
-                                  _vm._s(_vm.client.penalty) +
+                                  _vm._s(
+                                    parseFloat(_vm.client.penalty).toFixed(2)
+                                  ) +
                                   "\n                            "
                               )
                             ])
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "w-full" }, [
-                            _c(
-                              "span",
-                              { staticClass: "float-left font-bold" },
-                              [
-                                _vm._v(
-                                  "\n                                TOTAL AMOUNT DUE:\n                            "
-                                )
-                              ]
-                            ),
+                            _c("span", { staticClass: "float-left ml-5" }, [
+                              _vm._v(
+                                "\n                                Water Bill\n                            "
+                              )
+                            ]),
                             _vm._v(" "),
                             _c("span", { staticClass: "float-right mr-5" }, [
                               _vm._v(
-                                "\n                                ₱ " +
+                                "\n                                " +
                                   _vm._s(
                                     parseFloat(
                                       _vm.client.amount_to_pay
-                                    ).toFixed()
+                                    ).toFixed(2)
                                   ) +
                                   "\n                            "
                               )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "w-full py-10 my-5",
+                              staticStyle: {
+                                "border-bottom": "dashed black",
+                                "border-top": "dashed black"
+                              }
+                            },
+                            [
+                              _c("span", { staticClass: "float-left ml-5" }, [
+                                _vm._v(
+                                  "\n                                Total Bill\n                            "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("span", { staticClass: "float-right mr-5" }, [
+                                _vm._v(
+                                  "\n                                " +
+                                    _vm._s(
+                                      parseFloat(_vm.client.total).toFixed(2)
+                                    ) +
+                                    "\n                            "
+                                )
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-full" }, [
+                            _c("p", [
+                              _vm._v(
+                                "\n                                You may check your bill online @ water-billing-6mb6.onrender.com "
+                              ),
+                              _c("br"),
+                              _vm._v(
+                                "\n                                For any inquiries, please contact "
+                              ),
+                              _c("br"),
+                              _vm._v(
+                                "\n                                09566814383/09657657443 "
+                              ),
+                              _c("br")
                             ])
                           ])
                         ])
@@ -49546,7 +49811,7 @@ var render = function() {
                     },
                     [
                       _vm._v(
-                        "\n\t\t\t\t\tDoesn't have accout ? Sign Up Here!\n\t\t\t\t"
+                        "\n\t\t\t\t\tDoesn't have account ? Sign Up Here! \n\t\t\t\t"
                       )
                     ]
                   )
@@ -49574,6 +49839,7 @@ var render = function() {
                     ],
                     staticClass:
                       "w-full  my-2 --login__register--input text-center",
+                    staticStyle: { "text-transform": "capitalize" },
                     attrs: { type: "text", placeholder: "First Name" },
                     domProps: { value: _vm.formRegisterData.first_name },
                     on: {
@@ -49608,6 +49874,7 @@ var render = function() {
                     ],
                     staticClass:
                       "w-full  my-2 --login__register--input text-center",
+                    staticStyle: { "text-transform": "capitalize" },
                     attrs: { type: "text", placeholder: "Middle Name" },
                     domProps: { value: _vm.formRegisterData.middle_name },
                     on: {
@@ -49643,6 +49910,7 @@ var render = function() {
                     ],
                     staticClass:
                       "w-full  my-2 --login__register--input text-center",
+                    staticStyle: { "text-transform": "capitalize" },
                     attrs: { type: "text", placeholder: "Last Name" },
                     domProps: { value: _vm.formRegisterData.last_name },
                     on: {

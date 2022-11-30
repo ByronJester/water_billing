@@ -48034,6 +48034,7 @@ var render = function() {
                     ],
                     staticClass:
                       "w-full  my-2 --login__register--input text-center",
+                    staticStyle: { "text-transform": "uppercase" },
                     attrs: { type: "text", placeholder: "Account #" },
                     domProps: { value: _vm.form.reference },
                     on: {
@@ -48879,7 +48880,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "w-full mt-8 pl-2" }, [
                         _c("p", { staticClass: "text-xl" }, [
-                          _vm._v("\n                            Line #: "),
+                          _vm._v("\n                            Account #: "),
                           _c("span", { staticClass: "ml-2" }, [
                             _vm._v(" " + _vm._s(_vm.client.reference) + " ")
                           ])

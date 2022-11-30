@@ -12,7 +12,7 @@
 
                 <div class="w-full">
                     <input type="text" class="w-full  my-2 --login__register--input text-center"
-                        placeholder="Account #" v-model="form.reference"
+                        placeholder="Account #" v-model="form.reference" style="text-transform: uppercase"
                     >
                     <span class="text-xs text-red-500">{{validationError('reference', saveError)}} </span>
                 </div>
@@ -293,7 +293,7 @@ export default {
             document.getElementById("due_date").innerHTML = arg.client.due_date;
             document.getElementById("total").innerHTML = '₱ ' + (parseFloat(arg.total).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("reader").innerHTML = arg.reader;
-            document.getElementById("date").innerHTML = arg.date;
+            document.getElementById("date").innerHTML = arg.date; 
             document.getElementById("consumption").innerHTML = arg.consumption + ' mᶟ';
             document.getElementById("message").innerHTML = arg.message;
             document.getElementById("count").innerHTML = arg.count;

@@ -118,19 +118,19 @@ class ClientController extends Controller
     {   
         $auth = Auth::user();
 
+        $client = Client::where('reference', $request->reference)->first();
+
+        $bills = ClientPayment::where('client_id', $client->id)->where('status', 'unpaid')->get();
+
         $validator = Validator::make($request->all(), [
             'reference' => "required|exists:clients,reference",
-            'consumed_cubic_meter' => "required|numeric|min:1",
+            'consumed_cubic_meter' => "required|numeric|min:" . ($bills->sum('consumed_cubic_meter') + 1),
             'date' => "required"
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);
         }
-
-        $client = Client::where('reference', $request->reference)->first();
-
-        $bills = ClientPayment::where('client_id', $client->id)->where('status', 'unpaid')->get();
 
         $waterBill = WaterBill::orderBy('created_at', 'desc')->first();
 

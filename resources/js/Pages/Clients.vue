@@ -88,7 +88,7 @@
 
                         <div class="w-full mt-8 pl-2">
                             <p class="text-xl">
-                                Line #: <span class="ml-2"> {{ client.reference }} </span>
+                                Account #: <span class="ml-2"> {{ client.reference }} </span>
                             </p>
                         </div>
 

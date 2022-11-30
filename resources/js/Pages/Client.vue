@@ -15,7 +15,7 @@
                 <div class="w-full mt-10">
                     <graph-line3d
                             style="w-full"
-                            :height="600"
+                            :height="400"
                             :axis-min="0"
                             :axis-max="Math.max( ...options.reports.amount )"
                             :padding-top="100"

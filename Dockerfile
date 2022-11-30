@@ -6,7 +6,7 @@ ARG COMPOSER_VERSION=latest
 ###########################################
 # NODE
 ###########################################
-FROM node:16.3.0-alpine as frontend
+FROM node:16.18.1-alpine as frontend
 
 WORKDIR /frontend
 

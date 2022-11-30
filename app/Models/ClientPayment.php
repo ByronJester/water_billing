@@ -25,7 +25,7 @@ class ClientPayment extends Model
 
     public function getMonthAttribute()
     {
-        return date("F", strtotime($this->date));
+        return date("F", strtotime($this->created));
     }
 
     public function getDueDateAttribute()

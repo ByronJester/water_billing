@@ -153,7 +153,7 @@
 
 			
 
-			<div class="w-screen h-screen --requirements flex flex-col justify-center items-center mt-60">
+			<div class="w-screen h-full md:h-screen --requirements flex flex-col justify-center items-center mt-10 md:mt-12">
 				<div class="w-screen h-full --requirements flex justify-center items-center text-center mt-10 flex flex-col" id="requirements">
 					<div class="w-full">
 						<span class="text-4xl">
@@ -262,7 +262,7 @@
 				</div>
 			</div>
 
-			<div class="w-screen h-full --aboutus flex justify-center items-center text-center my-20 flex flex-col" id="aboutus">
+			<div class="w-screen h-scree --aboutus flex justify-center items-center text-center my-20 flex flex-col" id="aboutus">
 				<div class="w-full">
 					<p class="text-center w-full">
 						<span class="text-4xl">

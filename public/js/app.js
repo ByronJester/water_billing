@@ -50222,7 +50222,7 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "w-screen h-screen --requirements flex flex-col justify-center items-center mt-60"
+          "w-screen h-full md:h-screen --requirements flex flex-col justify-center items-center mt-10 md:mt-12"
       },
       [
         _c(
@@ -50456,7 +50456,7 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "w-screen h-full --aboutus flex justify-center items-center text-center my-20 flex flex-col",
+          "w-screen h-scree --aboutus flex justify-center items-center text-center my-20 flex flex-col",
         attrs: { id: "aboutus" }
       },
       [

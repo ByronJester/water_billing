@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="w-full md:w-3/4 mt-4 md:mt-0">
-                    <graph-line
+                    <!-- <graph-line
                             style="w-full"
                             :height="600"
                             :axis-min="0"
@@ -31,7 +31,23 @@
                             :values="options.reports.amount">
                         <note :text="'Year ' + new Date().getFullYear()" :align="'center'"></note>
                         <guideline :tooltip-y="true"></guideline>
-                    </graph-line>
+                    </graph-line> -->
+
+                    <graph-line3d
+                            style="w-full"
+                            :height="600"
+                            :axis-min="0"
+                            :axis-max="Math.max( ...options.reports.amount )"
+                            :padding-top="100"
+                            :padding-bottom="100"
+                            :depth="180"
+                            :labels="options.reports.month"
+                            :names="['Water Billing Report']"
+                            :colors="[ '#246AC6']"
+                            :values="options.reports.amount">
+                        <note :text="'Year ' + new Date().getFullYear()" :align="'center'"></note>
+                        <rotate3d></rotate3d>
+                    </graph-line3d>
                 </div>
             </div>
             

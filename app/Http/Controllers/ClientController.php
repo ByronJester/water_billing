@@ -43,7 +43,7 @@ class ClientController extends Controller
 
         $client = Client::where('reference', $reference)->first(); 
 
-        $payments = ClientPayment::where('client_id', $client->id)->orderBy('created_at')->whereYear('created_at', Carbon::now()->year)->get();
+        $payments = ClientPayment::where('client_id', $client->id)->orderBy('date')->whereYear('date', Carbon::now()->year)->get();
 
         $reportArr = [];
 
@@ -55,7 +55,7 @@ class ClientController extends Controller
                     'payments' => $payments,
                     'reports' => [
                         'amount' => $payments->pluck('amount'),
-                        'month' => $payments->pluck('month') 
+                        'month' => $payments->pluck('month')  
                     ]
                     
                 ]

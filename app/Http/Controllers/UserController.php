@@ -284,7 +284,7 @@ class UserController extends Controller
                 'auth'    => $auth,
                 'options' => [
                     'ir' => ClientUtility::get(),
-                    'clients' => Client::where('is_active', true)->get()
+                    'clients' => Client::get() 
                 ]
             ]);
         }

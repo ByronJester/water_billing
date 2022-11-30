@@ -131,7 +131,7 @@ export default {
             }
 
             if(arg == 'billing') {
-                this.rows = this.options.clients
+                this.rows = this.options.clients.filter( x => { return !!x.is_active })
 
                 this.columns = [
                     'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'
@@ -157,7 +157,7 @@ export default {
             }
 
             if(arg == 'payment') {
-                this.rows = this.options.clients
+                this.rows = this.options.clients.filter( x => { return !!x.is_active })
 
                 this.columns = [
                     'Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'
@@ -203,7 +203,7 @@ export default {
             }
 
             if(arg == 'deactivation') {
-                this.rows = this.options.clients.filter( x => { return!x.is_active})
+                this.rows = this.options.clients.filter( x => { return !x.is_active})
                 
                 this.columns = [
                     'Name', 'Account #', 'Address'

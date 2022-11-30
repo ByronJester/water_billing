@@ -11,28 +11,8 @@
                 </span>
             </div>
 
-            <div class="w-full flex flex-col md:flex-row mt-2 md:mt-10">
-                <div class="w-full md:w-2/4 px-2 mt-2 md:mt-20">
-                    <Table :columns="columns" :rows="options.payments" :keys="keys" :selected.sync="payment"/>
-                </div>
-
-                <div class="w-full md:w-3/4 mt-4 md:mt-0">
-                    <!-- <graph-line
-                            style="w-full"
-                            :height="600"
-                            :axis-min="0"
-                            :axis-max="Math.max( ...options.reports.amount )"
-                            :padding-top="100"
-                            :padding-bottom="100"
-                            :depth="180"
-                            :labels="options.reports.month"
-                            :names="['Water Billing Report']"
-                            :colors="[ '#246AC6']"
-                            :values="options.reports.amount">
-                        <note :text="'Year ' + new Date().getFullYear()" :align="'center'"></note>
-                        <guideline :tooltip-y="true"></guideline>
-                    </graph-line> -->
-
+            <div class="w-full flex flex-col mt-2 md:mt-10">
+                <div class="w-full mt-10">
                     <graph-line3d
                             style="w-full"
                             :height="600"
@@ -49,6 +29,12 @@
                         <rotate3d></rotate3d>
                     </graph-line3d>
                 </div>
+
+                <div class="w-full mt-10">
+                    <Table :columns="columns" :rows="options.payments" :keys="keys" :selected.sync="payment"/>
+                </div>
+
+                
             </div>
             
         </div>

@@ -25,7 +25,10 @@ class ClientPayment extends Model
 
     public function getMonthAttribute()
     {
-        return date("F", strtotime($this->created_at));
+        $date = Carbon::parse($this->date);
+        $date = $date->subMonth(1);
+
+        return date("F", strtotime($date));
     }
 
     public function getDueDateAttribute()

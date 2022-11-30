@@ -2,7 +2,7 @@
 	<div class="w-screen h-screen --main">
 
 		<div class="w-full flex flex-col">
-			<div class="w-full flex flex-row" style="height: 10vh; background: navy">
+			<div class="w-full flex flex-row fixed" style="height: 10vh; background: navy">
 				<div :style="{width: mobile ? '15%': '7%'}" class="flex justify-center items-center pl-1">
 					<img src="images/logo.png" class="w-full" style="height: 8vh">
 				</div>
@@ -151,7 +151,11 @@
 				</div>
 			</div>
 
-			<div class="w-screen h-full --requirements flex justify-center items-center" id="requirements">
+			<div class="w-full text-center text-2xl font-bold mt-20">
+				REQUIREMENTS
+			</div>
+
+			<div class="w-screen h-full --requirements flex justify-center items-center mt-16" id="requirements">
 				<div class="flex flex-col md:flex-row" style="width: 80%">
 					<div class="w-full">
 						<p class="text-xl font-bold mb-5 mt-5">
@@ -252,7 +256,7 @@
 				</div>
 			</div>
 
-			<div class="w-screen h-full --aboutus flex justify-center items-center text-center mt-10 flex flex-col" id="aboutus">
+			<div class="w-screen h-full --aboutus flex justify-center items-center text-center my-20 flex flex-col" id="aboutus">
 				<div class="w-full">
 					<p class="text-center w-full">
 						<span class="text-4xl">
@@ -260,8 +264,9 @@
 						</span><br><br>
 
 						<span class="text-lg">
-							Water Billing System is a website that helps consumer to monitor their water usage,<br> 
-							also consumers can see future announcement about the water billing.
+							Water Billing System is an online-based platform for managing consumer water charges. <br> 
+							The system will be able to process bill payments, generate billing reports and issues official receipt. <br>
+							The system will also have a feature that notifies registered clients about due date of payment via SMS. <br>
 						</span>
 					</p>
 				</div>
@@ -278,8 +283,8 @@
 							good for the client’s satisfactory and also benefits the bottom line. <br>
 							We think that companies can develop a conscience and thrive with a soul. <br>
 							Technology is being used more effectively, we made the decision to come 
-							up with a better way to handle water services, simplify client payment <br>
-							processes, and streamline the work of water readers.
+							up with a better way to handle water services, <br>
+							simplify client payment processes, and streamline the work of water readers. <br>
 						</span>
 					</p>
 				</div>
@@ -315,11 +320,11 @@
 					</div>
 				</div>
 
-				<div style="width: 100%" class="flex flex-col md:flex-row mt-5 md:mt-10">
+				<!-- <div style="width: 100%" class="flex flex-col md:flex-row mt-5 md:mt-10">
 					<div class="w-full text-center">
 						<i class="fa-regular fa-copyright"></i><p>All Rights Reserve 2022</p>
 					</div>
-				</div>
+				</div> -->
 			</div>
 
 		</div>
@@ -353,7 +358,8 @@ export default {
 				role: 2,
 				user_type: 'client',
 				reference: null,
-				code: null
+				code: null,
+				sentVerification: true,
 			},
 			isRegister: false,
 			saveError: null,
@@ -415,6 +421,7 @@ export default {
 					} else {
 						
 						if(this.formRegisterData.code == null) {
+							this.formRegisterData.sentVerification = false
 							this.openRegisterModal()
 						} else {
 							alert("Account successfully created.");

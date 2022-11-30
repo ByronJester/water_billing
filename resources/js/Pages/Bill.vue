@@ -239,7 +239,7 @@ export default {
     },
 
     methods: {
-        logout(){
+        logout(){ 
             Inertia.post(this.$root.route + "/users/logout", {}, 
 			{
 				onSuccess: (res) => {

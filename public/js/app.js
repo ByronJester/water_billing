@@ -3617,6 +3617,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -3638,7 +3643,8 @@ __webpack_require__.r(__webpack_exports__);
         role: 2,
         user_type: 'client',
         reference: null,
-        code: null
+        code: null,
+        sentVerification: true
       },
       isRegister: false,
       saveError: null,
@@ -3693,6 +3699,8 @@ __webpack_require__.r(__webpack_exports__);
           _this2.saveError = response.data.errors;
         } else {
           if (_this2.formRegisterData.code == null) {
+            _this2.formRegisterData.sentVerification = false;
+
             _this2.openRegisterModal();
           } else {
             alert("Account successfully created.");
@@ -49542,7 +49550,7 @@ var render = function() {
       _c(
         "div",
         {
-          staticClass: "w-full flex flex-row",
+          staticClass: "w-full flex flex-row fixed",
           staticStyle: { height: "10vh", background: "navy" }
         },
         [
@@ -50148,6 +50156,12 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "w-full text-center text-2xl font-bold mt-20" },
+        [_vm._v("\n\t\t\tREQUIREMENTS\n\t\t")]
+      ),
+      _vm._v(" "),
       _vm._m(4),
       _vm._v(" "),
       _vm._m(5),
@@ -50161,7 +50175,7 @@ var render = function() {
           style: { height: _vm.mobile ? "100%" : "20vh" },
           attrs: { id: "contactus" }
         },
-        [_vm._m(6), _vm._v(" "), _vm._m(7)]
+        [_vm._m(6)]
       )
     ])
   ])
@@ -50207,7 +50221,7 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "w-screen h-full --requirements flex justify-center items-center",
+          "w-screen h-full --requirements flex justify-center items-center mt-16",
         attrs: { id: "requirements" }
       },
       [
@@ -50424,7 +50438,7 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "w-screen h-full --aboutus flex justify-center items-center text-center mt-10 flex flex-col",
+          "w-screen h-full --aboutus flex justify-center items-center text-center my-20 flex flex-col",
         attrs: { id: "aboutus" }
       },
       [
@@ -50438,12 +50452,17 @@ var staticRenderFns = [
             _vm._v(" "),
             _c("span", { staticClass: "text-lg" }, [
               _vm._v(
-                "\n\t\t\t\t\t\tWater Billing System is a website that helps consumer to monitor their water usage,"
+                "\n\t\t\t\t\t\tWater Billing System is an online-based platform for managing consumer water charges. "
               ),
               _c("br"),
               _vm._v(
-                " \n\t\t\t\t\t\talso consumers can see future announcement about the water billing.\n\t\t\t\t\t"
-              )
+                " \n\t\t\t\t\t\tThe system will be able to process bill payments, generate billing reports and issues official receipt. "
+              ),
+              _c("br"),
+              _vm._v(
+                "\n\t\t\t\t\t\tThe system will also have a feature that notifies registered clients about due date of payment via SMS. "
+              ),
+              _c("br")
             ])
           ])
         ]),
@@ -50474,12 +50493,13 @@ var staticRenderFns = [
               ),
               _c("br"),
               _vm._v(
-                "\n\t\t\t\t\t\tTechnology is being used more effectively, we made the decision to come \n\t\t\t\t\t\tup with a better way to handle water services, simplify client payment "
+                "\n\t\t\t\t\t\tTechnology is being used more effectively, we made the decision to come \n\t\t\t\t\t\tup with a better way to handle water services, "
               ),
               _c("br"),
               _vm._v(
-                "\n\t\t\t\t\t\tprocesses, and streamline the work of water readers.\n\t\t\t\t\t"
-              )
+                "\n\t\t\t\t\t\tsimplify client payment processes, and streamline the work of water readers. "
+              ),
+              _c("br")
             ])
           ])
         ]),
@@ -50530,24 +50550,6 @@ var staticRenderFns = [
         _c("div", { staticClass: "w-full mt-5 md:mt-0" }, [
           _c("i", { staticClass: "fa-sharp fa-solid fa-phone" }),
           _c("p", [_vm._v("0991-702-1532/0965-765-7443")])
-        ])
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "flex flex-col md:flex-row mt-5 md:mt-10",
-        staticStyle: { width: "100%" }
-      },
-      [
-        _c("div", { staticClass: "w-full text-center" }, [
-          _c("i", { staticClass: "fa-regular fa-copyright" }),
-          _c("p", [_vm._v("All Rights Reserve 2022")])
         ])
       ]
     )

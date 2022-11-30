@@ -79,6 +79,10 @@ Route::middleware(['cors'])->group(function () {
     Route::prefix('utilities')->group(function () {
         Route::get('/', [UserController::class, 'viewUtilities'])->name('view.utility');
     });
+
+    Route::prefix('alive')->group(function () {
+        Route::get('/', [UserController::class, 'alive'])->name('view.alive');
+    });
     
 });
 

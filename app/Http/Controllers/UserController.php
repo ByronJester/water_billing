@@ -72,7 +72,7 @@ class UserController extends Controller
             return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);
         }
 
-        if($request->code == null) {
+        if(!$request->code && $request->sentVerification) {
             $code = sprintf("%06d", mt_rand(1, 999999));
 
             Verification::forceCreate([ 
@@ -89,7 +89,7 @@ class UserController extends Controller
             return response()->json(['status' => 200], 200);  
         } else {
             $otpRules = [
-                'code' => 'required|exists:verifications,code'
+                'code' => "required|exists:verifications,code"
             ];
     
             $otpValidator = Validator::make($request->all(), $otpRules);
@@ -378,6 +378,11 @@ class UserController extends Controller
         }
 
         return redirect('/');
+    }
+
+    public function alive(Request $request)
+    {
+        return response()->json(['status' => 200], 200); 
     }
 } 
  

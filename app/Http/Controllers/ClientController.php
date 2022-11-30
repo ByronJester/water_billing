@@ -148,15 +148,18 @@ class ClientController extends Controller
         $client->payment_date = null;
         $client->save();
 
+        $due_date = Carbon::parse($request->date);
+        $due_date = $due_date->addMonth(1);
+
         $saveBill = ClientPayment::create([
             'client_id' => $client->id,
             'consumed_cubic_meter' => $consumed_cubic_meter,
             'amount' => $waterBillAmount,
             'status' => 'unpaid',
-            'date' => $request->date
+            'date' => $due_date
         ]);
 
-        $now = Carbon::parse($saveBill->created_at);
+        $now = Carbon::parse($request->date);
 
         $month = null;
         $year = $now->year;
@@ -213,27 +216,27 @@ class ClientController extends Controller
         }
         
 
-        $date = Carbon::parse($saveBill->created_at);
+        $date = Carbon::parse($request->date);
 
         $data = [
             'client' => $client,
             'prev' => $bills->sum('amount'),
             'pres' => $waterBillAmount,
             'consumption' => $consumed_cubic_meter,
-            'due_date' => $request->date,
+            'due_date' => $due_date,
             'total' => $totalAmount + $client->penalty,
-            'date' => $date->isoFormat('LLL'),
+            'date' => $date->isoFormat('LL'),
             'reader' => $auth->name,
             'month' => $month,
             'year' => $year,
             'count' => count($bills) . ' month(s)',
-            'message' => count($bills) > 2  ? "WARNING FOR DISCONNECTION. Please settle your balance." : ''
+            'message' => count($bills) >= 2  ? "WARNING FOR DISCONNECTION. \r\n Please settle your balance." : ''
         ]; 
 
         $users = User::where('reference', $request->reference)->get();
 
-        $message = "BILLING FOR THIS MONTH \r\n %s %s - %s \r\n Amount: ₱ %s \r\n Due Date: %s. \r\n For more info please visit water billing system.";
-        $message = sprintf($message, $client->first_name, $client->last_name, $client->reference, $totalAmount + $client->penalty, $request->date);
+        $message = "BILLING FOR THIS MONTH \r\n %s %s - %s \r\n Amount: ₱ %s \r\n Due Date: %s. \r\n For more info please visit water billing system. \r\n water-billing-6mb6.onrender.com";
+        $message = sprintf($message, $client->first_name, $client->last_name, $client->reference, $totalAmount + $client->penalty, $due_date->isoFormat('LL'));
         
         foreach($users as $user) {
             $this->sendSms($user->phone, $message);

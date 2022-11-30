@@ -42,6 +42,7 @@
                             :padding-bottom="100"
                             :depth="180"
                             :labels="options.reports.month"
+                            :names="['Water Billing Report']"
                             :colors="[ '#246AC6']"
                             :values="options.reports.amount">
                         <note :text="'Year ' + new Date().getFullYear()" :align="'center'"></note>

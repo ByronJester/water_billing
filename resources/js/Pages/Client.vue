@@ -30,8 +30,6 @@
                             :colors="[ '#246AC6']"
                             :values="options.reports.amount">
                         <note :text="'Year ' + new Date().getFullYear()" :align="'center'"></note>
-                        <tooltip :names="['Water Billing Report']" :position="'left'"></tooltip>
-                        <legends :names="['Water Billing Report']"></legends>
                         <guideline :tooltip-y="true"></guideline>
                     </graph-line>
                 </div>

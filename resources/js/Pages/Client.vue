@@ -12,7 +12,7 @@
             </div>
 
             <div class="w-full flex flex-col mt-2 md:mt-10">
-                <div class="w-full mt-10">
+                <!-- <div class="w-full mt-10">
                     <graph-line3d
                             style="w-full"
                             :height="400"
@@ -28,7 +28,7 @@
                         <note :text="'Year ' + new Date().getFullYear()" :align="'center'"></note>
                         <rotate3d></rotate3d>
                     </graph-line3d>
-                </div>
+                </div> -->
 
                 <div class="w-full mt-10">
                     <Table :columns="columns" :rows="options.payments" :keys="keys" :selected.sync="payment"/>

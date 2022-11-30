@@ -151,11 +151,17 @@
 				</div>
 			</div>
 
-			<div class="w-full text-center text-2xl font-bold mt-20">
-				REQUIREMENTS
-			</div>
+			
 
-			<div class="w-screen h-full --requirements flex justify-center items-center mt-16" id="requirements">
+			<div class="w-screen h-screen --requirements flex flex-col justify-center items-center mt-60">
+				<div class="w-screen h-full --requirements flex justify-center items-center text-center mt-10 flex flex-col" id="requirements">
+					<div class="w-full">
+						<span class="text-4xl">
+							REQUIREMENTS
+						</span><br><br>
+					</div>
+				</div>
+				
 				<div class="flex flex-col md:flex-row" style="width: 80%">
 					<div class="w-full">
 						<p class="text-xl font-bold mb-5 mt-5">

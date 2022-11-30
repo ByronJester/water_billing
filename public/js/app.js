@@ -3622,6 +3622,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4675,7 +4681,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     utility: function utility(arg) {
-      if (arg.status != 'paid') {
+      if (arg.status != 'paid' && arg.status != 'completed') {
         if (this.auth.role == 1 && arg) {
           this.openStatusModal();
           this.ir.id = arg.id;
@@ -50157,12 +50163,6 @@ var render = function() {
         ]
       ),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "w-full text-center text-2xl font-bold mt-20" },
-        [_vm._v("\n\t\t\tREQUIREMENTS\n\t\t")]
-      ),
-      _vm._v(" "),
       _vm._m(4),
       _vm._v(" "),
       _vm._m(5),
@@ -50222,10 +50222,27 @@ var staticRenderFns = [
       "div",
       {
         staticClass:
-          "w-screen h-full --requirements flex justify-center items-center mt-16",
-        attrs: { id: "requirements" }
+          "w-screen h-screen --requirements flex flex-col justify-center items-center mt-60"
       },
       [
+        _c(
+          "div",
+          {
+            staticClass:
+              "w-screen h-full --requirements flex justify-center items-center text-center mt-10 flex flex-col",
+            attrs: { id: "requirements" }
+          },
+          [
+            _c("div", { staticClass: "w-full" }, [
+              _c("span", { staticClass: "text-4xl" }, [
+                _vm._v("\n\t\t\t\t\t\tREQUIREMENTS\n\t\t\t\t\t")
+              ]),
+              _c("br"),
+              _c("br")
+            ])
+          ]
+        ),
+        _vm._v(" "),
         _c(
           "div",
           {

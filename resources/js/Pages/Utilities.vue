@@ -145,7 +145,7 @@ export default {
 
     watch: {
         utility(arg){
-            if(arg.status != 'paid') {
+            if(arg.status != 'paid' && arg.status != 'completed') {
                 if(this.auth.role == 1 && arg) {
                     this.openStatusModal()
                     this.ir.id = arg.id

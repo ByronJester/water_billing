@@ -47,7 +47,7 @@
 					<div class="w-full flex flex-col mt-4">
 						<div class="w-full">
 							<input type="text" class="w-full  my-2 --login__register--input text-center" style="border: 1px solid black"
-								placeholder="Verification Code" v-model="formRegisterData.code"
+								placeholder="Verification Code" v-model="formRegisterData.code" 
 							>
 							<span class="text-xs text-red-500">{{validationError('code', saveError)}} </span><br>
 						</div>

@@ -156,7 +156,7 @@ class ClientController extends Controller
             'date' => $request->date
         ]);
 
-        $now = Carbon::now();
+        $now = Carbon::parse($saveBill->created_at);
 
         $month = null;
         $year = $now->year;
@@ -226,7 +226,7 @@ class ClientController extends Controller
             'reader' => $auth->name,
             'month' => $month,
             'year' => $year,
-            'count' => (count($bills) + 1) . ' month(s)',
+            'count' => count($bills) . ' month(s)',
             'message' => count($bills) > 2  ? "WARNING FOR DISCONNECTION. Please settle your balance." : ''
         ]; 
 

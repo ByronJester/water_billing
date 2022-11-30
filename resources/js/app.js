@@ -2,6 +2,7 @@ import { InertiaApp } from '@inertiajs/inertia-vue'
 import Vue from 'vue'
 import { InertiaProgress } from '@inertiajs/progress'; 
 import VueGraph from 'vue-graph';
+import GraphLine3D from 'vue-graph/src/components/line3d.js'
 
 InertiaProgress.init({
   // The delay after which the progress bar will
@@ -23,6 +24,7 @@ InertiaProgress.init();
 const app = document.getElementById('app')
 
 Vue.use(VueGraph);
+Vue.component(GraphLine3D.name, GraphLine3D);
 
 Vue.mixin({
   methods: {

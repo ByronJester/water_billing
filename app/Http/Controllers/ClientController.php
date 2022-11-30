@@ -29,7 +29,7 @@ class ClientController extends Controller
                 'options' => [
                     'clients' => $clients->get(),
                     'users' => User::get(),
-                    'incidents' => ClientUtility::where('status', 'pending')->get()
+                    'incidents' => ClientUtility::where('status', 'pending')->get() 
                 ]
             ]);
         }
@@ -149,14 +149,16 @@ class ClientController extends Controller
         $client->save();
 
         $due_date = Carbon::parse($request->date);
-        $due_date = $due_date->addMonth(1);
+        $days = $this->getDays($request->date);
+
+        $due_date = $due_date->addDays($days);
 
         $saveBill = ClientPayment::create([
             'client_id' => $client->id,
             'consumed_cubic_meter' => $consumed_cubic_meter,
             'amount' => $waterBillAmount,
             'status' => 'unpaid',
-            'date' => $due_date
+            'date' => $request->date
         ]);
 
         $now = Carbon::parse($request->date);
@@ -359,5 +361,64 @@ class ClientController extends Controller
         ]);
 
         return response()->json(['status' => 200, 'utilities' => $utilities->get()], 200);  
+    }
+
+    public function getDays($date)
+    {
+        $date = Carbon::parse($date);
+
+        $month = $date->month;
+
+        $day = null;
+
+        if($month == 1) {
+            $day = 31;
+        }
+
+        if($month == 2) {
+            $day = 28;
+        }
+
+        if($month == 3) {
+            $day = 31;
+        }
+
+        if($month == 4) {
+            $day = 30;
+        }
+
+        if($month == 5) {
+            $day = 31;
+        }
+
+        if($month == 6) {
+            $day = 30;
+        }
+
+        if($month == 7) {
+            $day = 31;
+        }
+
+        if($month == 8) {
+            $day = 31;
+        }
+
+        if($month == 9) {
+            $day = 30;
+        }
+
+        if($month == 10) {
+            $day = 31;
+        }
+
+        if($month == 11) {
+            $day = 30;
+        }
+
+        if($month == 12) {
+            $day = 31;
+        }
+
+        return $day;
     }
 }

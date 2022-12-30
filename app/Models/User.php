@@ -27,7 +27,9 @@ class User extends Authenticatable
         'user_type',
         'role',
         'is_active',
-        'reference'
+        'reference',
+        'username',
+        'is_change_password'
     ];
     
     protected $hidden = [
@@ -42,7 +44,8 @@ class User extends Authenticatable
 
     protected $appends = [
         'name',
-        'status'
+        'status',
+        'warning'
     ];
 
     public function getReferenceAttribute($val)
@@ -66,5 +69,22 @@ class User extends Authenticatable
         }
 
         return 'INACTIVE';
+    }
+
+    public function getWarningAttribute()
+    {
+        if($this->user_type == 'client') {
+            $client = Client::where('reference', $this->reference)->first();
+
+            $payments = ClientPayment::where('client_id', $client->id)->where('status', 'unpaid')->get();
+
+            if(count($payments) >= 3) {
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
     }
 }

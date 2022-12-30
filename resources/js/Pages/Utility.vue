@@ -40,7 +40,7 @@
             <div class="w-full" v-if="activeTab == 'trail'">
                 <table class="w-full">
                     <tr class="text-center">
-                        <th v-for="column in ['LOGS']" :key="column">
+                        <th v-for="column in ['Name', 'User Type', 'Logs']" :key="column">
                             {{ column }}
                         </th>
                     </tr>
@@ -48,7 +48,7 @@
                     <tr class="text-center"
                         v-for="(l, index) in options.trails" :key="index"
                     >
-                        <td v-for="(k, i) in [{label: 'description'}]" :key="i" class="cursor-pointer">
+                        <td v-for="(k, i) in [{label: 'user_name'}, {label: 'user_type'}, {label: 'description'}]" :key="i" class="cursor-pointer">
                             <span>{{options.trails[index][k.label] }}</span> 
                         </td>
                     </tr>

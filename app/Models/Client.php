@@ -14,31 +14,47 @@ class Client extends Model
         'first_name',
         'middle_name',
         'last_name',
-        'address',
+        'house_no',
+        'street',
+        'town',
+        'province',
         'reference',
         'is_active',
         'penalty',
         'payment_date',
-        'phone'
+        'phone',
+        'serial'
     ];
 
     protected $appends = [
         'name',
+        'fullname',
         'amount_to_pay',
         'due_date',
-        'status',
+        'payment_status',
         'other_fee',
         'total',
-        'cubic_meter_consumed'
+        'cubic_meter_consumed',
+        'serial_display',
+        'latest_consumed',
+        'address'
     ];
 
-    public function getNameAttribute()
+    public function getFullNameAttribute()
     {
         if(!!$this->middle_name) {
             return $this->first_name . ' ' . $this->middle_name . ' ' . $this->last_name;
         }
 
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function getNameAttribute()
+    {
+        $name = $name = $this->first_name . ' ' . $this->last_name;
+
+        return $name . ' - ' . $this->reference;
+        
     }
 
     public function getAmountToPayAttribute()
@@ -89,13 +105,18 @@ class Client extends Model
     }
 
 
-    public function getStatusAttribute()
+    public function getPaymentStatusAttribute()
     {
         if($this->amount_to_pay > 0) {
             return 'Unpaid';
         } else {
             return 'Paid';
         }
+    }
+
+    public function getStatusAttribute($value)
+    {
+        return ucfirst($value);
     }
 
     public function getPaymentDateAttribute($value)
@@ -110,5 +131,28 @@ class Client extends Model
     public function getTotalAttribute($value)
     {
         return $this->amount_to_pay + $this->penalty + $this->other_fee;
+    }
+
+    public function getSerialDisplayAttribute($value)
+    {
+        return $this->serial . ' - ' . $this->name;
+    }
+
+    public function getLatestConsumedAttribute($value)
+    {
+        $consumed_cubic_meter = ClientPayment::where('client_id', $this->id)->sum('consumed_cubic_meter');
+
+        if($consumed_cubic_meter > 0) {
+            return $consumed_cubic_meter;
+        }
+
+        return 'No previous reading';
+
+        
+    }
+
+    public function getAddressAttribute()
+    {
+        return $this->house_no . ', ' . $this->street . ', ' . $this->town . ', ' . $this->province;
     }
 }

@@ -1,12 +1,22 @@
 <template>
     <div class="w-full" style="min-height: 100vh; height: 100%">
         <div class="w-full flex flex-row --header" style="height: 10%">
-            <div :style="{'width': screenWidth <= 700 ? '20%' : '100%'}">
+            <div :style="{'width': screenWidth <= 700 ? '40%' : '100%'}" class="inline-flex">
                 <img src="/images/logo.png" class="p-2 --logo"/>
+
+                <div class="flex flex-col justify-center items-center text-white">
+                    <div class="" :class="{'text-4xl': screenWidth > 700, 'text-sm': screenWidth <= 700}">
+                        H W C A
+                    </div>
+
+                    <div v-if="screenWidth > 700">
+                        Hydrolite Waterworks and Consumers Association
+                    </div>
+                </div>
             </div>
 
-            <div class="flex justify-end items-center" style="color: #ffffff" :style="{'width': screenWidth <= 700 ? '80%' : '100%' }">
-                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
+            <div class="flex justify-end items-center" style="color: #ffffff" :style="{'width': screenWidth <= 700 ? '60%' : '100%' }">
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff' || auth.user_type == 'cashier'">
                     <span class="mx-2"
                         :style="{'border-bottom': active === '/clients' ? '1px solid #ffffff' : 'none'}"
                     > 
@@ -15,11 +25,28 @@
                 </p>
                 
 
-                <p class="mx-1 --text cursor-pointer" @click="changeActive('/settings')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
+                <!-- <p class="mx-1 --text cursor-pointer" @click="changeActive('/settings')" v-if="auth.user_type == 'admin' || auth.user_type == 'staff'">
                     <span  class="mx-2"
                         :style="{'border-bottom': active === '/settings' ? '1px solid #ffffff' : 'none'}"
                     > 
                         CUBIC METER
+                    </span>
+                </p> -->
+
+                
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients/' + auth.reference)" v-if="auth.user_type == 'client' && !!auth.is_change_password">
+                    <span class="mx-2"
+                        :style="{'border-bottom': active === '/clients/' + auth.reference ? '1px solid #ffffff' : 'none'}"
+                    > 
+                        BILLING
+                    </span>
+                </p>
+
+                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients/view/utilities')" v-if="(auth.user_type == 'client' || auth.user_type == 'utility') && !!auth.is_change_password">
+                    <span  class="mx-2"
+                        :style="{'border-bottom': active === '/clients/view/utilities'? '1px solid #ffffff' : 'none'}"
+                    > 
+                        SERVICES
                     </span>
                 </p>
 
@@ -28,22 +55,6 @@
                         :style="{'border-bottom': active === '/users/profile' ? '1px solid #ffffff' : 'none'}"
                     > 
                         PROFILE
-                    </span>
-                </p>
-
-                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients/' + auth.reference)" v-if="auth.user_type == 'client'">
-                    <span class="mx-2"
-                        :style="{'border-bottom': active === '/clients/' + auth.reference ? '1px solid #ffffff' : 'none'}"
-                    > 
-                        BILLING
-                    </span>
-                </p>
-
-                <p class="mx-1 --text cursor-pointer" @click="changeActive('/clients/view/utilities')" v-if="auth.user_type == 'client' || auth.user_type == 'utility'">
-                    <span  class="mx-2"
-                        :style="{'border-bottom': active === '/clients/view/utilities'? '1px solid #ffffff' : 'none'}"
-                    > 
-                        INCIDENT REPORTING
                     </span>
                 </p>
 
@@ -83,28 +94,6 @@
                         UTILITIES
                     </span>
                 </p>
-                
-
-                <!-- <p class="mx-1 --text cursor-pointer">
-                    <span class="mx-2"
-                    > 
-                        MAINTENANCE
-                    </span>
-                </p>
-
-                <p class="mx-1 --text cursor-pointer">
-                    <span class="mx-2"
-                    > 
-                        REPORT
-                    </span>
-                </p>
-
-                <p class="mx-1 --text cursor-pointer">
-                    <span class="mx-2"
-                    > 
-                        UTILITIES
-                    </span>
-                </p> -->
 
                 <p class="mx-1 --text cursor-pointer" @click="logout()" style="border-left: 1px solid #ffffff">
                     <i class="fa-solid fa-door-open fa-lg mx-2"></i> 
@@ -113,6 +102,12 @@
         </div>
 
         <div class="w-full" style="height: 90%">
+            <div class="w-full flex justify-center items-center" v-if="auth.user_type == 'client' && auth.warning">
+                <p class="my-3 text-center flex justify-center items-center text-white mx-2" style="background: #A52A2A; width: 100%; height: 40px">
+                    WARNING FOR DISCONNECTION
+                </p>
+            </div>
+
             <slot></slot>
         </div>
 

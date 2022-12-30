@@ -24,16 +24,35 @@ export default {
   props: ['value', 'url', 'id'],
   methods: {
     toggle() {
-        this.$emit('value', !this.value)
+        swal({
+            title: "Are you sure to this action?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((proceed) => {
+            if (proceed) {
+                this.$emit('value', !this.value)
 
-        Inertia.post(this.$root.route + this.url, { is_active: !this.value, id: this.id },
-          {
-            onSuccess: (res) => {
-              location.reload()
-            },
-            onError: (err) => {
+                Inertia.post(this.$root.route + this.url, { is_active: !this.value, id: this.id },
+                  {
+                    onSuccess: (res) => {
+                      swal({
+                          title: 'Good Job!',
+                          text: "Successfully",
+                          icon: "success",
+                          button: "Okay",
+                      }).then( (proceed)=> {
+
+                          location.reload()
+                      });
+                    },
+                    onError: (err) => {
+                    }
+                });
             }
         });
+        
     }
   }
 };

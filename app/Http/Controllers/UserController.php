@@ -12,6 +12,7 @@ use App\Models\Client;
 use App\Models\Maintenance;
 use App\Models\AuditTrail;
 use App\Models\Verification;
+use App\Models\WaterBill;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
@@ -23,25 +24,30 @@ class UserController extends Controller
     {    
         $auth = Auth::user();
 
-        $canAccessUsers = ['admin', 'staff'];
+        $canAccessUsers = ['admin', 'staff', 'cashier'];
 
         if($auth) {
-            if(in_array($auth->user_type, $canAccessUsers)) {
-                return redirect('/clients');
+            if(!$auth->is_change_password) {
+                return redirect('/users/profile'); 
             } else {
-                if($auth->user_type == 'reader') {
-                    return redirect('/bills'); 
-                }
-
-                if($auth->user_type == 'utility') {
-                    return redirect('/clients/view/utilities'); 
-                } 
-
-                if($auth->user_type == 'client') {
-                    $route =  "/clients" . "/" . $auth->reference;
-                    return redirect($route);
+                if(in_array($auth->user_type, $canAccessUsers)) {
+                    return redirect('/clients');
+                } else {
+                    if($auth->user_type == 'reader') {
+                        return redirect('/bills'); 
+                    }
+    
+                    if($auth->user_type == 'utility') {
+                        return redirect('/clients/view/utilities'); 
+                    } 
+    
+                    if($auth->user_type == 'client') {
+                        $route =  "/clients" . "/" . $auth->reference;
+                        return redirect($route);
+                    }
                 }
             }
+            
         }
 
         return Inertia::render('Login', [
@@ -52,78 +58,19 @@ class UserController extends Controller
         ]);
     }
 
-    public function saveClientUser(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'first_name' => "required|alpha_spaces",
-            'middle_name' => "nullable|alpha_spaces",
-            'last_name' => "required|alpha_spaces",
-            'phone' => "required|numeric|unique:users,phone",
-            'email' => "required|unique:users,email|email:rfc,dns", 
-            'user_type' => "required",
-            'role' => "required",
-            'password' => "sometimes|required|min:8",
-            'confirm_password' => "sometimes|required|same:password|min:8",
-            'reference' => "required|exists:clients,reference",
-
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);
-        }
-
-        if(!$request->code && $request->sentVerification) {
-            $code = sprintf("%06d", mt_rand(1, 999999));
-
-            Verification::forceCreate([ 
-                'code' => $code
-            ]);
-
-            $client = Client::where('reference', $request->reference)->first();
-
-            $phone = $client->phone;
-            $message = 'Your verification code is' . ' ' . $code;
-
-            $this->sendSms($phone, $message);
-
-            return response()->json(['status' => 200], 200);  
-        } else {
-            $otpRules = [
-                'code' => "required|exists:verifications,code"
-            ];
-    
-            $otpValidator = Validator::make($request->all(), $otpRules);
-    
-            if ($otpValidator->fails()) {
-                return response()->json(['errors' => $otpValidator->messages(), 'status' => 422], 200);
-            }
-
-            $password = $request->password;
-
-            $data = $request->except(['confirm_password']);
-    
-            $data['password'] = Hash::make($password);
-            
-            $saveUser = User::create($data);
-
-            Verification::where('code', $request->code)->delete();
-            
-            return response()->json(['status' => 200], 200);
-        }
-    }
-
     public function saveUser(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->toArray(), [
             'first_name' => "required|alpha_spaces",
             'middle_name' => "nullable|alpha_spaces",
             'last_name' => "required|alpha_spaces",
             'phone' => "required|numeric|unique:users,phone",
-            'email' => "required|unique:users,email|email:rfc,dns", 
+            'email' => "nullable",
+            'username' => "required|unique:users,username|min:5|regex:/(^[A-Za-z0-9]+$)+/", 
             'user_type' => "required",
             'role' => "required",
             'password' => "sometimes|required|min:8",
-            'confirm_password' => "sometimes|required|same:password|min:8",
+            'confirm_password' => "sometimes|required|same:password|min:8"
         ]);
 
         if ($validator->fails()) {
@@ -133,6 +80,7 @@ class UserController extends Controller
         $data = $request->except(['confirm_password']);
 
         $data['password'] = Hash::make($request->password);
+        $data['is_change_password'] = true;
         
         $saveUser = User::create($data);
         
@@ -144,11 +92,11 @@ class UserController extends Controller
         $maintenance = Maintenance::first();
 
         $data = [
-            'email' => $request->email,
+            'username' => $request->username,
             'password' => $request->password,
         ];
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('username', $request->username)->first();
 
         if(!$user) {
             return response()->json(['status' => 422, 'message' => 'No account found.' ], 200); 
@@ -190,16 +138,24 @@ class UserController extends Controller
 
         if($auth) {
             $users = User::orderBy('created_at', 'desc')->whereNotIn('id', [$auth->id]);
+            $workers = User::where('user_type', 'utility')->get();
 
             if($auth->user_type == 'staff') {
                 $users = $users->where('user_type', '!=', 'admin');
             }
 
+            $bills = WaterBill::orderBy('created_at', 'desc')->get();
+
+            $utilities = ClientUtility::orderBy('created_at', 'desc')->get();
+
             return Inertia::render('Users', [
                 'auth'    => $auth,
                 'options' => [
                     'users' => $users->get(),
-                    'maintenance' => Maintenance::first()
+                    'maintenance' => Maintenance::first(), 
+                    'bills' => $bills,
+                    'utilities' => $utilities,
+                    'workers' => $workers
                 ]
             ]);
         }
@@ -253,7 +209,7 @@ class UserController extends Controller
             'middle_name' => "nullable|alpha_spaces",
             'last_name' => "required|alpha_spaces",
             'phone' => "required|numeric|unique:users,phone," . $request->id,
-            'email' => "required|email:rfc,dns|unique:users,email," . $request->id, 
+            'username' => "required|min:5|regex:/(^[A-Za-z0-9]+$)+/|unique:users,username," . $request->id, 
             'password' => "sometimes|required|min:8",
             'confirm_password' => "sometimes|required|same:password|min:8",
         ]);
@@ -268,7 +224,11 @@ class UserController extends Controller
             $data = $request->except(['confirm_password']);
 
             $data['password'] = Hash::make($request->password);
+
+            $data['is_change_password'] = true;
         }
+
+        
         
         $saveUser = User::where('id', $request->id)->update($data);
         

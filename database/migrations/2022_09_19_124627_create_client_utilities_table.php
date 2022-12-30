@@ -15,12 +15,14 @@ class CreateClientUtilitiesTable extends Migration
     {
         Schema::create('client_utilities', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('user_id')->unsigned()->comment('Foreign key from table users');
             $table->bigInteger('client_id')->unsigned()->comment('Foreign key from table clients');
             $table->string('description');
             $table->double('amount', 8, 2);
             $table->string('status');
             
             $table->foreign('client_id')->references('id')->on('clients');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -18,8 +18,13 @@ class CreateClientPaymentsTable extends Migration
             $table->bigInteger('client_id')->unsigned()->comment('Foreign key from table clients'); 
             $table->integer('consumed_cubic_meter');
             $table->double('amount', 8, 2);
+            $table->double('payment', 8, 2)->default(0);
+            $table->double('penalty', 8, 2)->default(0);
+            $table->double('penalty_payment', 8, 2)->default(0);
             $table->date('date');
             $table->string('status');
+            $table->date('payment_date')->nullable();
+            $table->string('receipt')->nullable();
             
             $table->foreign('client_id')->references('id')->on('clients');
             $table->softDeletes();

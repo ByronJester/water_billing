@@ -18,7 +18,8 @@ class ClientUtility extends Model
 
     protected $appends = [
         'client_name',
-        'client_address'
+        'client_address',
+        'worker'
     ];
 
     public function client()
@@ -34,5 +35,12 @@ class ClientUtility extends Model
     public function getClientAddressAttribute()
     {
         return $this->client->address;
+    }
+
+    public function getWorkerAttribute()
+    {
+        $worker = User::where('id', $this->user_id)->first();
+
+        return $worker->name;
     }
 }

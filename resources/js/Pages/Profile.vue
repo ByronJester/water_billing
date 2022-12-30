@@ -36,9 +36,9 @@
                     </div>
 
                     <div class="px-5 py-3">
-                        <label for="name">Email:</label><br>
-                        <input type="text" class="--input py-1" v-model="form.email">
-                        <span class="text-xs text-red-500">{{validationError('email', saveError)}} </span>
+                        <label for="name">Username:</label><br>
+                        <input type="text" class="--input py-1" v-model="form.username">
+                        <span class="text-xs text-red-500">{{validationError('username', saveError)}} </span>
                     </div >
 
                     <div class="px-5 py-3">
@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="px-5 pt-3 pb-5">
-                        <button class="--btn py-2" @click="submit()">
+                        <button class="--btn py-2" @click="save()">
                             Submit
                         </button>
                     </div>
@@ -87,7 +87,7 @@ export default {
                 middle_name: null,
                 last_name: null,
                 phone: null,
-                email: null,
+                username: null,
                 password: null,
                 confirm_password: null
             },
@@ -101,7 +101,7 @@ export default {
         this.form.middle_name = this.auth.middle_name
         this.form.last_name = this.auth.last_name
         this.form.phone = this.auth.phone
-        this.form.email = this.auth.email
+        this.form.username = this.auth.username
     },
 
     methods: {
@@ -118,13 +118,27 @@ export default {
 					if(response.data.status == 422) {
 						this.saveError = response.data.errors 
 					} else {
-						alert("Profile successfully updated.");
-
-						this.saveError = null
+						swal("Profile", "You successfuly update your profile.", "success");
 
 						location.reload()
 					}
 				})
+        },
+
+        save() {
+            var self = this
+
+            swal({
+                title: "Are you sure you want to update your profile ?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((proceed) => {
+                if (proceed) {
+                    self.submit()
+                }
+            });
         }
     }
 }

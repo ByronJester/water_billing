@@ -5,36 +5,176 @@
 
                 <div class="mx-2" :style="{'width': activeTab == 'clients' ? '80%' : '100%'}">
                     <div class="w-full flex flex-row mb-3 font-bold" style="height: 50px; border-bottom: 1px solid black">
-                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'dashboard'" :class="{'bg-blue-300': activeTab == 'dashboard' }">
+                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'dashboard'" :class="{'bg-blue-300': activeTab == 'dashboard' }"
+                            v-if="auth.user_type != 'cashier'"
+                        >
                             DASHBOARD
                         </div>
 
-                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'clients'" :class="{'bg-blue-300': activeTab == 'clients' }">
+                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'clients'" :class="{'bg-blue-300': activeTab == 'clients' }"
+                            v-if="auth.user_type != 'cashier'"
+                        >
                             CLIENTS
                         </div>
 
-                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'billing'" :class="{'bg-blue-300': activeTab == 'billing' }">
+                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'billing'" :class="{'bg-blue-300': activeTab == 'billing' }"
+                            v-if="auth.user_type != 'cashier'"
+                        >
                             BILLING
                         </div>
 
-                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'cashiering'" :class="{'bg-blue-300': activeTab == 'cashiering' }">
+                        <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'cashiering'" :class="{'bg-blue-300': activeTab == 'cashiering' }" v-if="auth.user_type == 'cashier'">
                             CASHIERING
                         </div>
                     </div>
 
-                    <div class="w-full flex flex-col" v-if="activeTab != 'dashboard'">
-                        <div class="w-full">
+                    <div class="w-full flex flex-col" v-if="activeTab != 'dashboard' && activeTab != 'cashiering'">
+                        <div class="w-full" v-if="!isViewPayment">
                             <input type="text" style="height: 50px; border: 1px solid black; border-radius: 10px; width: 300px" class="px-5 float-right"
                                 placeholder="Search..." v-model="search"
                             >
                         </div>
 
-                        <div class="w-full mt-5">
+                        <div class="w-full mt-5" v-if="!isViewPayment">
                             <Table :columns="columns" :rows="clients" :keys="keys" :selected.sync="client" class="w-full"/>
+                        </div>
+
+                        <div class="w-full mt-5" v-else>
+                            <Table :columns="paymentColumns" :rows="payments" :keys="paymentKeys" :selected.sync="payment" class="w-full"/>
                         </div>
                         
                     </div>
-                    
+
+                    <div class="w-full flex flex-col" v-else-if="activeTab == 'cashiering'">
+                        <div class="w-full">
+                            <!-- <label>
+                                Client
+                            </label><br> -->
+                            <Dropdown
+                                :options="options.clients"
+                                :disabled="false"
+                                v-on:selected="selectClient"
+                                name="connections"
+                                :maxItem="5"
+                                style="border: 1px solid black; width: 252px; float: left; border-radius: 3px"
+                                placeholder="Please select client">
+                            </Dropdown>
+                        </div>
+
+                        <div class="w-full flex flex-row mt-5" v-if="!!selectedClient">
+                            <div style="width: 30%">
+                                <div class="w-full text-2xl font-bold">
+                                    Client's Personal Information
+                                </div>
+                                <div style="height: 500px; border: 1px solid black" class="w-full flex flex-col mt-2">
+                                    <div class="w-full p-2">
+                                        <label>
+                                            First Name:
+                                        </label><br>
+                                        <input type="text" class="--input" :value="selectedClient.first_name" disabled>
+                                    </div>
+
+                                    <div class="w-full p-2">
+                                        <label>
+                                            Middle Name:
+                                        </label><br>
+                                        <input type="text" class="--input" :value="selectedClient.middle_name" disabled>
+                                    </div>
+
+                                    <div class="w-full p-2">
+                                        <label>
+                                            Last Name:
+                                        </label><br>
+                                        <input type="text" class="--input" :value="selectedClient.last_name" disabled>
+                                    </div>
+
+                                    <div class="w-full p-2">
+                                        <label>
+                                            Address:
+                                        </label><br>
+                                        <input type="text" class="--input" :value="selectedClient.address" disabled>
+                                    </div>
+
+                                    <div class="w-full p-2">
+                                        <label>
+                                            Contact #:
+                                        </label><br>
+                                        <input type="text" class="--input" :value="selectedClient.phone" disabled>
+                                    </div>
+
+                                    <div class="w-full p-2">
+                                        <label>
+                                            Account #:
+                                        </label><br>
+                                        <input type="text" class="--input" :value="selectedClient.reference" disabled>
+                                    </div>
+
+                                    <div class="w-full p-2">
+                                        <label>
+                                            Serial #:
+                                        </label><br>
+                                        <input type="text" class="--input" :value="selectedClient.serial" disabled>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div style="width: 70%" class="ml-5">
+                                <div class="w-full text-2xl font-bold flex flex-row">
+                                    <div class="w-full">
+                                        <p> Billing Details </p> 
+                                    </div>
+                                    
+                                    <div class="w-full">
+                                        <select style="width: 90%; border: 1px solid black; border-radius: 5px; height: 34px; text-align: center" v-model="month" class="ml-1">
+                                            <option value="1">January</option>
+                                            <option value="2">February</option>
+                                            <option value="3">March</option>
+                                            <option value="4">April</option>
+                                            <option value="5">May</option>
+                                            <option value="6">June</option>
+                                            <option value="7">July</option>
+                                            <option value="8">August</option>
+                                            <option value="9">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="w-full">
+                                        <input type="text" style="width: 90%; border: 1px solid black; border-radius: 5px; height: 34px; text-align: center" 
+                                            class="ml-1"
+                                            @keypress="validate(event)" v-model="paymentAmount"
+                                        >
+                                    </div>
+
+                                    <div class="w-full">
+                                        <button style="background: #000000; color: white; padding: 0px 5px 0px 5px; border-radius: 5px; background: #0288D1; width: 90%; font-size: 15px"
+                                            @click="markAsPaid(selectedClient.id)" v-if="activeTab == 'cashiering'"
+                                            class="ml-1"
+                                        >
+                                            SAVE PAYMENT
+                                        </button>
+                                    </div>
+
+
+                                </div>
+                                <div style="height: 200px; border: 1px solid black" class="w-full flex flex-col items-center mt-2">
+                                    <Table :columns="paymentColumns" :rows="payments.filter( x => { return x.status == 'UNPAID'})" :keys="paymentKeys" :selected.sync="payment" style="width: 98%" class="mt-2"/>
+                                </div>
+
+                                <div class="w-full text-2xl font-bold mt-2">
+                                    Payment History
+                                </div>
+                                
+                                <div style="height: 250px; border: 1px solid black" class="w-full flex flex-col items-center mt-2">
+                                    <Table :columns="paymentColumns" :rows="payments.filter( x => { return x.status == 'PAID'})" :keys="paymentKeys" :selected.sync="payment" style="width: 100%" class="mt-2"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="w-full flex flex-row justify-center items-center mt-5" v-else>
                         <div class="w-full flex flex-col mx-2 cursor-pointer" style="border: 1px solid black; border-radius: 5px" @click="activeTab = 'clients'">
                             <div class="w-full text-center" style="font-size: 50px;">
@@ -62,7 +202,7 @@
                             </div>
 
                             <div class="w-full text-center">
-                                Incident Reports
+                                Services
                             </div>
                         </div>
                     </div>
@@ -74,7 +214,7 @@
                     >   
                         <div class="w-full">
                             <span class="ml-2 cursor-pointer"
-                                @click="client = null"
+                                @click="client = null; isViewPayment = false"
                             >  
                                 <i class="fa-solid fa-xmark"></i>
                             </span>
@@ -92,7 +232,7 @@
                             </p>
                         </div>
 
-                        <div class="w-full mt-4 flex flex-row pl-2" v-if="activeTab == 'clients'">
+                        <div class="w-full mt-4 flex flex-row pl-2" v-if="activeTab == 'clients' && client.status == 'Activated'">
                             <div class="w-2/12">
                                 <Toggle :value="client.is_active" :url="'/clients/deactivate-reactivate'" :id="client.id" class="pt-1"/> 
                             </div>
@@ -102,7 +242,15 @@
                             </div>
                         </div>
 
+
                         <div class="w-full mt-4 inline-flex justify-center">
+                            <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #0288D1"
+                                @click="acticateConnection()" class="mr-1"
+                                v-if="activeTab == 'clients' && client.status == 'Pending'"
+                            >
+                                Activate
+                            </button>
+
                             <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #0288D1"
                                 @click="viewClient(client.reference)" class="mr-1"
                                 v-if="activeTab == 'billing'"
@@ -110,10 +258,11 @@
                                 VIEW
                             </button>
 
-                            <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #00897B" 
-                                @click="markAsPaid(client.id)" class="mr-1" v-if="client.amount_to_pay > 0 && activeTab == 'cashiering'"
+                            <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #0288D1"
+                                @click="viewPayment(client)" v-if="activeTab == 'cashiering' && !isViewPayment"
+                                class="mr-1"
                             >
-                                MARK AS PAID
+                                VIEW PAYMENTS
                             </button>
 
                             <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #EF5350"
@@ -121,8 +270,44 @@
                             >
                                 NOTIFY
                             </button>
+                        </div>
 
+                        <div class="w-full mt-4 flex flex-col" v-if="client.amount_to_pay > 0 && !!isViewPayment && activeTab == 'cashiering'">
 
+                            <div class="w-full my-1">
+                                <select style="width: 100%; border: 1px solid black; border-radius: 5px; height: 33px; text-align: center" v-model="month">
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+
+                            <div class="w-full my-1">
+                                <input type="text" style="width: 100%; border: 1px solid black; border-radius: 5px; height: 33px; text-align: center" 
+                                    @keypress="validate($event)" v-model="paymentAmount"
+                                >
+                            </div>
+
+                            <div class="w-full my-1">
+                                <button style="background: #000000; color: white; padding: 5px 10px 5px 10px; border-radius: 5px; background: #0288D1; width: 100%"
+                                    @click="markAsPaid(client.id)" v-if="client.amount_to_pay > 0 && activeTab == 'cashiering'"
+                                >
+                                 SAVE PAYMENT
+                                </button>
+
+                                <span class="text-xs text-red-500" v-if="message">
+                                    {{message}} 
+                                </span>
+                            </div>
                         </div>
                     </div>
 
@@ -160,15 +345,39 @@
                         </div>
 
                         <div class="mt-4">
-                            <label for="address">Address:</label><br>
-                            <input type="text" id="address" name="address" class="--input py-4" v-model="form.address" style="text-transform: capitalize;">
-                            <span class="text-xs text-red-500">{{validationError('address', saveError)}} </span>
+                            <label for="address">House No.:</label><br>
+                            <input type="text" id="address" name="address" class="--input py-4" v-model="form.house_no" style="text-transform: capitalize;">
+                            <span class="text-xs text-red-500">{{validationError('house_no', saveError)}} </span>
+                        </div>
+
+                        <div class="mt-4">
+                            <label for="address">Street:</label><br>
+                            <input type="text" id="address" name="address" class="--input py-4" v-model="form.street" style="text-transform: capitalize;">
+                            <span class="text-xs text-red-500">{{validationError('street', saveError)}} </span>
+                        </div>
+
+                        <div class="mt-4">
+                            <label for="address">Town:</label><br>
+                            <input type="text" id="address" name="address" class="--input py-4" v-model="form.town" style="text-transform: capitalize;">
+                            <span class="text-xs text-red-500">{{validationError('town', saveError)}} </span>
+                        </div>
+
+                        <div class="mt-4">
+                            <label for="address">Province:</label><br>
+                            <input type="text" id="address" name="address" class="--input py-4" v-model="form.province" style="text-transform: capitalize;">
+                            <span class="text-xs text-red-500">{{validationError('province', saveError)}} </span>
                         </div>
 
                         <div class="mt-4">
                             <label for="address">Contact #:</label><br>
                             <input type="text" id="address" name="address" class="--input py-4" v-model="form.phone">
                             <span class="text-xs text-red-500">{{validationError('phone', saveError)}} </span>
+                        </div>
+
+                        <div class="mt-4">
+                            <label for="address">Serial #:</label><br>
+                            <input type="text" id="address" name="address" class="--input py-4" v-model="form.serial">
+                            <span class="text-xs text-red-500">{{validationError('serial', saveError)}} </span>
                         </div>
 
                         <div class="mt-6">
@@ -210,83 +419,64 @@
 
                             <div class="w-full">
                                 <span class="float-left ml-5">
-                                    Account No.
+                                    Account No.:
                                 </span>
 
-                                <span class="float-right mr-5">
-                                    {{client.reference }}
+                                <span class="float-right mr-5" v-if="!!display">
+                                    {{display.reference }}
                                 </span>
                             </div>
 
                             <div class="w-full">
                                 <span class="float-left ml-5">
-                                    Name
+                                    Name:
                                 </span>
 
-                                <span class="float-right mr-5">
-                                    {{client.name }}
+                                <span class="float-right mr-5" v-if="!!display">
+                                    {{display.name }}
                                 </span>
                             </div>
 
                             <div class="w-full">
                                 <span class="float-left ml-5">
-                                    Due Date
+                                    Address:
                                 </span>
 
-                                <span class="float-right mr-5">
-                                    {{client.due_date }}
+                                <span class="float-right mr-5" v-if="!!display">
+                                    {{display.address }}
                                 </span>
                             </div>
 
                             <div class="w-full">
                                 <span class="float-left ml-5">
-                                    Consumption
+                                    Month:
                                 </span>
 
-                                <span class="float-right mr-5">
-                                    {{client.cubic_meter_consumed }} Cubic Meter
+                                <span class="float-right mr-5" v-if="!!display">
+                                    {{display.month }}
                                 </span>
                             </div>
 
                             <div class="w-full">
                                 <span class="float-left ml-5">
-                                    Service Charge
+                                    Present Reading:
                                 </span>
 
-                                <span class="float-right mr-5">
-                                    {{ parseFloat(client.other_fee).toFixed(2) }}
+                                <span class="float-right mr-5" v-if="!!display">
+                                    {{display.present }}
                                 </span>
                             </div>
 
                             <div class="w-full">
                                 <span class="float-left ml-5">
-                                    Penalty
+                                    Previous Reading:
                                 </span>
 
-                                <span class="float-right mr-5">
-                                    {{ parseFloat(client.penalty).toFixed(2) }}
+                                <span class="float-right mr-5" v-if="!!display">
+                                    {{display.previous }}
                                 </span>
                             </div>
 
-                            <div class="w-full">
-                                <span class="float-left ml-5">
-                                    Water Bill
-                                </span>
-
-                                <span class="float-right mr-5">
-                                    {{ parseFloat(client.amount_to_pay).toFixed(2) }}
-                                </span>
-                            </div>
-
-                            <div class="w-full py-10 my-5" style="border-bottom: dashed black; border-top: dashed black">
-                                <span class="float-left ml-5">
-                                    Total Bill
-                                </span>
-
-                                <span class="float-right mr-5">
-                                    {{ parseFloat(client.total).toFixed(2) }}
-                                </span>
-                            </div>
 
                             <div class="w-full">
                                 <p>
@@ -314,6 +504,7 @@ import { Inertia } from '@inertiajs/inertia';
 import axios from "axios";
 import Toggle from '../Components/Toggle.vue';
 import VueHtml2pdf from 'vue-html2pdf';
+import Dropdown from 'vue-simple-search-dropdown';
 
 export default {
     props: ['auth', 'options'],
@@ -321,7 +512,8 @@ export default {
         Navigation,
         Table,
         Toggle,
-        VueHtml2pdf
+        VueHtml2pdf,
+        Dropdown
     },
     data(){
         return {
@@ -330,7 +522,7 @@ export default {
             ],
             keys : [
                 {
-                    label: 'name',
+                    label: 'fullname',
                 },
                 {
                     label: 'address',
@@ -344,18 +536,66 @@ export default {
                 first_name: null,
                 middle_name: null,
                 last_name: null,
-                address: null,
-                phone: null
+                house_no: null,
+                street: null,
+                town: null,
+                province: null,
+                phone: null,
+                serial: null
             },
             saveError: null,
             client: null,
             activeTab: 'dashboard',
-            search: null
+            search: null,
+            isViewPayment: false,
+            payments: [],
+            payment: null,
+            paymentColumns: [
+                'Month', 'Amount', 'Penalty', 'Charges', 'Total Bill',  'Amount Paid' , 'Balance', 'Due Date', 'Status'
+            ],
+            paymentKeys : [
+                {
+                    label: 'month',
+                },
+                {
+                    label: 'amount',
+                },
+                {
+                    label: 'penalty',
+                },
+                {
+                    label: 'charges',
+                },
+                {
+                    label: 'total',
+                },
+                {
+                    label: 'added_payment',
+                },
+                {
+                    label: 'amount_to_pay',
+                },
+                {
+                    label: 'due_date',
+                },
+                {
+                    label: 'status',
+                }
+            ],
+            month: 1,
+            paymentAmount: 0,
+            message: null,
+            selectedClient: null,
+            display: null
         }
     },
 
     mounted() {
         this.clients = this.options.clients
+
+        if(this.auth.user_type == 'cashier') {
+            this.activeTab = 'cashiering'
+        }
     },
 
     watch: {
@@ -373,12 +613,12 @@ export default {
         activeTab(arg){
             if(arg == 'clients') {
                 this.columns = [
-                    'Name', 'Address', 'Contact #', 'Account #'
+                    'Name', 'Address', 'Contact #', 'Account #', 'Serial #', 'Status'
                 ]
 
                 this.keys = [
                     {
-                        label: 'name',
+                        label: 'fullname',
                     },
                     {
                         label: 'address',
@@ -388,27 +628,33 @@ export default {
                     },
                     {
                         label: 'reference',
-                    }
+                    },
+                    {
+                        label: 'serial',
+                    },
+                    {
+                        label: 'status',
+                    },
                 ]
             }
 
             if(arg == 'billing') {
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Other Fees', 'Due Date'
+                    'Name', 'Account #', 'Serial #', 'Amount to Pay', 'Charges', 'Due Date'
                 ]
 
                 this.keys = [
                     {
-                        label: 'name',
+                        label: 'fullname',
                     },
                     {
                         label: 'reference',
                     },
                     {
-                        label: 'amount_to_pay',
+                        label: 'serial',
                     },
                     {
-                        label: 'penalty',
+                        label: 'amount_to_pay',
                     },
                     {
                         label: 'other_fee',
@@ -421,21 +667,21 @@ export default {
 
             if(arg == 'cashiering') {
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Other Fees', 'Total'
+                    'Name', 'Account #', 'Serial #', 'Amount to Pay', 'Charges', 'Total'
                 ]
 
                 this.keys = [
                     {
-                        label: 'name',
+                        label: 'fullname',
                     },
                     {
                         label: 'reference',
                     },
                     {
-                        label: 'amount_to_pay',
+                        label: 'serial',
                     },
                     {
-                        label: 'penalty',
+                        label: 'amount_to_pay',
                     },
                     {
                         label: 'other_fee',
@@ -449,33 +695,67 @@ export default {
     },
 
     methods: {
+        selectClient(arg){
+            this.selectedClient = arg
+
+            this.viewPayment(arg)
+            console.log(arg)
+        },
         createClient(){
-            let headers = {
-				'Access-Control-Allow-Origin': '*',
-				'Access-Control-Allow-Methods': 'HEAD, GET, POST, PUT, PATCH, DELETE, OPTIONS',
-				'Access-Control-Allow-Headers': 'Content-Type'
-			}
-			
-			axios.post(this.$root.route + "/clients/client/create", this.form)
-				.then(response => {
-					if(response.data.status == 422) {
-						this.saveError = response.data.errors 
-					} else {
-						this.form = {
-                            first_name: null,
-                            middle_name: null,
-                            last_name: null,
-                            address: null,
-                            phone: null
-                        }
+            swal({
+                title: "Are you sure to this new water bill connection ?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((proceed) => {
+                if (proceed) {
+                    axios.post(this.$root.route + "/clients/client/create", this.form)
+                        .then(response => {
+                            if(response.data.status == 422) {
+                                this.saveError = response.data.errors 
+                            } else {
+                                this.form = {
+                                    first_name: null,
+                                    middle_name: null,
+                                    last_name: null,
+                                    address: null,
+                                    phone: null
+                                }
 
-						alert("New connection successfully created.");
+                                swal({
+                                    title: "Water Bill",
+                                    text: "You successfully created new connection.",
+                                    icon: "success",
+                                    button: "Okay",
+                                }).then( (proceed)=> {
+                                    this.saveError = null
 
-						this.saveError = null
+                                    location.reload()
+                                });
+                            }
+                        })
+                }
+            });
+        },
 
-						location.reload()
-					}
-				})
+        acticateConnection(){
+            swal({
+                title: "Are you sure you want to activate this connection ?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((proceed) => {
+                if (proceed) {
+                    axios.post(this.$root.route + "/clients/client/activate", { id: this.client.id })
+                        .then(response => {
+                            swal("Clients", "You successfully activated this connection.", "success");
+
+                            location.reload()
+                        })
+                }
+            });
         },
 
         viewClient(arg) {
@@ -488,13 +768,39 @@ export default {
         },
 
         markAsPaid(client_id) {
-            axios.post(this.$root.route + "/clients/client/mark-as-paid", {id : client_id})
-				.then(response => {
-                    alert("Succesfully mark as paid.");
-					// location.reload()
+            swal({
+                title: "Are you sure with this payment?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((proceed) => {
+                if (proceed) {
+                    var req = {
+                        month: this.month,
+                        client_id: client_id,
+                        paymentAmount: this.paymentAmount
+                    }
 
-                    this.$refs.or.generatePdf()
-				})
+                    axios.post(this.$root.route + "/clients/client/mark-as-paid", req)
+                        .then(response => {
+                            // alert()
+                            if(!response.data.message) {
+                                swal("Client's Payments", "Payment save successfully.", "success");
+
+                                this.display = response.data.display
+
+
+                                this.$refs.or.generatePdf()
+                            } else {
+                                this.message = response.data.message
+                            }
+                            
+                        })
+                }
+            });
+
+            
         },
 
         notify(arg) {
@@ -514,7 +820,32 @@ export default {
         },
 
         hasDownloaded(evt) {
-            location.reload()
+            // location.reload()
+        },
+
+        viewPayment(arg) {
+            axios.post(this.$root.route + "/clients/client/view-payment", {client_id : arg.id})
+				.then(response => {
+                    this.payments = response.data.payments
+				})
+        },
+
+        validate(evt) {
+            var theEvent = evt || window.event;
+
+            // Handle paste
+            if (theEvent.type === 'paste') {
+                key = event.clipboardData.getData('text/plain');
+            } else {
+            // Handle key press
+                var key = theEvent.keyCode || theEvent.which;
+                key = String.fromCharCode(key);
+            }
+            var regex = /[0-9]|\./;
+            if( !regex.test(key) ) {
+                theEvent.returnValue = false;
+                if(theEvent.preventDefault) theEvent.preventDefault();
+            }
         }
     }
 }
@@ -526,7 +857,7 @@ export default {
     width: 100%;
     height: 30px;
     border: 1px solid black;
-    border-radius: 5px;
+    border-radius: 3px;
     text-align: center;
 }
 

@@ -20,7 +20,11 @@ class ClientPayment extends Model
 
     protected $appends = [
         "month",
-        "due_date"
+        "due_date",
+        'charges',
+        'total',
+        'amount_to_pay',
+        'added_payment'
     ];
 
     public function getMonthAttribute()
@@ -43,4 +47,29 @@ class ClientPayment extends Model
     {
         return strtoupper($value);
     }
+
+    public function getChargesAttribute()
+    {
+        $month = Carbon::parse($this->date);
+
+        $charges = ClientUtility::whereMonth('created_at', $month)->whereIn('status', ['completed', 'paid'])->sum('amount');
+
+        return $charges;
+    }
+
+    public function getAddedPaymentAttribute()
+    {
+        return  $this->payment + $this->penalty_payment + $this->charges;
+    }
+
+    public function getTotalAttribute()
+    {
+        return ($this->amount + $this->penalty + $this->charges);
+    }
+
+    public function getAmountToPayAttribute()
+    {
+        return ($this->amount + $this->penalty + $this->charges) - ($this->payment + $this->penalty_payment + $this->charges);
+    }
+
 }

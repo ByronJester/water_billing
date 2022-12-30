@@ -18,11 +18,14 @@ class CreateClientsTable extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
-            $table->string('address');
+            $table->string('house_no');
+            $table->string('street');
+            $table->string('town');
+            $table->string('province');
             $table->string('phone')->unique();
             $table->string('reference');
-            $table->double('penalty', 8, 2)->default(0);
-            $table->date('payment_date')->nullable();
+            $table->string('serial')->unique();
+            $table->string('status')->default('pending');
             $table->boolean('is_active')->default(true);
 
             $table->softDeletes();

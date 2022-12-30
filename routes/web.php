@@ -49,9 +49,12 @@ Route::middleware(['cors'])->group(function () {
         Route::get('/', [ClientController::class, 'viewClients'])->name('view.clients');
         Route::get('/{reference}', [ClientController::class, 'viewClient'])->name('view.client'); 
         Route::get('/view/utilities', [ClientController::class, 'viewUtilities'])->name('view.utilities');
+        Route::post('/client/assign-worker', [ClientController::class, 'assignWoker']);
         Route::post('/client/create', [ClientController::class, 'saveClient']);
         Route::post('/client/mark-as-paid', [ClientController::class, 'markAsPaid']);
+        Route::post('/client/activate', [ClientController::class, 'activateConnection']);
         Route::post('/client/notify', [ClientController::class, 'notifyClient']);
+        Route::post('/client/view-payment', [ClientController::class, 'viewPayment']);
         Route::post('/deactivate-reactivate', [ClientController::class, 'changeStatus']);
         Route::post('/incident-report', [ClientController::class, 'generateIncidentReport']);
         Route::post('/incident-report/change-status', [ClientController::class, 'incidentReportChangeStatus']);
@@ -64,6 +67,8 @@ Route::middleware(['cors'])->group(function () {
     Route::prefix('bills')->group(function () {
         Route::get('/', [ClientController::class, 'viewBill'])->name('view.bill');
         Route::post('/generate', [ClientController::class, 'generateBill']);
+        Route::post('/void', [ClientController::class, 'voidReading']);
+        Route::post('/save-receipt', [ClientController::class, 'saveReceipt']);
         
     });
 

@@ -22,7 +22,7 @@ class ClientController extends Controller
         $auth = Auth::user();
 
         if($auth) {
-            $clients = Client::orderBy('created_at', 'desc')->where('is_active', true);
+            $clients = Client::orderBy('created_at', 'desc')->where('is_active', true); 
 
             return Inertia::render('Clients', [ 
                 'auth'    => $auth,
@@ -54,10 +54,9 @@ class ClientController extends Controller
                     'client' => $client,
                     'payments' => $payments,
                     'reports' => [
-                        'amount' => $payments->pluck('amount'),
+                        'amount' => $payments->pluck('amount'), 
                         'month' => $payments->pluck('month')  
                     ]
-                    
                 ]
             ]);
         }
@@ -66,14 +65,18 @@ class ClientController extends Controller
         
     }
 
-    public function saveClient(Request $request)
+    public function saveClient(Request $request)  
     {
         $validator = Validator::make($request->all(), [
             'first_name' => "required|alpha_spaces",
             'middle_name' => "nullable|alpha_spaces",
             'last_name' => "required|alpha_spaces",
-            'address' => "required|string",
-            'phone' => "required|numeric|digits:11|unique:clients,phone"
+            'house_no' => "required|string",
+            'street' => "required|string",
+            'town' => "required|string",
+            'province' => "required|string", 
+            'phone' => "required|numeric|digits:11|unique:clients,phone",
+            'serial' => "required|numeric|unique:clients,serial",
         ]);
 
         if ($validator->fails()) {
@@ -85,6 +88,16 @@ class ClientController extends Controller
         $data['reference'] = strtoupper(Str::random(8));
 
         $saveClient = Client::forceCreate($data);
+
+        $this->saveClientUser($data);
+
+        ClientUtility::forceCreate([
+            'user_id' => 1,
+            'client_id' => $saveClient->id,
+            'description' => "New Connection",
+            'amount' => 0,
+            'status' => "pending"
+        ]);
         
         return response()->json(['status' => 200], 200);  
     }
@@ -106,10 +119,12 @@ class ClientController extends Controller
     {
         $auth = Auth::user();
 
+        $clients = Client::get();
+
         return Inertia::render('Bill', [
             'auth'    => $auth,
             'options' => [
-                'sample' => []
+                'clients' => $clients
             ]
         ]);
     }
@@ -139,26 +154,31 @@ class ClientController extends Controller
 
         $totalAmount = $waterBillAmount;
 
-        if(count($bills) > 0) {
-            $totalAmount += $bills->sum('amount');
-            $penalty = (10 / 100) * $totalAmount;
-            $client->penalty = $client->penalty + $penalty;
-        }
+        $penalty = 0;
 
-        $client->payment_date = null;
-        $client->save();
+        if(count($bills) > 0) {
+            foreach($bills as $bill) {
+                $bill = (object) $bill;
+
+                $totalAmount += $bill->amount;
+            }
+            
+            $penalty = (10 / 100) * $totalAmount;
+        }
 
         $due_date = Carbon::parse($request->date);
         $days = $this->getDays($request->date);
 
         $due_date = $due_date->addDays($days);
 
-        $saveBill = ClientPayment::create([
+        $saveBill = ClientPayment::forceCreate([
             'client_id' => $client->id,
             'consumed_cubic_meter' => $consumed_cubic_meter,
             'amount' => $waterBillAmount,
             'status' => 'unpaid',
-            'date' => $request->date
+            'date' => $request->date,
+            'penalty' => $penalty,
+            'payment_date' => null
         ]);
 
         $now = Carbon::parse($request->date);
@@ -226,7 +246,7 @@ class ClientController extends Controller
             'pres' => $waterBillAmount,
             'consumption' => $consumed_cubic_meter,
             'due_date' => $due_date,
-            'total' => $totalAmount + $client->penalty,
+            'total' => $totalAmount + $penalty,
             'date' => $date->isoFormat('LL'),
             'reader' => $auth->name,
             'month' => $month,
@@ -251,22 +271,73 @@ class ClientController extends Controller
     {
         $auth = Auth::user();
 
-        $client = Client::where('id', $request->id)->first();
+        $message = null;
 
-        $description = $auth->first_name . ' ' . $auth->last_name . ' has mark as paid connection with account #' . $client->reference . '.';
+        $client_id = $request->client_id;
+        $payment_amount = $request->paymentAmount;
+        $month = $request->month;
+
+        $client = Client::where('id', $client_id)->first();
+
+        $description = $auth->first_name . ' ' . $auth->last_name . ' has mark as paid connection with serial #' . $client->serial . '.';
 
         $this->saveLogs($description);
 
-        Client::where('id', $request->id)->update([
-            'penalty' => 0,
-            'payment_date' => Carbon::now()
-        ]);
+        $previousPayment = ClientPayment::where('client_id', $client_id)->where('status', 'unpaid')->whereMonth('date', $month - 1)->first();
 
-        ClientUtility::where('client_id', $request->id)->update(['status' => 'paid']);
+        if($previousPayment) {
+            $message = 'Please pay your previous balance first.';
+        }
 
-        ClientPayment::where('client_id', $request->id)->update(['status' => 'paid']);
+        $payment = ClientPayment::where('client_id', $client_id)->where('status', 'unpaid')->whereMonth('date', $month)->first();
+        $charges = ClientUtility::where('client_id', $client_id)->where('status', 'completed')->whereMonth('created_at', $month)->sum('amount');
 
-        return response()->json(['status' => 200], 200);  
+        $display = null;
+        
+        if($payment) {
+            if($payment_amount == (($payment->amount - $payment->payment) + $payment->penalty + $charges)) {
+                ClientUtility::where('client_id', $client_id)->where('status', 'completed')->whereMonth('created_at', $month)->update(['status' => 'paid']);
+
+                $payment->payment = $payment->amount;
+                $payment->penalty_payment = $payment->penalty;
+                $payment->status = 'paid';
+                $payment->save();
+            } else {
+                
+                if($payment_amount < (($payment->amount - $payment->payment) + $charges)) {
+                    if($payment_amount > $charges) {
+                        ClientUtility::where('client_id', $client_id)->where('status', 'completed')->whereMonth('created_at', $month)->update(['status' => 'paid']);
+
+                        $payment->payment = ($payment_amount + $payment->payment) - $charges;
+                        $payment->save();
+                    } else {
+                        $message = 'Minimum amount must be equal to utility charges (' . $charges . ').';
+                    }
+                    
+                } else {
+                    $message = 'Payment exceeded to existing balance.';
+                }
+            }
+
+            $payments = ClientPayment::orderBy('date', 'desc')->where('client_id', $client_id)->get();
+            $unpaid = ClientPayment::orderBy('date')->where('client_id', $client_id)->where('status', 'unpaid')->get();
+            $other_charges = ClientUtility::where('client_id', $client_id)->where('status', 'completed')->whereMonth('created_at', $month)->get();
+
+            $display = [
+                'reference' => $client->reference,
+                'name' => $client->fullname,
+                'address' => $client->address,
+                'serial' => $client->serial,
+                'month' => $this->getMonth($month),
+                'present' => count($payments) > 0 ? $payments[0]['consumed_cubic_meter'] : null,
+                'previous' => count($payments) > 1 ? $payments[1]['consumed_cubic_meter'] : null,
+                'last_bill' => $unpaid,
+                'charges' => $other_charges,
+                'payment' => $payment
+            ];
+        }
+
+        return response()->json(['status' => 200, 'message' => $message, 'display' => $display], 200);  
     }
 
     public function notifyClient(Request $request)
@@ -298,7 +369,11 @@ class ClientController extends Controller
                 $client = Client::where('reference', $auth->reference)->first();
 
                 $utilities = $utilities->where('client_id', $client->id);
-            } 
+            } else {
+                if($auth->user_type == 'utility') {
+                    $utilities = $utilities->where('user_id', $auth->id);
+                }
+            }
 
             return Inertia::render('Utilities', [
                 'auth'    => $auth,
@@ -326,19 +401,22 @@ class ClientController extends Controller
         $data = $request->except(['user_id']);
         $client = Client::where('reference', $auth->reference)->first();
         
+        $admin = User::where('user_type', 'admin')->first();
+
+        $data['user_id'] = $admin->id;
         $data['client_id'] = $client->id;
         $data['status'] = 'pending';
         $data['amount'] = 0;
 
-        ClientUtility::create($data);
+        ClientUtility::forceCreate($data);
 
-        $utilities = User::where('user_type', 'utility')->get();
+        // $utilities = User::where('user_type', 'utility')->get();
 
-        foreach($utilities as $utility) {
+        // foreach($utilities as $utility) {
             $message = "There's new incident report submitted from client with Line #: " . $client->reference . ". Please visit our system for more information.";
 
-            $this->sendSms($utility->phone, $message);
-        }
+            $this->sendSms($admin->phone, $message);
+        // }
 
         return response()->json(['status' => 200], 200);  
     }
@@ -361,6 +439,57 @@ class ClientController extends Controller
         ]);
 
         return response()->json(['status' => 200, 'utilities' => $utilities->get()], 200);  
+    }
+
+    public function getMonth($arg)
+    {
+        if($arg == 1) {
+            return 'January';
+        }
+
+        if($arg == 2) {
+            return 'February';
+        }
+
+        if($arg == 3) {
+            return 'March';
+        }
+
+        if($arg == 4) {
+            return 'April';
+        }
+
+        if($arg == 5) {
+            return 'May';
+        }
+
+        if($arg == 6) {
+            return 'June';
+        }
+
+        if($arg == 7) {
+            return 'July';
+        }
+        
+        if($arg == 8) {
+            return 'August';
+        }
+
+        if($arg == 9) {
+            return 'September';
+        }
+
+        if($arg == 10) {
+            return 'October';
+        }
+
+        if($arg == 11) {
+            return 'November';
+        }
+
+        if($arg == 12) {
+            return 'December';
+        }
     }
 
     public function getDays($date)
@@ -420,5 +549,79 @@ class ClientController extends Controller
         }
 
         return $day;
+    }
+
+    public function activateConnection(Request $request)
+    {
+        CLient::where('id', $request->id)->update(['status' => 'activated']);
+
+        return response()->json(['status' => 200], 200);  
+    }
+
+    public function voidReading(Request $request)
+    {
+        $latest = ClientPayment::orderBy('created_at', 'desc')->where('client_id', $request->client_id)->first();
+
+        ClientPayment::where('id', $latest->id)->delete();
+
+        return response()->json(['status' => 200], 200);
+    }
+
+    public function viewPayment(Request $request)
+    {
+        $payments = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->get();
+
+        return response()->json(['payments' => $payments], 200);
+    }
+
+    public function assignWoker(Request $request)
+    {
+        ClientUtility::where('id', $request->id)->update($request->toArray());
+
+        $worker = User::where('id', $request->user_id)->first();
+
+        $ir = ClientUtility::where('id', $request->id)->first();
+
+        $client = Client::where('id', $ir->client_id)->first();
+
+        $date = Carbon::now();
+
+        if($ir->description == "New Connection") {
+            $message = "Dear " . $worker->name . ",\r\nWe have a water line installation on \r\n" . $date->isoFormat('LL') .  "\r\nSerial #:\r\n" . $client->serial . "\r\n" . "Name:\r\n" . $client->fullname . "\r\n" . "Address:\r\n" . $client->address . "\r\n";
+            $clientMessage = "Dear Client,\r\n" . "Be inform that the schedule of the installation for your water meter will be on " . $date->isoFormat('LL') . ". Make sure that you're at home to avoid any problems in installing your water meter line.\r\nThank you!";
+        } else {
+            $message = "Dear " . $worker->name . ",\r\nThere was a client report \r\n" . "Serial #:\r\n" . $client->serial . "\r\n" . "Name:\r\n" . $client->fullname . "\r\n" . "Address:\r\n" . $client->address . "\r\n" . "Report:\r\n"  . $ir->description;
+            $clientMessage = "Dear Client,\r\n" . "Good day!\r\nOur workers is now on their way to fixed your problem regarding your water line. Make sure that you're at home to avoid any problem in fixing your water line.\r\nThank you!";
+        }
+
+        $this->sendSms($worker->phone, $message);
+        $this->sendSms($client->phone, $clientMessage);
+
+        return response()->json(['status' => 200], 200);
+    }
+
+    public function saveReceipt(Request $request)
+    {
+        $client = Client::where('reference', $request->reference)->first();
+
+        $payment = ClientPayment::orderBy('created_at', 'desc')->where('client_id', $client->id)->first();
+        
+        if($image = $request->image) {
+            
+            $path = public_path().'/images/uploads';
+
+            $filename = time() . '_' . Str::random(8);
+
+            $extension = $image->getClientOriginalExtension();
+            
+            $uplaod = $image->move($path, $filename . '.' . $extension);
+
+            $image = $filename . '.' . $extension;
+
+            $payment->receipt = $image;
+            $payment->save();
+        }
+
+        return response()->json(['status' => $request->toArray()], 200);
     }
 }

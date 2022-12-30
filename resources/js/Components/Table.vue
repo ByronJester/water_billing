@@ -60,4 +60,14 @@ th {
 .--active__color {
     background: #B0BEC5;
 }
+
+@media screen and (max-width: 600px) {
+    td {
+        font-size: 9px;
+    }
+
+    th {
+        font-size: 9px;
+    }
+}
 </style>

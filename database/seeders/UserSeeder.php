@@ -10,7 +10,6 @@ use App\Models\WaterBill;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-
 class UserSeeder extends Seeder
 {
     /**
@@ -23,11 +22,13 @@ class UserSeeder extends Seeder
         User::create([
             'first_name' => 'Admin',
             'last_name' => 'Admin',
-            'phone' => random_int(10000000000, 99999999999),
+            'phone' => '09657657443',
             'email' => 'admin@gmail.com',
+            'username' => 'admin',
             'password' => Hash::make('password'),
             'user_type' => 'admin',
             'role' => '1',
+            'is_change_password' => true
         ]);
 
         // User::create([

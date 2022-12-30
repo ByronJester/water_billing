@@ -307,6 +307,7 @@ RUN mkdir -p \
   bootstrap/cache \
   && chown -R octane:octane \
   storage \
+  public \
   bootstrap/cache \
   && chmod -R ug+rwx storage bootstrap/cache
 

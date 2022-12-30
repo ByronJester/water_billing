@@ -65,7 +65,7 @@
 
 				<div class="p-2" style="border: 2px solid black; border-radius: 5px; width: 500px" v-if="!isRegister">
 					<input type="text" class="w-full  my-2 --login__register--input text-center"
-						placeholder="Email" v-model="formloginData.email"
+						placeholder="Username" v-model="formloginData.username"
 						@keyup.enter="login()"
 					>
 
@@ -87,11 +87,11 @@
 						Login
 					</button>
 
-					<p class="text-white text-sm cursor-pointer hover:underline text-center"
+					<!-- <p class="text-white text-sm cursor-pointer hover:underline text-center"
 						@click="isRegister = true"
 					>
 						Doesn't have account ? Sign Up Here! 
-					</p>
+					</p> -->
 				</div>
 
 				<div class="p-2" style="border: 2px solid black; border-radius: 5px; width: 500px" v-else>
@@ -350,7 +350,7 @@ export default {
 	data(){
 		return {
 			formloginData : {
-				email: null,
+				username: null,
 				password: null 
 			},
 			formRegisterData: {
@@ -408,7 +408,7 @@ export default {
 		},
 
 		disableButton(){
-			if(!this.formloginData.email){
+			if(!this.formloginData.username){
 				return true;
 			}
 

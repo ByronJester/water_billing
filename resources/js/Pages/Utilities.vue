@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="w-full mt-5">
-                        <button class="w-full px-4 py-2 text-center" style="background: black; color:white;"
+                        <button class="w-full px-4 py-2 text-center" style="background: navy; color:white;"
                             @click="changeStatus()"
                         >
                             Submit
@@ -141,6 +141,30 @@ export default {
         this.form.user_id = this.auth.id
 
         this.utilities = this.options.utilities
+
+        if(this.auth.role == 2) {
+            this.columns = [
+                'Name', 'Address', 'Description', 'Woker', 'Status'
+            ]
+
+            this.keys = [
+                {
+                    label: 'client_name',
+                },
+                {
+                    label: 'client_address'
+                },
+                {
+                    label: 'description',
+                },
+                {
+                    label: 'worker',
+                },
+                {
+                    label: 'status',
+                },
+            ]
+        }
     },
 
     watch: {
@@ -162,18 +186,35 @@ export default {
 
     methods: {
         generateIncidentReport(){
-            axios.post(this.$root.route + "/clients/incident-report", this.form)
-				.then(response => {
-					if(response.data.status == 422) {
-						this.saveError = response.data.errors 
-					} else {
-						alert("Incident report created.");
+            swal({
+                title: "Are you sure to generate this report?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((proceed) => {
+                if (proceed) {
+                    axios.post(this.$root.route + "/clients/incident-report", this.form)
+                        .then(response => {
+                            if(response.data.status == 422) {
+                                this.saveError = response.data.errors 
+                            } else {
+                                swal({
+                                    title: "Incident Report",
+                                    text: "You successfully generated incident report.",
+                                    icon: "success",
+                                    button: "Okay",
+                                }).then( (proceed)=> {
+                                    this.saveError = null
 
-						this.saveError = null
+                                    location.reload()
+                                });
+                            }
+                        })
+                }
+            });
 
-                        location.reload()
-					}
-				})
+            
         },
 
         openStatusModal(){

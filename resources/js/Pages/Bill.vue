@@ -1,7 +1,7 @@
 <template>
     <Navigation :auth="auth">
         <div class="w-full h-screen">
-            <div class="flex flex-col p-4 w-full h-full mt-20"
+            <div class="flex flex-col p-4 w-full h-full mt-10"
                 v-if="!isPrint"
             >
                 <div class="w-full text-center mb-5">
@@ -11,31 +11,66 @@
                 </div>
 
                 <div class="w-full">
-                    <input type="text" class="w-full  my-2 --login__register--input text-center"
-                        placeholder="Account #" v-model="form.reference" style="text-transform: uppercase"
+                    <label class="font-bold text-sm">Serial #:</label>
+                    <select class="--login__register--input w-full text-center text-sm" v-model="selected">
+                        <option :value="client" v-for="client in options.clients" :key="client.id">
+                            {{ client.serial_display }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="w-full mt-2">
+                    <label class="font-bold text-sm">Account #:</label>
+                    <input type="text" class="w-full  my-2 --login__register--input text-center text-sm"
+                        v-model="form.reference" style="text-transform: uppercase"
+                        :disabled="true"
                     >
                     <span class="text-xs text-red-500">{{validationError('reference', saveError)}} </span>
                 </div>
 
-                <div class="w-full">
-                    <input type="number" class="w-full  my-2 --login__register--input text-center"
+                <div class="w-full mt-2" v-if="selected">
+                    <label class="font-bold text-sm">Previous Reading:</label>
+                    <input type="text" class="w-full  my-2 --login__register--input text-center text-sm"
+                        v-model="selected.latest_consumed" style="text-transform: uppercase"
+                        :disabled="true"
+                    >
+                    <span class="text-xs text-red-500">{{validationError('reference', saveError)}} </span>
+                </div>
+
+                <div class="w-full" mt-2>
+                    <label class="font-bold text-sm">Current Reading:</label>
+                    <input type="number" class="w-full  my-2 --login__register--input text-center text-sm"
                         placeholder="Consumed Cubic Meter" v-model="form.consumed_cubic_meter"
                     >
                     <span class="text-xs text-red-500">{{validationError('consumed_cubic_meter', saveError)}} </span>
                 </div>
 
                 <div class="w-full">
-                    <input type="date" class="w-full  my-2 --login__register--input text-center"
+                    <label class="font-bold text-sm">Date:</label>
+                    <input type="date" class="w-full  my-2 --login__register--input text-center text-sm"
                         v-model="form.date"
+                        :disabled="true"
                     >
                     <span class="text-xs text-red-500">{{validationError('date', saveError)}} </span>
                 </div>
 
-                <div class="w-full">
+                <div class="w-full mt-2">
                     <button class="w-full  my-2 --login__register--button text-center"
                         @click="generateBill()"
+                        :disabled="!form.reference"
+                        :class="{'cursor-not-allowed': !form.reference}"
                     >
                         Generate Bill
+                    </button>
+                </div>
+
+                <div class="w-full mt-2">
+                    <button class="w-full  my-2 --void--button text-center"
+                        :disabled="!form.reference"
+                        @click="voidLastReading()"
+                        :class="{'cursor-not-allowed': !form.reference}"
+                    >
+                        Void Last Reading
                     </button>
                 </div>
             </div>
@@ -52,6 +87,7 @@
                 pdf-format="a6"
                 pdf-orientation="portrait"
                 pdf-content-width="100%"
+                @hasDownloaded="downloaded($event)"
                 ref="receipt"
             >
                 <section slot="pdf-content">
@@ -211,12 +247,14 @@ import { Inertia } from '@inertiajs/inertia';
 import axios from "axios";
 import VueHtml2pdf from 'vue-html2pdf'
 import Navigation from '../Layouts/Navigation.vue'
+import Dropdown from 'vue-simple-search-dropdown';
 
 export default {
     props: ['auth', 'options'],
     components: {
         VueHtml2pdf,
-        Navigation
+        Navigation,
+        Dropdown
     },
     data(){
         return {
@@ -227,7 +265,8 @@ export default {
             },
             saveError: null,
             clientData: null,
-            isPrint: false
+            isPrint: false,
+            selected: null
         }
     },
 
@@ -250,33 +289,80 @@ export default {
         },
 
         generateBill(){
-            axios.post(this.$root.route + "/bills/generate", this.form)
-				.then(response => {
-					if(response.data.status == 422) {
-						this.saveError = response.data.errors 
-					} else {
-                        var data = response.data.data
+            swal({
+                title: "Are you sure to generate this bill ?",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((proceed) => {
+                if (proceed) {
+                    axios.post(this.$root.route + "/bills/generate", this.form)
+                        .then(response => {
+                            if(response.data.status == 422) {
+                                this.saveError = response.data.errors 
+                            } else {
+                                var data = response.data.data
 
-                        this.clientData = data
+                                this.clientData = data
 
-                        this.form = {
-							reference: null,
-							consumed_cubic_meter: 0,
-                            date: null
-						}
+                                swal("Generate Bill", "You successfully generated bill.", "success");
 
-						alert("Successfully generate bill.");
+                                this.saveError = null
 
-						this.saveError = null
+                                
 
-                        
+                                // location.reload()
+                            }  
+                        })
+                }
+            });
+            
+        },
 
-                        // location.reload()
-					}  
-				})
+        voidLastReading() {
+            swal({
+                title: "Are you sure to void the latest bill ?",
+                text: "You will not be able to recover this bill.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((proceed) => {
+                if (proceed) {
+                    axios.post(this.$root.route + "/bills/void", { client_id: this.selected.id })
+                        .then(response => {
+                            location.reload()
+                        })
+                }
+            });
+
+            
+        },
+
+        downloaded(evt) {
+            // location.reload()
+            
+            var file = new File([evt], "receipt.pdf", { lastModified: new Date().getTime(), type: evt.type })
+
+            console.log(file)
+
+            var form_data = new FormData()
+
+            form_data.append('reference', this.form.reference)
+            form_data.append('image', file)
+
+            axios.post(this.$root.route + "/bills/save-receipt", form_data)
+                        .then(response => {
+                            location.reload()
+                            // console.log(response)
+                        })
         }
     },
     watch: {
+        selected(arg){
+            this.form.reference = arg.reference
+        },
         clientData(arg) {
             var self = this 
 
@@ -284,7 +370,7 @@ export default {
 
             document.getElementById("month").innerHTML = arg.month;
             document.getElementById("year").innerHTML = arg.year;
-            document.getElementById("name").innerHTML = arg.client.name;
+            document.getElementById("name").innerHTML = arg.client.fullname;
             document.getElementById("address").innerHTML = arg.client.address;
             document.getElementById("reference").innerHTML = arg.client.reference;
             document.getElementById("penalty").innerHTML = '₱ ' + (parseFloat(arg.client.penalty).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -322,6 +408,13 @@ export default {
 	color: white
 }
 
+.--void--button {
+	height: 40px;
+	border-radius: 30px;
+	background: #FF2B2B;
+	color: white
+}
+
 .--logout--button {
 	height: 40px;
 	border-radius: 30px;
@@ -335,4 +428,5 @@ export default {
 	background: #303F9F;
 	color: white
 }
+
 </style>

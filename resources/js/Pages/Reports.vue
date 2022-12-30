@@ -3,7 +3,7 @@
         <div class="w-full h-full px-2 py-2 flex flex-col">
             <div class="w-full flex flex-row mb-3 font-bold mt-5" style="height: 50px; border-bottom: 1px solid black">
                 <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'ir'" :class="{'bg-blue-300': activeTab == 'ir' }">
-                    INCIDENT REPORT
+                    SERVICES
                 </div>
 
                 <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'billing'" :class="{'bg-blue-300': activeTab == 'billing' }">
@@ -111,7 +111,7 @@ export default {
                 this.rows = this.options.ir
 
                 this.columns = [
-                    'Name', 'Address', 'Description', 'Status'
+                    'Name', 'Address', 'Description', 'Worker', 'Status'
                 ]
 
                 this.keys = [
@@ -123,6 +123,9 @@ export default {
                     },
                     {
                         label: 'description',
+                    },
+                    {
+                        label: 'worker',
                     },
                     {
                         label: 'status',

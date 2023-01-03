@@ -144,7 +144,7 @@ export default {
 
         if(this.auth.role == 2) {
             this.columns = [
-                'Name', 'Address', 'Description', 'Woker', 'Status'
+                'Name', 'Address', 'Description', 'Worker', 'Status'
             ]
 
             this.keys = [

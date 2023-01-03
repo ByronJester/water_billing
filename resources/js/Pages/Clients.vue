@@ -51,7 +51,7 @@
                                 Client
                             </label><br> -->
                             <Dropdown
-                                :options="options.clients"
+                                :options="options.activatedClients"
                                 :disabled="false"
                                 v-on:selected="selectClient"
                                 name="connections"
@@ -125,7 +125,7 @@
                                         <p> Billing Details </p> 
                                     </div>
                                     
-                                    <div class="w-full">
+                                    <div class="w-full" v-if="hasSelected">
                                         <select style="width: 90%; border: 1px solid black; border-radius: 5px; height: 34px; text-align: center" v-model="month" class="ml-1">
                                             <option value="1">January</option>
                                             <option value="2">February</option>
@@ -142,14 +142,14 @@
                                         </select>
                                     </div>
 
-                                    <div class="w-full">
+                                    <div class="w-full" v-if="hasSelected">
                                         <input type="text" style="width: 90%; border: 1px solid black; border-radius: 5px; height: 34px; text-align: center" 
                                             class="ml-1"
                                             @keypress="validate(event)" v-model="paymentAmount"
                                         >
                                     </div>
 
-                                    <div class="w-full">
+                                    <div class="w-full" v-if="hasSelected">
                                         <button style="background: #000000; color: white; padding: 0px 5px 0px 5px; border-radius: 5px; background: #0288D1; width: 90%; font-size: 15px"
                                             @click="markAsPaid(selectedClient.id)" v-if="activeTab == 'cashiering'"
                                             class="ml-1"
@@ -163,13 +163,18 @@
                                 <div style="height: 200px; border: 1px solid black" class="w-full flex flex-col items-center mt-2">
                                     <Table :columns="paymentColumns" :rows="payments.filter( x => { return x.status == 'UNPAID'})" :keys="paymentKeys" :selected.sync="payment" style="width: 98%" class="mt-2"/>
                                 </div>
+                                <div class="w-full">
+                                    <span class="float-right text-2xl font-bold">
+                                        ₱ {{ parseFloat(unpaid_total).toFixed(2) }}
+                                    </span>
+                                </div>
 
-                                <div class="w-full text-2xl font-bold mt-2">
+                                <div class="w-full text-2xl font-bold mt-10">
                                     Payment History
                                 </div>
                                 
                                 <div style="height: 250px; border: 1px solid black" class="w-full flex flex-col items-center mt-2">
-                                    <Table :columns="paymentColumns" :rows="payments.filter( x => { return x.status == 'PAID'})" :keys="paymentKeys" :selected.sync="payment" style="width: 100%" class="mt-2"/>
+                                    <Table :columns="otherPaymentColumns" :rows="payments.filter( x => { return x.status == 'PAID'})" :keys="otherPaymentKeys" :selected.sync="payment" style="width: 98%" class="mt-2"/>
                                 </div>
                             </div>
                         </div>
@@ -345,19 +350,19 @@
                         </div>
 
                         <div class="mt-4">
-                            <label for="address">House No.:</label><br>
+                            <label for="address">House No/Street:</label><br>
                             <input type="text" id="address" name="address" class="--input py-4" v-model="form.house_no" style="text-transform: capitalize;">
                             <span class="text-xs text-red-500">{{validationError('house_no', saveError)}} </span>
                         </div>
 
                         <div class="mt-4">
-                            <label for="address">Street:</label><br>
+                            <label for="address">Barangay:</label><br>
                             <input type="text" id="address" name="address" class="--input py-4" v-model="form.street" style="text-transform: capitalize;">
                             <span class="text-xs text-red-500">{{validationError('street', saveError)}} </span>
                         </div>
 
                         <div class="mt-4">
-                            <label for="address">Town:</label><br>
+                            <label for="address">Municipality:</label><br>
                             <input type="text" id="address" name="address" class="--input py-4" v-model="form.town" style="text-transform: capitalize;">
                             <span class="text-xs text-red-500">{{validationError('town', saveError)}} </span>
                         </div>
@@ -400,93 +405,164 @@
                 :pdf-quality="2"
                 :manual-pagination="false"
                 pdf-format="a4"
-                pdf-orientation="landscape"
+                pdf-orientation="portrait"
                 pdf-content-width="100%"
                 @hasDownloaded="hasDownloaded($event)"
                 ref="or"
             >
                 <section slot="pdf-content">
-                    <div class="flex flex-col p-4 w-full h-screen">
-                        <div class="w-full flex flex-col" v-if="!!client">
-                            <div class="w-full text-center text-xl pt-4 pb-10" style="border-bottom: dashed black;">
-                                WATER BILLING MANAGEMENT SYSTEM
-                            </div>
+                    <div class="w-full flex justify-center items-center mt-5">
+                        <img src="/images/logo.png" style="width: 80px; height: 80px"/>
+                    </div>
 
-                            <div class="w-full text-center font-bold text-lg my-5">
-                                OFFICIAL WATER RECEIPT
-                            </div>
+                    <div class="w-full text-xs text-center font-bold">
+                        Hydrolite Waterworks and Consumers Association
+                    </div>
 
+                    <div class="w-full text-xs text-center font-bold pb-10" style="border-bottom: dashed black;">
+                        Brgy. Lumbang Calzada Calaca, Batangas
+                    </div>
 
-                            <div class="w-full">
-                                <span class="float-left ml-5">
-                                    Account No.:
+                    <div class="flex flex-col p-2 w-full h-screen mt-10">
+                        <div class="w-full text-center text-md mt-2 font-bold">
+                           OFFICIAL WATER BILLING RECEIPT
+                        </div>
+
+                        <div class="w-full flex flex-col mt-10">
+                            <div class="mt-2 text-lg w-full mb-1 pb-1">
+                                <span class="float-left">
+                                    <b>Account #:</b>
                                 </span>
 
-                                <span class="float-right mr-5" v-if="!!display">
-                                    {{display.reference }}
-                                </span>
-                            </div>
+                                <span class="float-right mr-2" id="reference">
 
-                            <div class="w-full">
-                                <span class="float-left ml-5">
-                                    Name:
-                                </span>
-
-                                <span class="float-right mr-5" v-if="!!display">
-                                    {{display.name }}
                                 </span>
                             </div>
 
-                            <div class="w-full">
-                                <span class="float-left ml-5">
-                                    Address:
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Name:</b>
                                 </span>
 
-                                <span class="float-right mr-5" v-if="!!display">
-                                    {{display.address }}
-                                </span>
-                            </div>
+                                <span class="float-right mr-2" id="name">
 
-                            <div class="w-full">
-                                <span class="float-left ml-5">
-                                    Month:
-                                </span>
-
-                                <span class="float-right mr-5" v-if="!!display">
-                                    {{display.month }}
                                 </span>
                             </div>
 
-                            <div class="w-full">
-                                <span class="float-left ml-5">
-                                    Present Reading:
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
+                                    <b>Address:</b>
                                 </span>
 
-                                <span class="float-right mr-5" v-if="!!display">
-                                    {{display.present }}
-                                </span>
-                            </div>
+                                <span class="float-right mr-1 text-md" id="address">
 
-                            <div class="w-full">
-                                <span class="float-left ml-5">
-                                    Previous Reading:
-                                </span>
-
-                                <span class="float-right mr-5" v-if="!!display">
-                                    {{display.previous }}
                                 </span>
                             </div>
 
 
-                            <div class="w-full">
-                                <p>
-                                    You may check your bill online @ water-billing-6mb6.onrender.com <br>
-                                    For any inquiries, please contact <br>
-                                    09566814383/09657657443 <br>
-                                </p>
+                            <div class="mt-2 text-lg w-full mb-1 pb-1">
+                                <span class="float-left">
+                                    <b>Serial #:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="serial">
+
+                                </span>
                             </div>
 
-   
+                            <div class="mt-2 text-lg w-full mt-5">
+                                <span class="float-left">
+                                    <b>Month:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="month">
+
+                                </span>
+                            </div>
+                            
+                            <div class="mt-2 text-lg w-full mt-5">
+                                <span class="float-left">
+                                    <b>Present Reading:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="present">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full pb-10" style="border-bottom: dashed black;">
+                                <span class="float-left">
+                                    <b>Previous Reading:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="previous">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full mt-5">
+                                <span class="float-left">
+                                    <b>Other Charge(s):</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="charges">
+
+                                </span>
+                            </div>
+
+                            <!-- <div class="mt-2 text-lg w-full mt-5" id="testdiv">
+                            </div> -->
+
+                            <div class="mt-2 text-lg w-full mt-5">
+                                <span class="float-left">
+                                    <b>Total Charges</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="chargesAmount">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full mt-5">
+                                <span class="float-left">
+                                    <b>Penalty:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="penalty">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full mt-5">
+                                <span class="float-left">
+                                    <b>Amount Paid:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="amount_paid">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full mt-5 pb-10" style="border-bottom: dashed black;">
+                                <span class="float-left">
+                                    <b>Total Bill:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="amount_to_pay">
+
+                                </span>
+                            </div>
+                            
+
+                            <div class="mt-2 text-md w-full mt-10">
+                                You may check your bill online @https://water-billing-6mb6.onrender.com
+                            </div>
+
+                            <div class="mt-2 text-md w-full">
+                                For any inquiries, please contact 09566814383/09657657443
+                            </div>
+
+
                         </div>
                     </div>
                 </section>
@@ -582,11 +658,39 @@ export default {
                     label: 'status',
                 }
             ],
+            otherPaymentColumns: [
+                'Month', 'Amount', 'Penalty', 'Charges', 'Total Bill',  'Amount Paid', 'Status'
+            ],
+            otherPaymentKeys : [
+                {
+                    label: 'month',
+                },
+                {
+                    label: 'amount',
+                },
+                {
+                    label: 'penalty',
+                },
+                {
+                    label: 'charges',
+                },
+                {
+                    label: 'total',
+                },
+                {
+                    label: 'added_payment',
+                },
+                {
+                    label: 'status',
+                }
+            ],
             month: 1,
             paymentAmount: 0,
             message: null,
             selectedClient: null,
-            display: null
+            clientData: null,
+            hasSelected: false,
+            unpaid_total: 0
         }
     },
 
@@ -691,15 +795,41 @@ export default {
                     },
                 ]
             }
+        },
+        clientData(arg){
+            // console.log(arg)
+            var self = this 
+
+            document.getElementById("reference").innerHTML = arg.reference;
+            document.getElementById("name").innerHTML = arg.name;
+            document.getElementById("address").innerHTML = arg.address;
+            document.getElementById("serial").innerHTML = arg.serial;
+            document.getElementById("present").innerHTML = arg.present + ' mᶟ';
+            document.getElementById("previous").innerHTML = arg.previous + ' mᶟ';
+            document.getElementById("month").innerHTML = arg.month;
+            document.getElementById("charges").innerHTML = arg.charges;
+            document.getElementById("chargesAmount").innerHTML = '₱ ' + (parseFloat(arg.chargesAmount).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("amount_to_pay").innerHTML = '₱ ' + (parseFloat(arg.amount_to_pay).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("amount_paid").innerHTML = '₱ ' + (parseFloat(arg.amount_paid).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("penalty").innerHTML = '₱ ' + (parseFloat(arg.penalty).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+            setTimeout(() => {
+                self.$refs.or.generatePdf()
+            }, 3000)
         }
     },
 
     methods: {
         selectClient(arg){
+            this.hasSelected = false
+
             this.selectedClient = arg
 
-            this.viewPayment(arg)
-            console.log(arg)
+            if(arg.id) {
+                this.viewPayment(arg)
+                this.hasSelected = true
+            }
+            
         },
         createClient(){
             swal({
@@ -754,7 +884,7 @@ export default {
 
                             location.reload()
                         })
-                }
+                } 
             });
         },
 
@@ -788,10 +918,14 @@ export default {
                             if(!response.data.message) {
                                 swal("Client's Payments", "Payment save successfully.", "success");
 
-                                this.display = response.data.display
+                                var data = response.data.data
+
+                                this.clientData = data
+
+                                // this.displayData = response.data.display
 
 
-                                this.$refs.or.generatePdf()
+                                // this.$refs.or.generatePdf()
                             } else {
                                 this.message = response.data.message
                             }
@@ -814,7 +948,7 @@ export default {
             Inertia.get(
                 this.$root.route + arg,
                 {
-                    onSuccess: () => { },
+                    onSuccess: () => { }, 
                 },
             );
         },
@@ -827,6 +961,7 @@ export default {
             axios.post(this.$root.route + "/clients/client/view-payment", {client_id : arg.id})
 				.then(response => {
                     this.payments = response.data.payments
+                    this.unpaid_total = response.data.total
 				})
         },
 
@@ -846,7 +981,8 @@ export default {
                 theEvent.returnValue = false;
                 if(theEvent.preventDefault) theEvent.preventDefault();
             }
-        }
+        },
+        
     }
 }
 

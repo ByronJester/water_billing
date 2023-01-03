@@ -239,12 +239,15 @@ class UserController extends Controller
     {
         $auth = Auth::user();
 
+        $clients = Client::orderBy('created_at', 'desc')->get();
+
         if($auth) {
             return Inertia::render('Reports', [
                 'auth'    => $auth,
                 'options' => [
                     'ir' => ClientUtility::get(),
-                    'clients' => Client::get() 
+                    'clients' => $clients,
+                    'total' => $clients->sum('amount_to_pay')
                 ]
             ]);
         }

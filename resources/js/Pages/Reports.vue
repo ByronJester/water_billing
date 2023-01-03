@@ -1,7 +1,7 @@
 <template>
      <Navigation :auth="auth">
         <div class="w-full h-full px-2 py-2 flex flex-col">
-            <div class="w-full flex flex-row mb-3 font-bold mt-5" style="height: 50px; border-bottom: 1px solid black">
+            <!-- <div class="w-full flex flex-row mb-3 font-bold mt-5" style="height: 50px; border-bottom: 1px solid black">
                 <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'ir'" :class="{'bg-blue-300': activeTab == 'ir' }">
                     SERVICES
                 </div>
@@ -21,16 +21,52 @@
                 <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'deactivation'" :class="{'bg-blue-300': activeTab == 'deactivation' }">
                     DEACTIVATED CONNECTION
                 </div>
+            </div> -->
+
+            <div class="w-full flex flex-row">
+                <div class="w-full">
+                    <label class="font-bold text-2xl">
+                        Time Frame
+                    </label><br>
+                    <input type="date" class="mx-1 mt-5" style="border: 1px solid black;  height: 40px" v-model="date.start">
+                    -
+                    <input type="date" class="mx-1" style="border: 1px solid black;  height: 40px" v-model="date.end">
+
+                    <button style="background: navy; width: 50px; height: 40px" class="text-center text-xs py-2 text-white"
+                        @click="filterRows()"
+                    >
+                        Filter
+                    </button>
+                </div>
+
+                <div class="w-full">
+                    <div class="float-right">
+                        <label class="font-bold text-2xl">
+                            Report Category
+                        </label><br>
+                        <select v-model="activeTab" style="width: 150px; border: 1px solid black; height: 40px" class="mt-5 float-right">
+                            <option value="billing">Billing</option>
+                            <option value="payment">Payment</option>
+                            <option value="reconnection">ACTIVATED CONNECTION</option>
+                            <option value="deactivation">DEACTIVATED CONNECTION</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
-            <div class="w-full">
-                <span class="float-right mr-2 cursor-pointer" @click="printReport()">
+            <div class="w-full mt-5">
+                <span class="float-right mr-2 cursor-pointer" @click="printReport()"> 
                     <i class="fa-solid fa-print"></i>
                 </span>
             </div>
 
             <div class="w-full mt-2">
                 <Table :columns="columns" :rows="rows" :keys="keys" :selected.sync="selected"/>
+            </div>
+            <div class="w-full" v-if="activeTab == 'billing' || activeTab == 'payment'">
+                <span class="float-right text-2xl font-bold py-2">
+                        Total: ₱ {{ parseFloat(options.total).toFixed(2) }}
+                </span>
             </div>
 
             <VueHtml2pdf
@@ -49,8 +85,16 @@
             >
                 <section slot="pdf-content">
                     <div class="w-full p-5">
-                        <div class="w-full text-xl text-center">
-                            WATER BILLING MANAGEMENT SYSTEM
+                        <div class="w-full flex justify-center items-center">
+                            <img src="/images/logo.png" style="width: 100px; height: 100px"/>
+                        </div>
+
+                        <div class="w-full text-xl text-center font-bold">
+                            Hydrolite Waterworks and Consumers Association
+                        </div>
+
+                        <div class="w-full text-lg text-center font-bold">
+                            Brgy. Lumbang Calzada Calaca, Batangas
                         </div>
 
                         <div class="w-full text-lg font-bold text-center mt-6">
@@ -72,7 +116,12 @@
                                 </td>
                             </tr>
 
-                        </table>
+                        </table> 
+                        <div class="w-full" v-if="activeTab == 'billing' || activeTab == 'payment'">
+                            <span class="float-right text-2xl font-bold py-2">
+                                    Total: ₱ {{ parseFloat(options.total).toFixed(2) }}
+                            </span>
+                        </div>
                     </div>
                 </section>
             </VueHtml2pdf>
@@ -97,11 +146,15 @@ export default {
     },
     data(){
         return {
-           activeTab: 'ir',
-           selected: null,
-           columns: [],
-           rows: [],
-           keys: []
+            activeTab: 'billing',
+            selected: null,
+            columns: [],
+            rows: [],
+            keys: [],
+            date: {
+                start: null,
+                end: null
+            }
         }
     },
 
@@ -228,31 +281,152 @@ export default {
     },
 
     created(){
-        if(this.activeTab == 'ir') {
-            this.rows = this.options.ir
+        if(this.activeTab == 'billing') {
+            this.rows = this.options.clients.filter( x => { return !!x.is_active })
 
             this.columns = [
-                'Name', 'Address', 'Description', 'Status'
+                'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'
             ]
 
             this.keys = [
                 {
-                    label: 'client_name',
+                    label: 'name',
                 },
                 {
-                    label: 'client_address'
+                    label: 'reference',
                 },
                 {
-                    label: 'description',
+                    label: 'amount_to_pay',
                 },
                 {
-                    label: 'status',
+                    label: 'penalty',
                 },
+                {
+                    label: 'due_date'
+                }
             ]
         }
+
+        var date = new Date();
+
+        var startDate = date.toISOString().slice(0,10);
+        var endDate = date.setDate(date.getDate() + 1);
+        endDate = date.toISOString().slice(0,10);
+
+        this.date.start = startDate
+        this.date.end = endDate
+
+        this.rows = this.rows.filter(x => {
+            var createdAt = new Date(x.created_at);
+            return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
+        })
+        
     },
 
     methods: {
+        filterRows(){
+            var arg = this.activeTab
+
+            if(arg == 'billing') {
+                this.rows = this.options.clients.filter( x => { return !!x.is_active })
+
+                this.columns = [
+                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'
+                ]
+
+                this.keys = [
+                    {
+                        label: 'name',
+                    },
+                    {
+                        label: 'reference',
+                    },
+                    {
+                        label: 'amount_to_pay',
+                    },
+                    {
+                        label: 'penalty',
+                    },
+                    {
+                        label: 'due_date'
+                    }
+                ]
+            }
+
+            if(arg == 'payment') {
+                this.rows = this.options.clients.filter( x => { return !!x.is_active })
+
+                this.columns = [
+                    'Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'
+                ]
+
+                this.keys = [
+                    {
+                        label: 'name',
+                    },
+                    {
+                        label: 'reference',
+                    },
+                    {
+                        label: 'amount_to_pay',
+                    },
+                    {
+                        label: 'status',
+                    },
+                    {
+                        label: 'payment_date',
+                    },
+                ]
+            }
+
+            if(arg == 'reconnection') {
+                this.rows = this.options.clients.filter( x => {return !!x.is_active})
+                
+                this.columns = [
+                    'Name', 'Account #', 'Address'
+                ]
+
+                this.keys = [
+                    {
+                        label: 'name',
+                    },
+                    {
+                        label: 'reference',
+                    },
+                    {
+                        label: 'address',
+                    },
+                ]
+            }
+
+            if(arg == 'deactivation') {
+                this.rows = this.options.clients.filter( x => { return !x.is_active})
+                
+                this.columns = [
+                    'Name', 'Account #', 'Address'
+                ]
+
+                this.keys = [
+                    {
+                        label: 'name',
+                    },
+                    {
+                        label: 'reference',
+                    },
+                    {
+                        label: 'address',
+                    },
+                ]
+            }
+
+            this.rows = this.rows.filter(x => {
+                var createdAt = new Date(x.created_at);
+                return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
+            })
+
+            console.log(this.rows)
+
+        },
         printReport(){
             this.$refs.report.generatePdf()
         },

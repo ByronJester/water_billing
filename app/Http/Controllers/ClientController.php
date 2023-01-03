@@ -22,14 +22,16 @@ class ClientController extends Controller
         $auth = Auth::user();
 
         if($auth) {
-            $clients = Client::orderBy('created_at', 'desc')->where('is_active', true); 
+            $clients = Client::orderBy('created_at', 'desc')->where('is_active', true);
+            $activatedClients = Client::orderBy('created_at', 'desc')->where('status', 'activated')->where('is_active', true)->get();
 
             return Inertia::render('Clients', [ 
                 'auth'    => $auth,
                 'options' => [
                     'clients' => $clients->get(),
                     'users' => User::get(),
-                    'incidents' => ClientUtility::where('status', 'pending')->get() 
+                    'incidents' => ClientUtility::where('status', 'pending')->get(),
+                    'activatedClients' => $activatedClients
                 ]
             ]);
         }
@@ -75,8 +77,8 @@ class ClientController extends Controller
             'street' => "required|string",
             'town' => "required|string",
             'province' => "required|string", 
-            'phone' => "required|numeric|digits:11|unique:clients,phone",
-            'serial' => "required|numeric|unique:clients,serial",
+            'phone' => "required|numeric|digits:11|unique:clients,phone|unique:users,phone",
+            'serial' => "required|numeric|unique:clients,serial|digits:9",
         ]);
 
         if ($validator->fails()) {
@@ -119,7 +121,7 @@ class ClientController extends Controller
     {
         $auth = Auth::user();
 
-        $clients = Client::get();
+        $clients = Client::where('status', 'activated')->get();
 
         return Inertia::render('Bill', [
             'auth'    => $auth,
@@ -240,6 +242,8 @@ class ClientController extends Controller
 
         $date = Carbon::parse($request->date);
 
+        $charges = ClientUtility::where('client_id', $client->id)->where('status', 'completed')->whereMonth('created_at', Carbon::now()->month)->sum('amount');
+
         $data = [
             'client' => $client,
             'prev' => $bills->sum('amount'),
@@ -252,7 +256,9 @@ class ClientController extends Controller
             'month' => $month,
             'year' => $year,
             'count' => count($bills) . ' month(s)',
-            'message' => count($bills) >= 2  ? "WARNING FOR DISCONNECTION. \r\n Please settle your balance." : ''
+            'message' => count($bills) >= 2  ? "WARNING FOR DISCONNECTION. \r\n Please settle your balance." : '',
+            'penalty' => $penalty,
+            'charges' => $charges
         ]; 
 
         $users = User::where('reference', $request->reference)->get();
@@ -293,6 +299,10 @@ class ClientController extends Controller
         $charges = ClientUtility::where('client_id', $client_id)->where('status', 'completed')->whereMonth('created_at', $month)->sum('amount');
 
         $display = null;
+
+        if(!$payment) {
+            return response()->json(['status' => 200], 200);  
+        }
         
         if($payment) {
             if($payment_amount == (($payment->amount - $payment->payment) + $payment->penalty + $charges)) {
@@ -320,8 +330,9 @@ class ClientController extends Controller
             }
 
             $payments = ClientPayment::orderBy('date', 'desc')->where('client_id', $client_id)->get();
-            $unpaid = ClientPayment::orderBy('date')->where('client_id', $client_id)->where('status', 'unpaid')->get();
-            $other_charges = ClientUtility::where('client_id', $client_id)->where('status', 'completed')->whereMonth('created_at', $month)->get();
+            $other_charges = ClientUtility::where('client_id', $client_id)->where('status', 'paid')->whereMonth('created_at', $month)->get();
+            $chargesAmount = $other_charges->sum('amount');
+            $stringCharges = $other_charges->pluck('display_service');
 
             $display = [
                 'reference' => $client->reference,
@@ -331,13 +342,15 @@ class ClientController extends Controller
                 'month' => $this->getMonth($month),
                 'present' => count($payments) > 0 ? $payments[0]['consumed_cubic_meter'] : null,
                 'previous' => count($payments) > 1 ? $payments[1]['consumed_cubic_meter'] : null,
-                'last_bill' => $unpaid,
-                'charges' => $other_charges,
-                'payment' => $payment
+                'charges' => implode(", ", $stringCharges->toArray()),
+                'chargesAmount' => $chargesAmount,
+                'amount_to_pay' => $payment->total + $chargesAmount,
+                'amount_paid' => $payment_amount,
+                'penalty' => $payment->penalty
             ];
         }
 
-        return response()->json(['status' => 200, 'message' => $message, 'display' => $display], 200);  
+        return response()->json(['status' => 200, 'message' => $message, 'data' => $display], 200);  
     }
 
     public function notifyClient(Request $request)
@@ -570,8 +583,9 @@ class ClientController extends Controller
     public function viewPayment(Request $request)
     {
         $payments = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->get();
+        $total = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->where('status', 'unpaid')->get();
 
-        return response()->json(['payments' => $payments], 200);
+        return response()->json(['payments' => $payments, 'total' => $total->sum('total')], 200);
     }
 
     public function assignWoker(Request $request)

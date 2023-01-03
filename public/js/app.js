@@ -2656,6 +2656,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2762,7 +2794,8 @@ __webpack_require__.r(__webpack_exports__);
       document.getElementById("name").innerHTML = arg.client.fullname;
       document.getElementById("address").innerHTML = arg.client.address;
       document.getElementById("reference").innerHTML = arg.client.reference;
-      document.getElementById("penalty").innerHTML = '₱ ' + parseFloat(arg.client.penalty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("serial").innerHTML = arg.client.serial;
+      document.getElementById("penalty").innerHTML = '₱ ' + parseFloat(arg.penalty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       document.getElementById("pres").innerHTML = '₱ ' + parseFloat(arg.pres).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       document.getElementById("prev").innerHTML = '₱ ' + parseFloat(arg.prev).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       document.getElementById("due_date").innerHTML = arg.client.due_date;
@@ -2772,6 +2805,7 @@ __webpack_require__.r(__webpack_exports__);
       document.getElementById("consumption").innerHTML = arg.consumption + ' mᶟ';
       document.getElementById("message").innerHTML = arg.message;
       document.getElementById("count").innerHTML = arg.count;
+      document.getElementById("charges").innerHTML = '₱ ' + parseFloat(arg.charges).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       setTimeout(function () {
         self.$refs.receipt.generatePdf();
       }, 3000);
@@ -3448,6 +3482,82 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3513,11 +3623,29 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         label: 'status'
       }],
+      otherPaymentColumns: ['Month', 'Amount', 'Penalty', 'Charges', 'Total Bill', 'Amount Paid', 'Status'],
+      otherPaymentKeys: [{
+        label: 'month'
+      }, {
+        label: 'amount'
+      }, {
+        label: 'penalty'
+      }, {
+        label: 'charges'
+      }, {
+        label: 'total'
+      }, {
+        label: 'added_payment'
+      }, {
+        label: 'status'
+      }],
       month: 1,
       paymentAmount: 0,
       message: null,
       selectedClient: null,
-      display: null
+      clientData: null,
+      hasSelected: false,
+      unpaid_total: 0
     };
   },
   mounted: function mounted() {
@@ -3587,13 +3715,36 @@ __webpack_require__.r(__webpack_exports__);
           label: 'total'
         }];
       }
+    },
+    clientData: function clientData(arg) {
+      // console.log(arg)
+      var self = this;
+      document.getElementById("reference").innerHTML = arg.reference;
+      document.getElementById("name").innerHTML = arg.name;
+      document.getElementById("address").innerHTML = arg.address;
+      document.getElementById("serial").innerHTML = arg.serial;
+      document.getElementById("present").innerHTML = arg.present + ' mᶟ';
+      document.getElementById("previous").innerHTML = arg.previous + ' mᶟ';
+      document.getElementById("month").innerHTML = arg.month;
+      document.getElementById("charges").innerHTML = arg.charges;
+      document.getElementById("chargesAmount").innerHTML = '₱ ' + parseFloat(arg.chargesAmount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("amount_to_pay").innerHTML = '₱ ' + parseFloat(arg.amount_to_pay).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("amount_paid").innerHTML = '₱ ' + parseFloat(arg.amount_paid).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("penalty").innerHTML = '₱ ' + parseFloat(arg.penalty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      setTimeout(function () {
+        self.$refs.or.generatePdf();
+      }, 3000);
     }
   },
   methods: {
     selectClient: function selectClient(arg) {
+      this.hasSelected = false;
       this.selectedClient = arg;
-      this.viewPayment(arg);
-      console.log(arg);
+
+      if (arg.id) {
+        this.viewPayment(arg);
+        this.hasSelected = true;
+      }
     },
     createClient: function createClient() {
       var _this = this;
@@ -3673,9 +3824,9 @@ __webpack_require__.r(__webpack_exports__);
             // alert()
             if (!response.data.message) {
               swal("Client's Payments", "Payment save successfully.", "success");
-              _this3.display = response.data.display;
-
-              _this3.$refs.or.generatePdf();
+              var data = response.data.data;
+              _this3.clientData = data; // this.displayData = response.data.display
+              // this.$refs.or.generatePdf()
             } else {
               _this3.message = response.data.message;
             }
@@ -3705,6 +3856,7 @@ __webpack_require__.r(__webpack_exports__);
         client_id: arg.id
       }).then(function (response) {
         _this4.payments = response.data.payments;
+        _this4.unpaid_total = response.data.total;
       });
     },
     validate: function validate(evt) {
@@ -3744,6 +3896,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
 //
 //
 //
@@ -4127,6 +4282,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {},
   methods: {
+    showLoginPassword: function showLoginPassword() {
+      var x = document.getElementById("loginPassword");
+
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    },
     login: function login() {
       var _this = this;
 
@@ -4445,6 +4609,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4460,11 +4673,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      activeTab: 'ir',
+      activeTab: 'billing',
       selected: null,
       columns: [],
       rows: [],
-      keys: []
+      keys: [],
+      date: {
+        start: null,
+        end: null
+      }
     };
   },
   watch: {
@@ -4551,21 +4768,113 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    if (this.activeTab == 'ir') {
-      this.rows = this.options.ir;
-      this.columns = ['Name', 'Address', 'Description', 'Status'];
+    var _this = this;
+
+    if (this.activeTab == 'billing') {
+      this.rows = this.options.clients.filter(function (x) {
+        return !!x.is_active;
+      });
+      this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
       this.keys = [{
-        label: 'client_name'
+        label: 'name'
       }, {
-        label: 'client_address'
+        label: 'reference'
       }, {
-        label: 'description'
+        label: 'amount_to_pay'
       }, {
-        label: 'status'
+        label: 'penalty'
+      }, {
+        label: 'due_date'
       }];
     }
+
+    var date = new Date();
+    var startDate = date.toISOString().slice(0, 10);
+    var endDate = date.setDate(date.getDate() + 1);
+    endDate = date.toISOString().slice(0, 10);
+    this.date.start = startDate;
+    this.date.end = endDate;
+    this.rows = this.rows.filter(function (x) {
+      var createdAt = new Date(x.created_at);
+      return createdAt >= new Date(_this.date.start) && createdAt <= new Date(_this.date.end);
+    });
   },
   methods: {
+    filterRows: function filterRows() {
+      var _this2 = this;
+
+      var arg = this.activeTab;
+
+      if (arg == 'billing') {
+        this.rows = this.options.clients.filter(function (x) {
+          return !!x.is_active;
+        });
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
+        this.keys = [{
+          label: 'name'
+        }, {
+          label: 'reference'
+        }, {
+          label: 'amount_to_pay'
+        }, {
+          label: 'penalty'
+        }, {
+          label: 'due_date'
+        }];
+      }
+
+      if (arg == 'payment') {
+        this.rows = this.options.clients.filter(function (x) {
+          return !!x.is_active;
+        });
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'];
+        this.keys = [{
+          label: 'name'
+        }, {
+          label: 'reference'
+        }, {
+          label: 'amount_to_pay'
+        }, {
+          label: 'status'
+        }, {
+          label: 'payment_date'
+        }];
+      }
+
+      if (arg == 'reconnection') {
+        this.rows = this.options.clients.filter(function (x) {
+          return !!x.is_active;
+        });
+        this.columns = ['Name', 'Account #', 'Address'];
+        this.keys = [{
+          label: 'name'
+        }, {
+          label: 'reference'
+        }, {
+          label: 'address'
+        }];
+      }
+
+      if (arg == 'deactivation') {
+        this.rows = this.options.clients.filter(function (x) {
+          return !x.is_active;
+        });
+        this.columns = ['Name', 'Account #', 'Address'];
+        this.keys = [{
+          label: 'name'
+        }, {
+          label: 'reference'
+        }, {
+          label: 'address'
+        }];
+      }
+
+      this.rows = this.rows.filter(function (x) {
+        var createdAt = new Date(x.created_at);
+        return createdAt >= new Date(_this2.date.start) && createdAt <= new Date(_this2.date.end);
+      });
+      console.log(this.rows);
+    },
     printReport: function printReport() {
       this.$refs.report.generatePdf();
     },
@@ -5418,7 +5727,7 @@ __webpack_require__.r(__webpack_exports__);
     this.utilities = this.options.utilities;
 
     if (this.auth.role == 2) {
-      this.columns = ['Name', 'Address', 'Description', 'Woker', 'Status'];
+      this.columns = ['Name', 'Address', 'Description', 'Worker', 'Status'];
       this.keys = [{
         label: 'client_name'
       }, {
@@ -49020,10 +49329,7 @@ var render = function() {
                     ],
                     staticClass:
                       "w-full  my-2 --login__register--input text-center text-sm",
-                    attrs: {
-                      type: "number",
-                      placeholder: "Consumed Cubic Meter"
-                    },
+                    attrs: { type: "number", placeholder: "Current Reading" },
                     domProps: { value: _vm.form.consumed_cubic_meter },
                     on: {
                       input: function($event) {
@@ -49164,12 +49470,45 @@ var render = function() {
               [
                 _c(
                   "div",
-                  { staticClass: "flex flex-col p-2 w-full h-screen" },
+                  {
+                    staticClass: "w-full flex justify-center items-center mt-5"
+                  },
+                  [
+                    _c("img", {
+                      staticStyle: { width: "80px", height: "80px" },
+                      attrs: { src: "/images/logo.png" }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "w-full text-xs text-center font-bold" },
+                  [
+                    _vm._v(
+                      "\n                    Hydrolite Waterworks and Consumers Association\n                "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "w-full text-xs text-center font-bold" },
+                  [
+                    _vm._v(
+                      "\n                    Brgy. Lumbang Calzada Calaca, Batangas\n                "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "flex flex-col p-2 w-full h-screen mt-10" },
                   [
                     _c(
                       "div",
                       {
-                        staticClass: "w-full text-center text-xl mt-2 font-bold"
+                        staticClass: "w-full text-center text-md mt-2 font-bold"
                       },
                       [
                         _vm._v(
@@ -49181,8 +49520,7 @@ var render = function() {
                     _c(
                       "div",
                       {
-                        staticClass:
-                          "w-full text-center text-xl mt-2 font-bold inline-flex"
+                        staticClass: "w-full text-center text-md mt-2 font-bold"
                       },
                       [
                         _vm._v("\n                       FOR THE MONTH OF "),
@@ -49220,10 +49558,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "div",
-                        {
-                          staticClass: "mt-2 text-lg w-full mb-1 pb-1",
-                          staticStyle: { "border-bottom": "dashed black" }
-                        },
+                        { staticClass: "mt-2 text-lg w-full mb-1 pb-1" },
                         [
                           _c("span", { staticClass: "float-left" }, [
                             _c("b", [_vm._v("Account #:")])
@@ -49232,6 +49567,24 @@ var render = function() {
                           _c("span", {
                             staticClass: "float-right mr-2",
                             attrs: { id: "reference" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-lg w-full mb-1 pb-1",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Serial #:")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "serial" }
                           })
                         ]
                       ),
@@ -49258,7 +49611,7 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                      _c("div", { staticClass: "mt-2 text-lg w-full mt-10" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Consumption:")])
                         ]),
@@ -49282,6 +49635,17 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-lg w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Charges:")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "charges" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                        _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Unpaid Month:")])
                         ]),
                         _vm._v(" "),
@@ -49294,7 +49658,7 @@ var render = function() {
                       _c(
                         "div",
                         {
-                          staticClass: "mt-2 text-lg w-full mb-1 pb-1",
+                          staticClass: "mt-2 text-lg w-full mb-1 pb-1 mt-5",
                           staticStyle: { "border-bottom": "dashed black" }
                         },
                         [
@@ -49733,7 +50097,7 @@ var render = function() {
                             "border-radius": "3px"
                           },
                           attrs: {
-                            options: _vm.options.clients,
+                            options: _vm.options.activatedClients,
                             disabled: false,
                             name: "connections",
                             maxItem: 5,
@@ -49911,189 +50275,198 @@ var render = function() {
                                       _c("p", [_vm._v(" Billing Details ")])
                                     ]),
                                     _vm._v(" "),
-                                    _c("div", { staticClass: "w-full" }, [
-                                      _c(
-                                        "select",
-                                        {
-                                          directives: [
+                                    _vm.hasSelected
+                                      ? _c("div", { staticClass: "w-full" }, [
+                                          _c(
+                                            "select",
                                             {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: _vm.month,
-                                              expression: "month"
-                                            }
-                                          ],
-                                          staticClass: "ml-1",
-                                          staticStyle: {
-                                            width: "90%",
-                                            border: "1px solid black",
-                                            "border-radius": "5px",
-                                            height: "34px",
-                                            "text-align": "center"
-                                          },
-                                          on: {
-                                            change: function($event) {
-                                              var $$selectedVal = Array.prototype.filter
-                                                .call(
-                                                  $event.target.options,
-                                                  function(o) {
-                                                    return o.selected
-                                                  }
-                                                )
-                                                .map(function(o) {
-                                                  var val =
-                                                    "_value" in o
-                                                      ? o._value
-                                                      : o.value
-                                                  return val
-                                                })
-                                              _vm.month = $event.target.multiple
-                                                ? $$selectedVal
-                                                : $$selectedVal[0]
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "1" } },
-                                            [_vm._v("January")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "2" } },
-                                            [_vm._v("February")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "3" } },
-                                            [_vm._v("March")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "4" } },
-                                            [_vm._v("April")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "5" } },
-                                            [_vm._v("May")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "6" } },
-                                            [_vm._v("June")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "7" } },
-                                            [_vm._v("July")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "8" } },
-                                            [_vm._v("August")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "9" } },
-                                            [_vm._v("September")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "10" } },
-                                            [_vm._v("October")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "11" } },
-                                            [_vm._v("November")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "option",
-                                            { attrs: { value: "12" } },
-                                            [_vm._v("December")]
-                                          )
-                                        ]
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "w-full" }, [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.paymentAmount,
-                                            expression: "paymentAmount"
-                                          }
-                                        ],
-                                        staticClass: "ml-1",
-                                        staticStyle: {
-                                          width: "90%",
-                                          border: "1px solid black",
-                                          "border-radius": "5px",
-                                          height: "34px",
-                                          "text-align": "center"
-                                        },
-                                        attrs: { type: "text" },
-                                        domProps: { value: _vm.paymentAmount },
-                                        on: {
-                                          keypress: function($event) {
-                                            return _vm.validate(_vm.event)
-                                          },
-                                          input: function($event) {
-                                            if ($event.target.composing) {
-                                              return
-                                            }
-                                            _vm.paymentAmount =
-                                              $event.target.value
-                                          }
-                                        }
-                                      })
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "w-full" }, [
-                                      _vm.activeTab == "cashiering"
-                                        ? _c(
-                                            "button",
-                                            {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value: _vm.month,
+                                                  expression: "month"
+                                                }
+                                              ],
                                               staticClass: "ml-1",
                                               staticStyle: {
-                                                background: "#0288D1",
-                                                color: "white",
-                                                padding: "0px 5px 0px 5px",
-                                                "border-radius": "5px",
                                                 width: "90%",
-                                                "font-size": "15px"
+                                                border: "1px solid black",
+                                                "border-radius": "5px",
+                                                height: "34px",
+                                                "text-align": "center"
                                               },
                                               on: {
-                                                click: function($event) {
-                                                  return _vm.markAsPaid(
-                                                    _vm.selectedClient.id
-                                                  )
+                                                change: function($event) {
+                                                  var $$selectedVal = Array.prototype.filter
+                                                    .call(
+                                                      $event.target.options,
+                                                      function(o) {
+                                                        return o.selected
+                                                      }
+                                                    )
+                                                    .map(function(o) {
+                                                      var val =
+                                                        "_value" in o
+                                                          ? o._value
+                                                          : o.value
+                                                      return val
+                                                    })
+                                                  _vm.month = $event.target
+                                                    .multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
                                                 }
                                               }
                                             },
                                             [
-                                              _vm._v(
-                                                "\n                                        SAVE PAYMENT\n                                    "
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "1" } },
+                                                [_vm._v("January")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "2" } },
+                                                [_vm._v("February")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "3" } },
+                                                [_vm._v("March")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "4" } },
+                                                [_vm._v("April")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "5" } },
+                                                [_vm._v("May")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "6" } },
+                                                [_vm._v("June")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "7" } },
+                                                [_vm._v("July")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "8" } },
+                                                [_vm._v("August")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "9" } },
+                                                [_vm._v("September")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "10" } },
+                                                [_vm._v("October")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "11" } },
+                                                [_vm._v("November")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "option",
+                                                { attrs: { value: "12" } },
+                                                [_vm._v("December")]
                                               )
                                             ]
                                           )
-                                        : _vm._e()
-                                    ])
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm.hasSelected
+                                      ? _c("div", { staticClass: "w-full" }, [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.paymentAmount,
+                                                expression: "paymentAmount"
+                                              }
+                                            ],
+                                            staticClass: "ml-1",
+                                            staticStyle: {
+                                              width: "90%",
+                                              border: "1px solid black",
+                                              "border-radius": "5px",
+                                              height: "34px",
+                                              "text-align": "center"
+                                            },
+                                            attrs: { type: "text" },
+                                            domProps: {
+                                              value: _vm.paymentAmount
+                                            },
+                                            on: {
+                                              keypress: function($event) {
+                                                return _vm.validate(_vm.event)
+                                              },
+                                              input: function($event) {
+                                                if ($event.target.composing) {
+                                                  return
+                                                }
+                                                _vm.paymentAmount =
+                                                  $event.target.value
+                                              }
+                                            }
+                                          })
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _vm.hasSelected
+                                      ? _c("div", { staticClass: "w-full" }, [
+                                          _vm.activeTab == "cashiering"
+                                            ? _c(
+                                                "button",
+                                                {
+                                                  staticClass: "ml-1",
+                                                  staticStyle: {
+                                                    background: "#0288D1",
+                                                    color: "white",
+                                                    padding: "0px 5px 0px 5px",
+                                                    "border-radius": "5px",
+                                                    width: "90%",
+                                                    "font-size": "15px"
+                                                  },
+                                                  on: {
+                                                    click: function($event) {
+                                                      return _vm.markAsPaid(
+                                                        _vm.selectedClient.id
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                        SAVE PAYMENT\n                                    "
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e()
+                                        ])
+                                      : _vm._e()
                                   ]
                                 ),
                                 _vm._v(" "),
@@ -50129,11 +50502,32 @@ var render = function() {
                                   1
                                 ),
                                 _vm._v(" "),
+                                _c("div", { staticClass: "w-full" }, [
+                                  _c(
+                                    "span",
+                                    {
+                                      staticClass:
+                                        "float-right text-2xl font-bold"
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                                    ₱ " +
+                                          _vm._s(
+                                            parseFloat(
+                                              _vm.unpaid_total
+                                            ).toFixed(2)
+                                          ) +
+                                          "\n                                "
+                                      )
+                                    ]
+                                  )
+                                ]),
+                                _vm._v(" "),
                                 _c(
                                   "div",
                                   {
                                     staticClass:
-                                      "w-full text-2xl font-bold mt-2"
+                                      "w-full text-2xl font-bold mt-10"
                                   },
                                   [
                                     _vm._v(
@@ -50155,13 +50549,13 @@ var render = function() {
                                   [
                                     _c("Table", {
                                       staticClass: "mt-2",
-                                      staticStyle: { width: "100%" },
+                                      staticStyle: { width: "98%" },
                                       attrs: {
-                                        columns: _vm.paymentColumns,
+                                        columns: _vm.otherPaymentColumns,
                                         rows: _vm.payments.filter(function(x) {
                                           return x.status == "PAID"
                                         }),
-                                        keys: _vm.paymentKeys,
+                                        keys: _vm.otherPaymentKeys,
                                         selected: _vm.payment
                                       },
                                       on: {
@@ -50852,7 +51246,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-4" }, [
                         _c("label", { attrs: { for: "address" } }, [
-                          _vm._v("House No.:")
+                          _vm._v("House No/Street:")
                         ]),
                         _c("br"),
                         _vm._v(" "),
@@ -50898,7 +51292,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-4" }, [
                         _c("label", { attrs: { for: "address" } }, [
-                          _vm._v("Street:")
+                          _vm._v("Barangay:")
                         ]),
                         _c("br"),
                         _vm._v(" "),
@@ -50940,7 +51334,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-4" }, [
                         _c("label", { attrs: { for: "address" } }, [
-                          _vm._v("Town:")
+                          _vm._v("Municipality:")
                         ]),
                         _c("br"),
                         _vm._v(" "),
@@ -51148,7 +51542,7 @@ var render = function() {
               "pdf-quality": 2,
               "manual-pagination": false,
               "pdf-format": "a4",
-              "pdf-orientation": "landscape",
+              "pdf-orientation": "portrait",
               "pdf-content-width": "100%"
             },
             on: {
@@ -51164,187 +51558,223 @@ var render = function() {
               [
                 _c(
                   "div",
-                  { staticClass: "flex flex-col p-4 w-full h-screen" },
+                  {
+                    staticClass: "w-full flex justify-center items-center mt-5"
+                  },
                   [
-                    !!_vm.client
-                      ? _c("div", { staticClass: "w-full flex flex-col" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-full text-center text-xl pt-4 pb-10",
-                              staticStyle: { "border-bottom": "dashed black" }
-                            },
-                            [
-                              _vm._v(
-                                "\n                            WATER BILLING MANAGEMENT SYSTEM\n                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "w-full text-center font-bold text-lg my-5"
-                            },
-                            [
-                              _vm._v(
-                                "\n                            OFFICIAL WATER RECEIPT\n                        "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-full" }, [
-                            _c("span", { staticClass: "float-left ml-5" }, [
-                              _vm._v(
-                                "\n                                Account No.:\n                            "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            !!_vm.display
-                              ? _c(
-                                  "span",
-                                  { staticClass: "float-right mr-5" },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.display.reference) +
-                                        "\n                            "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
+                    _c("img", {
+                      staticStyle: { width: "80px", height: "80px" },
+                      attrs: { src: "/images/logo.png" }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "w-full text-xs text-center font-bold" },
+                  [
+                    _vm._v(
+                      "\n                    Hydrolite Waterworks and Consumers Association\n                "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "w-full text-xs text-center font-bold pb-10",
+                    staticStyle: { "border-bottom": "dashed black" }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Brgy. Lumbang Calzada Calaca, Batangas\n                "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "flex flex-col p-2 w-full h-screen mt-10" },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "w-full text-center text-md mt-2 font-bold"
+                      },
+                      [
+                        _vm._v(
+                          "\n                       OFFICIAL WATER BILLING RECEIPT\n                    "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "w-full flex flex-col mt-10" }, [
+                      _c(
+                        "div",
+                        { staticClass: "mt-2 text-lg w-full mb-1 pb-1" },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Account #:")])
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "w-full" }, [
-                            _c("span", { staticClass: "float-left ml-5" }, [
-                              _vm._v(
-                                "\n                                Name:\n                            "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            !!_vm.display
-                              ? _c(
-                                  "span",
-                                  { staticClass: "float-right mr-5" },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.display.name) +
-                                        "\n                            "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "reference" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Name:")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "name" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Address:")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-1 text-md",
+                          attrs: { id: "address" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "mt-2 text-lg w-full mb-1 pb-1" },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Serial #:")])
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "w-full" }, [
-                            _c("span", { staticClass: "float-left ml-5" }, [
-                              _vm._v(
-                                "\n                                Address:\n                            "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            !!_vm.display
-                              ? _c(
-                                  "span",
-                                  { staticClass: "float-right mr-5" },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.display.address) +
-                                        "\n                            "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "serial" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-lg w-full mt-5" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Month:")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "month" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-lg w-full mt-5" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Present Reading:")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "present" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-lg w-full pb-10",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Previous Reading:")])
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "w-full" }, [
-                            _c("span", { staticClass: "float-left ml-5" }, [
-                              _vm._v(
-                                "\n                                Month:\n                            "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            !!_vm.display
-                              ? _c(
-                                  "span",
-                                  { staticClass: "float-right mr-5" },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.display.month) +
-                                        "\n                            "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "previous" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-lg w-full mt-5" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Other Charge(s):")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "charges" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-lg w-full mt-5" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Total Charges")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "chargesAmount" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-lg w-full mt-5" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Penalty:")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "penalty" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-lg w-full mt-5" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Amount Paid:")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "amount_paid" }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-lg w-full mt-5 pb-10",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Total Bill:")])
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticClass: "w-full" }, [
-                            _c("span", { staticClass: "float-left ml-5" }, [
-                              _vm._v(
-                                "\n                                Present Reading:\n                            "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            !!_vm.display
-                              ? _c(
-                                  "span",
-                                  { staticClass: "float-right mr-5" },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.display.present) +
-                                        "\n                            "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-full" }, [
-                            _c("span", { staticClass: "float-left ml-5" }, [
-                              _vm._v(
-                                "\n                                Previous Reading:\n                            "
-                              )
-                            ]),
-                            _vm._v(" "),
-                            !!_vm.display
-                              ? _c(
-                                  "span",
-                                  { staticClass: "float-right mr-5" },
-                                  [
-                                    _vm._v(
-                                      "\n                                " +
-                                        _vm._s(_vm.display.previous) +
-                                        "\n                            "
-                                    )
-                                  ]
-                                )
-                              : _vm._e()
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-full" }, [
-                            _c("p", [
-                              _vm._v(
-                                "\n                                You may check your bill online @ water-billing-6mb6.onrender.com "
-                              ),
-                              _c("br"),
-                              _vm._v(
-                                "\n                                For any inquiries, please contact "
-                              ),
-                              _c("br"),
-                              _vm._v(
-                                "\n                                09566814383/09657657443 "
-                              ),
-                              _c("br")
-                            ])
-                          ])
-                        ])
-                      : _vm._e()
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "amount_to_pay" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-md w-full mt-10" }, [
+                        _vm._v(
+                          "\n                            You may check your bill online @https://water-billing-6mb6.onrender.com\n                        "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
+                        _vm._v(
+                          "\n                            For any inquiries, please contact 09566814383/09657657443\n                        "
+                        )
+                      ])
+                    ])
                   ]
                 )
               ]
@@ -51589,7 +52019,11 @@ var render = function() {
                     staticClass:
                       "w-full mt-2 --login__register--input text-center",
                     class: { "mb-2": !_vm.message },
-                    attrs: { type: "password", placeholder: "Password" },
+                    attrs: {
+                      type: "password",
+                      placeholder: "Password",
+                      id: "loginPassword"
+                    },
                     domProps: { value: _vm.formloginData.password },
                     on: {
                       keyup: function($event) {
@@ -51619,6 +52053,18 @@ var render = function() {
                       }
                     }
                   }),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: { type: "checkbox" },
+                    on: {
+                      click: function($event) {
+                        return _vm.showLoginPassword()
+                      }
+                    }
+                  }),
+                  _c("span", { staticClass: "text-white" }, [
+                    _vm._v(" Show Password ")
+                  ]),
                   _vm._v(" "),
                   _vm.message
                     ? _c("span", { staticClass: "text-red-500 text-xs ml-2" }, [
@@ -52726,91 +53172,143 @@ var render = function() {
       "div",
       { staticClass: "w-full h-full px-2 py-2 flex flex-col" },
       [
-        _c(
-          "div",
-          {
-            staticClass: "w-full flex flex-row mb-3 font-bold mt-5",
-            staticStyle: { height: "50px", "border-bottom": "1px solid black" }
-          },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "w-full flex justify-center items-center h-full cursor-pointer",
-                class: { "bg-blue-300": _vm.activeTab == "ir" },
-                on: {
-                  click: function($event) {
-                    _vm.activeTab = "ir"
-                  }
+        _c("div", { staticClass: "w-full flex flex-row" }, [
+          _c("div", { staticClass: "w-full" }, [
+            _c("label", { staticClass: "font-bold text-2xl" }, [
+              _vm._v("\n                    Time Frame\n                ")
+            ]),
+            _c("br"),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.date.start,
+                  expression: "date.start"
                 }
-              },
-              [_vm._v("\n                SERVICES\n            ")]
-            ),
+              ],
+              staticClass: "mx-1 mt-5",
+              staticStyle: { border: "1px solid black", height: "40px" },
+              attrs: { type: "date" },
+              domProps: { value: _vm.date.start },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.date, "start", $event.target.value)
+                }
+              }
+            }),
+            _vm._v("\n                -\n                "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.date.end,
+                  expression: "date.end"
+                }
+              ],
+              staticClass: "mx-1",
+              staticStyle: { border: "1px solid black", height: "40px" },
+              attrs: { type: "date" },
+              domProps: { value: _vm.date.end },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.date, "end", $event.target.value)
+                }
+              }
+            }),
             _vm._v(" "),
             _c(
-              "div",
+              "button",
               {
-                staticClass:
-                  "w-full flex justify-center items-center h-full cursor-pointer",
-                class: { "bg-blue-300": _vm.activeTab == "billing" },
+                staticClass: "text-center text-xs py-2 text-white",
+                staticStyle: {
+                  background: "navy",
+                  width: "50px",
+                  height: "40px"
+                },
                 on: {
                   click: function($event) {
-                    _vm.activeTab = "billing"
+                    return _vm.filterRows()
                   }
                 }
               },
-              [_vm._v("\n                BILLING\n            ")]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "w-full flex justify-center items-center h-full cursor-pointer",
-                class: { "bg-blue-300": _vm.activeTab == "payment" },
-                on: {
-                  click: function($event) {
-                    _vm.activeTab = "payment"
-                  }
-                }
-              },
-              [_vm._v("\n                PAYMENT\n            ")]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "w-full flex justify-center items-center h-full cursor-pointer",
-                class: { "bg-blue-300": _vm.activeTab == "reconnection" },
-                on: {
-                  click: function($event) {
-                    _vm.activeTab = "reconnection"
-                  }
-                }
-              },
-              [_vm._v("\n                ACTIVATED CONNECTION\n            ")]
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass:
-                  "w-full flex justify-center items-center h-full cursor-pointer",
-                class: { "bg-blue-300": _vm.activeTab == "deactivation" },
-                on: {
-                  click: function($event) {
-                    _vm.activeTab = "deactivation"
-                  }
-                }
-              },
-              [_vm._v("\n                DEACTIVATED CONNECTION\n            ")]
+              [_vm._v("\n                    Filter\n                ")]
             )
-          ]
-        ),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "w-full" }, [
+            _c("div", { staticClass: "float-right" }, [
+              _c("label", { staticClass: "font-bold text-2xl" }, [
+                _vm._v(
+                  "\n                        Report Category\n                    "
+                )
+              ]),
+              _c("br"),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.activeTab,
+                      expression: "activeTab"
+                    }
+                  ],
+                  staticClass: "mt-5 float-right",
+                  staticStyle: {
+                    width: "150px",
+                    border: "1px solid black",
+                    height: "40px"
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.activeTab = $event.target.multiple
+                        ? $$selectedVal
+                        : $$selectedVal[0]
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "billing" } }, [
+                    _vm._v("Billing")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "payment" } }, [
+                    _vm._v("Payment")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "reconnection" } }, [
+                    _vm._v("ACTIVATED CONNECTION")
+                  ]),
+                  _vm._v(" "),
+                  _c("option", { attrs: { value: "deactivation" } }, [
+                    _vm._v("DEACTIVATED CONNECTION")
+                  ])
+                ]
+              )
+            ])
+          ])
+        ]),
         _vm._v(" "),
-        _c("div", { staticClass: "w-full" }, [
+        _c("div", { staticClass: "w-full mt-5" }, [
           _c(
             "span",
             {
@@ -52846,6 +53344,22 @@ var render = function() {
           1
         ),
         _vm._v(" "),
+        _vm.activeTab == "billing" || _vm.activeTab == "payment"
+          ? _c("div", { staticClass: "w-full" }, [
+              _c(
+                "span",
+                { staticClass: "float-right text-2xl font-bold py-2" },
+                [
+                  _vm._v(
+                    "\n                    Total: ₱ " +
+                      _vm._s(parseFloat(_vm.options.total).toFixed(2)) +
+                      "\n            "
+                  )
+                ]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
         _c(
           "VueHtml2pdf",
           {
@@ -52872,11 +53386,36 @@ var render = function() {
               { attrs: { slot: "pdf-content" }, slot: "pdf-content" },
               [
                 _c("div", { staticClass: "w-full p-5" }, [
-                  _c("div", { staticClass: "w-full text-xl text-center" }, [
-                    _vm._v(
-                      "\n                        WATER BILLING MANAGEMENT SYSTEM\n                    "
-                    )
-                  ]),
+                  _c(
+                    "div",
+                    { staticClass: "w-full flex justify-center items-center" },
+                    [
+                      _c("img", {
+                        staticStyle: { width: "100px", height: "100px" },
+                        attrs: { src: "/images/logo.png" }
+                      })
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "w-full text-xl text-center font-bold" },
+                    [
+                      _vm._v(
+                        "\n                        Hydrolite Waterworks and Consumers Association\n                    "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "w-full text-lg text-center font-bold" },
+                    [
+                      _vm._v(
+                        "\n                        Brgy. Lumbang Calzada Calaca, Batangas\n                    "
+                      )
+                    ]
+                  ),
                   _vm._v(" "),
                   _c(
                     "div",
@@ -52931,7 +53470,27 @@ var render = function() {
                       })
                     ],
                     2
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.activeTab == "billing" || _vm.activeTab == "payment"
+                    ? _c("div", { staticClass: "w-full" }, [
+                        _c(
+                          "span",
+                          {
+                            staticClass: "float-right text-2xl font-bold py-2"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                Total: ₱ " +
+                                _vm._s(
+                                  parseFloat(_vm.options.total).toFixed(2)
+                                ) +
+                                "\n                        "
+                            )
+                          ]
+                        )
+                      ])
+                    : _vm._e()
                 ])
               ]
             )

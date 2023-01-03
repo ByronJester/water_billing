@@ -72,8 +72,11 @@
 					<input type="password" class="w-full mt-2 --login__register--input text-center"
 						:class="{'mb-2' : !message}"
 						placeholder="Password" v-model="formloginData.password"
-						@keyup.enter="login()"
+						id="loginPassword"
+						@keyup.enter="login()" 
 					>
+
+					<input type="checkbox" @click="showLoginPassword()"><span class="text-white"> Show Password </span>
 
 					<span class="text-red-500 text-xs ml-2" v-if="message">
 						{{ message }}
@@ -388,6 +391,15 @@ export default {
 	},
 
 	methods: {
+		showLoginPassword(){
+			var x = document.getElementById("loginPassword");
+
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		},
 		login() {
 			// Inertia.post(this.$root.route + "/users/login", this.formloginData,
 			// {

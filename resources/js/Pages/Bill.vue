@@ -40,7 +40,7 @@
                 <div class="w-full" mt-2>
                     <label class="font-bold text-sm">Current Reading:</label>
                     <input type="number" class="w-full  my-2 --login__register--input text-center text-sm"
-                        placeholder="Consumed Cubic Meter" v-model="form.consumed_cubic_meter"
+                        placeholder="Current Reading" v-model="form.consumed_cubic_meter"
                     >
                     <span class="text-xs text-red-500">{{validationError('consumed_cubic_meter', saveError)}} </span>
                 </div>
@@ -91,12 +91,24 @@
                 ref="receipt"
             >
                 <section slot="pdf-content">
-                    <div class="flex flex-col p-2 w-full h-screen">
-                        <div class="w-full text-center text-xl mt-2 font-bold">
+                    <div class="w-full flex justify-center items-center mt-5">
+                        <img src="/images/logo.png" style="width: 80px; height: 80px"/>
+                    </div>
+
+                    <div class="w-full text-xs text-center font-bold">
+                        Hydrolite Waterworks and Consumers Association
+                    </div>
+
+                    <div class="w-full text-xs text-center font-bold">
+                        Brgy. Lumbang Calzada Calaca, Batangas
+                    </div>
+
+                    <div class="flex flex-col p-2 w-full h-screen mt-10">
+                        <div class="w-full text-center text-md mt-2 font-bold">
                            Billing Notice
                         </div>
 
-                        <div class="w-full text-center text-xl mt-2 font-bold inline-flex">
+                        <div class="w-full text-center text-md mt-2 font-bold">
                            FOR THE MONTH OF <span id="month" class="mx-1"></span> <span id="year"></span>
                         </div>
 
@@ -121,12 +133,22 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full mb-1 pb-1" style="border-bottom: dashed black;">
+                            <div class="mt-2 text-lg w-full mb-1 pb-1">
                                 <span class="float-left">
                                     <b>Account #:</b>
                                 </span>
 
                                 <span class="float-right mr-2" id="reference">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full mb-1 pb-1" style="border-bottom: dashed black;">
+                                <span class="float-left">
+                                    <b>Serial #:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="serial">
 
                                 </span>
                             </div>
@@ -151,7 +173,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full">
+                            <div class="mt-2 text-lg w-full mt-10">
                                 <span class="float-left">
                                     <b>Consumption:</b>
                                 </span>
@@ -173,6 +195,16 @@
 
                             <div class="mt-2 text-lg w-full">
                                 <span class="float-left">
+                                    <b>Charges:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="charges">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full">
+                                <span class="float-left">
                                     <b>Unpaid Month:</b>
                                 </span>
 
@@ -181,7 +213,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full mb-1 pb-1" style="border-bottom: dashed black;">
+                            <div class="mt-2 text-lg w-full mb-1 pb-1 mt-5" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Due Date: </b>
                                 </span>
@@ -284,7 +316,7 @@ export default {
 				onSuccess: (res) => {
 				},
 				orError: (err) => {
-				}
+				} 
 			});
         },
 
@@ -373,7 +405,8 @@ export default {
             document.getElementById("name").innerHTML = arg.client.fullname;
             document.getElementById("address").innerHTML = arg.client.address;
             document.getElementById("reference").innerHTML = arg.client.reference;
-            document.getElementById("penalty").innerHTML = '₱ ' + (parseFloat(arg.client.penalty).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("serial").innerHTML = arg.client.serial;
+            document.getElementById("penalty").innerHTML = '₱ ' + (parseFloat(arg.penalty).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("pres").innerHTML = '₱ ' + (parseFloat(arg.pres).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("prev").innerHTML = '₱ ' + (parseFloat(arg.prev).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("due_date").innerHTML = arg.client.due_date;
@@ -383,6 +416,7 @@ export default {
             document.getElementById("consumption").innerHTML = arg.consumption + ' mᶟ';
             document.getElementById("message").innerHTML = arg.message;
             document.getElementById("count").innerHTML = arg.count;
+            document.getElementById("charges").innerHTML = '₱ ' + (parseFloat(arg.charges).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
             setTimeout(() => {
                 self.$refs.receipt.generatePdf()

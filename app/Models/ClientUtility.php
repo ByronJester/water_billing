@@ -19,7 +19,8 @@ class ClientUtility extends Model
     protected $appends = [
         'client_name',
         'client_address',
-        'worker'
+        'worker',
+        'display_service'
     ];
 
     public function client()
@@ -42,5 +43,10 @@ class ClientUtility extends Model
         $worker = User::where('id', $this->user_id)->first();
 
         return $worker->name;
+    }
+
+    public function getDisplayServiceAttribute()
+    {
+        return $this->description . " (₱ " . $this->amount . ")";
     }
 }

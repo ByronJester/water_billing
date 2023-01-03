@@ -24,7 +24,8 @@ class ClientPayment extends Model
         'charges',
         'total',
         'amount_to_pay',
-        'added_payment'
+        'added_payment',
+        'paid_charges'
     ];
 
     public function getMonthAttribute()
@@ -52,14 +53,23 @@ class ClientPayment extends Model
     {
         $month = Carbon::parse($this->date);
 
-        $charges = ClientUtility::whereMonth('created_at', $month)->whereIn('status', ['completed', 'paid'])->sum('amount');
+        $charges = ClientUtility::whereMonth('created_at', $month)->whereIn('status', ['completed'])->where('client_id', $this->client_id)->sum('amount');
+
+        return $charges;
+    }
+
+    public function getPaidChargesAttribute()
+    {
+        $month = Carbon::parse($this->date);
+
+        $charges = ClientUtility::whereMonth('created_at', $month)->whereIn('status', ['paid'])->where('client_id', $this->client_id)->sum('amount');
 
         return $charges;
     }
 
     public function getAddedPaymentAttribute()
     {
-        return  $this->payment + $this->penalty_payment + $this->charges;
+        return  $this->payment + $this->penalty_payment + $this->paid_charges;
     }
 
     public function getTotalAttribute()
@@ -69,7 +79,7 @@ class ClientPayment extends Model
 
     public function getAmountToPayAttribute()
     {
-        return ($this->amount + $this->penalty + $this->charges) - ($this->payment + $this->penalty_payment + $this->charges);
+        return ($this->amount + $this->penalty + $this->charges) - ($this->payment + $this->penalty_payment + $this->paid_charges);
     }
 
 }

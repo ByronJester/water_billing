@@ -74,7 +74,7 @@ class ClientPayment extends Model
 
     public function getTotalAttribute()
     {
-        return ($this->amount + $this->penalty + $this->charges);
+        return ($this->amount + $this->penalty) + ($this->paid_charges ? $this->paid_charges : $this->charges);
     }
 
     public function getAmountToPayAttribute()
@@ -83,7 +83,7 @@ class ClientPayment extends Model
             return 0;
         }
 
-        return ($this->amount + $this->penalty + $this->charges) - ($this->payment + $this->penalty_payment + $this->paid_charges);
+        return ($this->amount + $this->penalty + $this->charges) - ($this->payment + $this->penalty_payment + ($this->paid_charges ? 0 : $this->paid_charges));
     }
 
 }

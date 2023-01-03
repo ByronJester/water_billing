@@ -2932,7 +2932,7 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         label: 'total'
       }, {
-        label: 'payment'
+        label: 'added_payment'
       }, {
         label: 'amount_to_pay'
       }, {
@@ -49904,7 +49904,7 @@ var render = function() {
             _vm._v(
               "\n                    Total: ₱ " +
                 _vm._s(parseFloat(_vm.options.unpaid).toFixed(2)) +
-                "\n                "
+                " \n                "
             )
           ])
         ]),

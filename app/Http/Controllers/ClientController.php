@@ -61,7 +61,7 @@ class ClientController extends Controller
                         'amount' => $payments->pluck('amount'), 
                         'month' => $payments->pluck('month'),
                     ],
-                    'unpaid' => $unpaid->sum('total')
+                    'unpaid' => $unpaid->sum('amount_to_pay')
                 ]
             ]);
         }
@@ -352,8 +352,8 @@ class ClientController extends Controller
                 'address' => $client->address,
                 'serial' => $client->serial,
                 'month' => $this->getMonth($month),
-                'present' => count($payments) > 0 ? $payments[0]['consumed_cubic_meter'] : null,
-                'previous' => count($payments) > 1 ? $payments[1]['consumed_cubic_meter'] : null,
+                'present' => count($payments) > 0 ? $payments[0]['consumed_cubic_meter'] : 0,
+                'previous' => count($payments) > 1 ? $payments[1]['consumed_cubic_meter'] : 0,
                 'charges' => implode(", ", $stringCharges->toArray()),
                 'chargesAmount' => $chargesAmount,
                 'amount_to_pay' => $payment->total + $chargesAmount,
@@ -598,7 +598,7 @@ class ClientController extends Controller
         $total = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->where('status', 'unpaid')->get();
         $months = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->where('status', 'unpaid')->get();
 
-        return response()->json(['payments' => $payments, 'total' => $total->sum('total'), 'months' => $months->pluck('month')], 200);
+        return response()->json(['payments' => $payments, 'total' => $total->sum('amount_to_pay'), 'months' => $months->pluck('month')], 200);
     }
 
     public function assignWoker(Request $request)

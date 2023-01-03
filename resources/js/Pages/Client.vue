@@ -36,7 +36,7 @@
 
                 <div class="w-full">
                     <span class="float-right font-bold text-xl">
-                        Total: ₱ {{ parseFloat(options.unpaid).toFixed(2) }}
+                        Total: ₱ {{ parseFloat(options.unpaid).toFixed(2) }} 
                     </span>
                 </div>
 
@@ -104,7 +104,7 @@ export default {
                     label: 'total',
                 },
                 {
-                    label: 'payment',
+                    label: 'added_payment',
                 },
                 {
                     label: 'amount_to_pay',

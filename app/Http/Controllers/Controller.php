@@ -58,27 +58,27 @@ class Controller extends BaseController
         );
     }
 
-    public function saveClientUser($data)
-    {
-        $password = strtoupper(Str::random(8));
+    // public function saveClientUser($data)
+    // {
+    //     $password = strtoupper(Str::random(8));
 
-        $req['first_name'] = $data['first_name'];
-        $req['middle_name'] = $data['middle_name'];
-        $req['last_name'] = $data['last_name'];
-        $req['phone'] = $data['phone'];
-        $req['username'] = $data['reference'];
-        $req['password'] = Hash::make($password);
-        $req['user_type'] = 'client';
-        $req['role'] = 2;
-        $req['reference'] = $data['reference'];
+    //     $req['first_name'] = $data['first_name'];
+    //     $req['middle_name'] = $data['middle_name'];
+    //     $req['last_name'] = $data['last_name'];
+    //     $req['phone'] = $data['phone'];
+    //     $req['username'] = $data['reference'];
+    //     $req['password'] = Hash::make($password);
+    //     $req['user_type'] = 'client';
+    //     $req['role'] = 2;
+    //     $req['reference'] = $data['reference'];
         
-        $message = "Dear Client, \r\n Your temporary username is your account number ( %s ) and your password is  %s. \r\n You are required to change your password in your profile to our system for security purposes. \r\n Thank you!";
-        $message = sprintf($message, $data['reference'], $password);
+    //     $message = "Dear Client, \r\n Your temporary username is your account number ( %s ) and your password is  %s. \r\n You are required to change your password in your profile to our system for security purposes. \r\n Thank you!";
+    //     $message = sprintf($message, $data['reference'], $password);
 
-        $this->sendSms($data['phone'], $message); 
+    //     $this->sendSms($data['phone'], $message); 
 
-        $saveUser = User::create($req);
+    //     $saveUser = User::create($req);
 
-        return response()->json(['status' => 200], 200);
-    }
+    //     return response()->json(['status' => 200], 200);
+    // }
 }

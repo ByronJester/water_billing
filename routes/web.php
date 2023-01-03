@@ -37,7 +37,7 @@ Route::middleware(['cors'])->group(function () {
         Route::post('/login', [UserController::class, 'loginAccount']);
         Route::post('/logout', [UserController::class, 'logoutAccount']);
         Route::post('/deactivate-reactivate', [UserController::class, 'changeStatus']); 
-        Route::post('/create-client-account', [UserController::class, 'saveClientUser']);
+        // Route::post('/create-client-account', [UserController::class, 'saveClientUser']);
         Route::post('/create-account', [UserController::class, 'saveUser']);
         Route::post('/edit-profile', [UserController::class, 'editProfile']);
         Route::post('/reset-password', [UserController::class, 'resetPassword']);

@@ -51637,10 +51637,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  {
-                    staticClass: "w-full text-xs text-center font-bold pb-10",
-                    staticStyle: { "border-bottom": "dashed black" }
-                  },
+                  { staticClass: "w-full text-xs text-center font-bold pb-6" },
                   [
                     _vm._v(
                       "\n                    Brgy. Lumbang Calzada Calaca, Batangas\n                "
@@ -51650,7 +51647,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "flex flex-col p-2 w-full h-screen mt-10" },
+                  { staticClass: "flex flex-col p-2 w-full h-screen mt-4" },
                   [
                     _c(
                       "div",
@@ -51664,7 +51661,7 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-full flex flex-col mt-10" }, [
+                    _c("div", { staticClass: "w-full flex flex-col mt-6" }, [
                       _c(
                         "div",
                         { staticClass: "mt-2 text-lg w-full mb-1 pb-1" },
@@ -51742,7 +51739,7 @@ var render = function() {
                       _c(
                         "div",
                         {
-                          staticClass: "mt-2 text-lg w-full pb-10",
+                          staticClass: "mt-2 text-lg w-full pb-5",
                           staticStyle: { "border-bottom": "dashed black" }
                         },
                         [
@@ -51804,7 +51801,7 @@ var render = function() {
                       _c(
                         "div",
                         {
-                          staticClass: "mt-2 text-lg w-full mt-5 pb-10",
+                          staticClass: "mt-2 text-lg w-full mt-5 pb-5",
                           staticStyle: { "border-bottom": "dashed black" }
                         },
                         [
@@ -51819,7 +51816,7 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-md w-full mt-10" }, [
+                      _c("div", { staticClass: "mt-2 text-md w-full mt-5" }, [
                         _vm._v(
                           "\n                            You may check your bill online @https://water-billing-v2.onrender.com\n                        "
                         )

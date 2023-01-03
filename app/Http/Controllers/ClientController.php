@@ -196,13 +196,13 @@ class ClientController extends Controller
         $penalty = 0;
 
         if(count($bills) > 0) {
+            $penalty = (10 / 100) * $totalAmount;
+
             foreach($bills as $bill) {
                 $bill = (object) $bill;
 
                 $totalAmount += $bill->amount;
             }
-            
-            $penalty = (10 / 100) * $totalAmount;
         }
 
         $due_date = Carbon::parse($request->date);
@@ -281,6 +281,8 @@ class ClientController extends Controller
 
         $charges = ClientUtility::where('client_id', $client->id)->where('status', 'completed')->whereMonth('created_at', Carbon::now()->month)->sum('amount');
 
+        $otherBills = ClientPayment::where('client_id', $client->id)->where('status', 'unpaid')->get();
+
         $data = [
             'client' => $client,
             'prev' => $bills->sum('amount'),
@@ -293,7 +295,7 @@ class ClientController extends Controller
             'month' => $month,
             'year' => $year,
             'count' => count($bills) . ' month(s)',
-            'message' => count($bills) >= 2  ? "WARNING FOR DISCONNECTION. \r\n Please settle your balance." : '',
+            'message' => count($otherBills) >= 2  ? "WARNING FOR DISCONNECTION. \r\n Please settle your balance." : '',
             'penalty' => $penalty,
             'charges' => $charges
         ]; 

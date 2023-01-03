@@ -421,7 +421,7 @@ export default {
             document.getElementById("reader").innerHTML = arg.reader;
             document.getElementById("date").innerHTML = arg.date; 
             document.getElementById("consumption").innerHTML = arg.consumption + ' mᶟ';
-            document.getElementById("message").innerHTML = arg.message;
+            document.getElementById("message").innerHTML = arg.message; 
             document.getElementById("count").innerHTML = arg.count;
             document.getElementById("charges").innerHTML = '₱ ' + (parseFloat(arg.charges).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 

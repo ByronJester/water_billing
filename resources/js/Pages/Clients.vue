@@ -414,16 +414,16 @@
                         Hydrolite Waterworks and Consumers Association
                     </div>
 
-                    <div class="w-full text-xs text-center font-bold pb-10" style="border-bottom: dashed black;">
+                    <div class="w-full text-xs text-center font-bold pb-6">
                         Brgy. Lumbang Calzada Calaca, Batangas
                     </div>
 
-                    <div class="flex flex-col p-2 w-full h-screen mt-10">
+                    <div class="flex flex-col p-2 w-full h-screen mt-4">
                         <div class="w-full text-center text-md mt-2 font-bold">
                            OFFICIAL WATER BILLING RECEIPT
                         </div>
 
-                        <div class="w-full flex flex-col mt-10">
+                        <div class="w-full flex flex-col mt-6">
                             <div class="mt-2 text-lg w-full mb-1 pb-1">
                                 <span class="float-left">
                                     <b>Account #:</b>
@@ -485,7 +485,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full pb-10" style="border-bottom: dashed black;">
+                            <div class="mt-2 text-lg w-full pb-5" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Previous Reading:</b>
                                 </span>
@@ -538,7 +538,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full mt-5 pb-10" style="border-bottom: dashed black;">
+                            <div class="mt-2 text-lg w-full mt-5 pb-5" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Total Bill:</b>
                                 </span>
@@ -549,7 +549,7 @@
                             </div>
                             
 
-                            <div class="mt-2 text-md w-full mt-10">
+                            <div class="mt-2 text-md w-full mt-5">
                                 You may check your bill online @https://water-billing-v2.onrender.com
                             </div>
 

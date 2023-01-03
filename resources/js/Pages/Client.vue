@@ -34,6 +34,12 @@
                     <Table :columns="columns" :rows="options.payments" :keys="keys" :selected.sync="payment" class="w-full"/>
                 </div>
 
+                <div class="w-full">
+                    <span class="float-right font-bold text-xl">
+                        Total: ₱ {{ parseFloat(options.unpaid).toFixed(2) }}
+                    </span>
+                </div>
+
                 <div id="receiptModal" class="receiptModal">
                     <!-- Modal content -->
                     <div class="receipt-content flex flex-col" :style="{'width': screenWidth <= 700 ? '90%' : '50%'}">

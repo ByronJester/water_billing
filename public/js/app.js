@@ -2896,6 +2896,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3553,11 +3559,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -3629,11 +3630,11 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         label: 'amount'
       }, {
-        label: 'penalty'
+        label: 'penalty_payment'
       }, {
-        label: 'charges'
+        label: 'paid_charges'
       }, {
-        label: 'total'
+        label: 'added_payment'
       }, {
         label: 'added_payment'
       }, {
@@ -3645,7 +3646,45 @@ __webpack_require__.r(__webpack_exports__);
       selectedClient: null,
       clientData: null,
       hasSelected: false,
-      unpaid_total: 0
+      unpaid_total: 0,
+      months: [{
+        label: 'January',
+        value: 1
+      }, {
+        label: 'February',
+        value: 2
+      }, {
+        label: 'March',
+        value: 3
+      }, {
+        label: 'April',
+        value: 4
+      }, {
+        label: 'May',
+        value: 5
+      }, {
+        label: 'June',
+        value: 6
+      }, {
+        label: 'July',
+        value: 7
+      }, {
+        label: 'August',
+        value: 8
+      }, {
+        label: 'September',
+        value: 9
+      }, {
+        label: 'October',
+        value: 10
+      }, {
+        label: 'November',
+        value: 11
+      }, {
+        label: 'December',
+        value: 12
+      }],
+      availableMonths: []
     };
   },
   mounted: function mounted() {
@@ -3847,7 +3886,8 @@ __webpack_require__.r(__webpack_exports__);
         onSuccess: function onSuccess() {}
       });
     },
-    hasDownloaded: function hasDownloaded(evt) {// location.reload()
+    hasDownloaded: function hasDownloaded(evt) {
+      location.reload();
     },
     viewPayment: function viewPayment(arg) {
       var _this4 = this;
@@ -3857,6 +3897,8 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this4.payments = response.data.payments;
         _this4.unpaid_total = response.data.total;
+        _this4.availableMonths = response.data.months;
+        console.log(_this4.availableMonths);
       });
     },
     validate: function validate(evt) {
@@ -4706,7 +4748,7 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date', 'Date Created'];
         this.keys = [{
           label: 'name'
         }, {
@@ -4717,6 +4759,8 @@ __webpack_require__.r(__webpack_exports__);
           label: 'penalty'
         }, {
           label: 'due_date'
+        }, {
+          label: 'display_created_at'
         }];
       }
 
@@ -4724,7 +4768,7 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date', 'Date Created'];
         this.keys = [{
           label: 'name'
         }, {
@@ -4735,6 +4779,8 @@ __webpack_require__.r(__webpack_exports__);
           label: 'status'
         }, {
           label: 'payment_date'
+        }, {
+          label: 'display_created_at'
         }];
       }
 
@@ -4742,13 +4788,15 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Address'];
+        this.columns = ['Name', 'Account #', 'Address', 'Date Created'];
         this.keys = [{
           label: 'name'
         }, {
           label: 'reference'
         }, {
           label: 'address'
+        }, {
+          label: 'display_created_at'
         }];
       }
 
@@ -4756,13 +4804,15 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Address'];
+        this.columns = ['Name', 'Account #', 'Address', 'Date Created'];
         this.keys = [{
           label: 'name'
         }, {
           label: 'reference'
         }, {
           label: 'address'
+        }, {
+          label: 'display_created_at'
         }];
       }
     }
@@ -4774,7 +4824,7 @@ __webpack_require__.r(__webpack_exports__);
       this.rows = this.options.clients.filter(function (x) {
         return !!x.is_active;
       });
-      this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
+      this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date', 'Date Created'];
       this.keys = [{
         label: 'name'
       }, {
@@ -4785,6 +4835,8 @@ __webpack_require__.r(__webpack_exports__);
         label: 'penalty'
       }, {
         label: 'due_date'
+      }, {
+        label: 'display_created_at'
       }];
     }
 
@@ -4809,7 +4861,7 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date', 'Date Created'];
         this.keys = [{
           label: 'name'
         }, {
@@ -4820,6 +4872,8 @@ __webpack_require__.r(__webpack_exports__);
           label: 'penalty'
         }, {
           label: 'due_date'
+        }, {
+          label: 'display_created_at'
         }];
       }
 
@@ -4827,7 +4881,7 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date', 'Date Created'];
         this.keys = [{
           label: 'name'
         }, {
@@ -4838,6 +4892,8 @@ __webpack_require__.r(__webpack_exports__);
           label: 'status'
         }, {
           label: 'payment_date'
+        }, {
+          label: 'display_created_at'
         }];
       }
 
@@ -4845,13 +4901,15 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Address'];
+        this.columns = ['Name', 'Account #', 'Address', 'Date Created'];
         this.keys = [{
           label: 'name'
         }, {
           label: 'reference'
         }, {
           label: 'address'
+        }, {
+          label: 'display_created_at'
         }];
       }
 
@@ -4859,13 +4917,15 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Address'];
+        this.columns = ['Name', 'Account #', 'Address', 'Date Created'];
         this.keys = [{
           label: 'name'
         }, {
           label: 'reference'
         }, {
           label: 'address'
+        }, {
+          label: 'display_created_at'
         }];
       }
 
@@ -5303,6 +5363,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -5346,8 +5408,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       saveError: null,
       selected: null,
-      activeTab: 'user',
-      cColumns: ['Amount', 'Date', 'Personnel'],
+      activeTab: 'ir',
+      cColumns: ['Amount', 'Date/Time', 'Personnel'],
       cKeys: [{
         label: 'amount'
       }, {
@@ -49823,6 +49885,16 @@ var render = function() {
           1
         ),
         _vm._v(" "),
+        _c("div", { staticClass: "w-full" }, [
+          _c("span", { staticClass: "float-right font-bold text-xl" }, [
+            _vm._v(
+              "\n                    Total: ₱ " +
+                _vm._s(parseFloat(_vm.options.unpaid).toFixed(2)) +
+                "\n                "
+            )
+          ])
+        ]),
+        _vm._v(" "),
         _c(
           "div",
           { staticClass: "receiptModal", attrs: { id: "receiptModal" } },
@@ -50319,79 +50391,30 @@ var render = function() {
                                                 }
                                               }
                                             },
-                                            [
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "1" } },
-                                                [_vm._v("January")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "2" } },
-                                                [_vm._v("February")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "3" } },
-                                                [_vm._v("March")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "4" } },
-                                                [_vm._v("April")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "5" } },
-                                                [_vm._v("May")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "6" } },
-                                                [_vm._v("June")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "7" } },
-                                                [_vm._v("July")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "8" } },
-                                                [_vm._v("August")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "9" } },
-                                                [_vm._v("September")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "10" } },
-                                                [_vm._v("October")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "11" } },
-                                                [_vm._v("November")]
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "option",
-                                                { attrs: { value: "12" } },
-                                                [_vm._v("December")]
-                                              )
-                                            ]
+                                            _vm._l(
+                                              _vm.months.filter(function(x) {
+                                                return _vm.availableMonths.includes(
+                                                  x.label
+                                                )
+                                              }),
+                                              function(m) {
+                                                return _c(
+                                                  "option",
+                                                  {
+                                                    key: m.value,
+                                                    domProps: { value: m.value }
+                                                  },
+                                                  [
+                                                    _vm._v(
+                                                      "\n                                            " +
+                                                        _vm._s(m.label) +
+                                                        "\n                                        "
+                                                    )
+                                                  ]
+                                                )
+                                              }
+                                            ),
+                                            0
                                           )
                                         ])
                                       : _vm._e(),
@@ -50447,7 +50470,7 @@ var render = function() {
                                                     color: "white",
                                                     padding: "0px 5px 0px 5px",
                                                     "border-radius": "5px",
-                                                    width: "90%",
+                                                    width: "100%",
                                                     "font-size": "15px"
                                                   },
                                                   on: {
@@ -50461,6 +50484,23 @@ var render = function() {
                                                 [
                                                   _vm._v(
                                                     "\n                                        SAVE PAYMENT\n                                    "
+                                                  )
+                                                ]
+                                              )
+                                            : _vm._e(),
+                                          _vm._v(" "),
+                                          _vm.message
+                                            ? _c(
+                                                "span",
+                                                {
+                                                  staticClass:
+                                                    "text-xs text-red-500"
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "\n                                        " +
+                                                      _vm._s(_vm.message) +
+                                                      " \n                                    "
                                                   )
                                                 ]
                                               )
@@ -50511,7 +50551,7 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                    ₱ " +
+                                        "\n                                    Total: ₱ " +
                                           _vm._s(
                                             parseFloat(
                                               _vm.unpaid_total
@@ -50669,7 +50709,7 @@ var render = function() {
                           },
                           on: {
                             click: function($event) {
-                              return _vm.changeActive("/reports")
+                              return _vm.changeActive("/users")
                             }
                           }
                         },
@@ -53715,6 +53755,21 @@ var render = function() {
             {
               staticClass:
                 "w-full flex justify-center items-center h-full cursor-pointer",
+              class: { "bg-blue-300": _vm.activeTab == "ir" },
+              on: {
+                click: function($event) {
+                  _vm.activeTab = "ir"
+                }
+              }
+            },
+            [_vm._v("\n                SERVICES\n            ")]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "w-full flex justify-center items-center h-full cursor-pointer",
               class: { "bg-blue-300": _vm.activeTab == "user" },
               on: {
                 click: function($event) {
@@ -53738,21 +53793,6 @@ var render = function() {
               }
             },
             [_vm._v("\n                CUBIC METER MAINTENANCE\n            ")]
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "w-full flex justify-center items-center h-full cursor-pointer",
-              class: { "bg-blue-300": _vm.activeTab == "ir" },
-              on: {
-                click: function($event) {
-                  _vm.activeTab = "ir"
-                }
-              }
-            },
-            [_vm._v("\n                SERVICES\n            ")]
           )
         ]
       ),

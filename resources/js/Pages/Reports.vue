@@ -190,7 +190,7 @@ export default {
                 this.rows = this.options.clients.filter( x => { return !!x.is_active })
 
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'
+                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date', 'Date Created'
                 ]
 
                 this.keys = [
@@ -208,7 +208,10 @@ export default {
                     },
                     {
                         label: 'due_date'
-                    }
+                    },
+                    {
+                        label: 'display_created_at'
+                    },
                 ]
             }
 
@@ -216,7 +219,7 @@ export default {
                 this.rows = this.options.clients.filter( x => { return !!x.is_active })
 
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'
+                    'Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date', 'Date Created'
                 ]
 
                 this.keys = [
@@ -235,6 +238,9 @@ export default {
                     {
                         label: 'payment_date',
                     },
+                    {
+                        label: 'display_created_at'
+                    },
                 ]
             }
 
@@ -242,7 +248,7 @@ export default {
                 this.rows = this.options.clients.filter( x => {return !!x.is_active})
                 
                 this.columns = [
-                    'Name', 'Account #', 'Address'
+                    'Name', 'Account #', 'Address', 'Date Created'
                 ]
 
                 this.keys = [
@@ -254,6 +260,9 @@ export default {
                     },
                     {
                         label: 'address',
+                    },
+                    {
+                        label: 'display_created_at'
                     },
                 ]
             }
@@ -262,7 +271,7 @@ export default {
                 this.rows = this.options.clients.filter( x => { return !x.is_active})
                 
                 this.columns = [
-                    'Name', 'Account #', 'Address'
+                    'Name', 'Account #', 'Address', 'Date Created'
                 ]
 
                 this.keys = [
@@ -273,7 +282,10 @@ export default {
                         label: 'reference',
                     },
                     {
-                        label: 'address',
+                       label: 'address',
+                    },
+                    {
+                        label: 'display_created_at'
                     },
                 ]
             }
@@ -285,7 +297,7 @@ export default {
             this.rows = this.options.clients.filter( x => { return !!x.is_active })
 
             this.columns = [
-                'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'
+                'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date', 'Date Created'
             ]
 
             this.keys = [
@@ -303,7 +315,11 @@ export default {
                 },
                 {
                     label: 'due_date'
-                }
+                },
+                {
+                    label: 'display_created_at'
+                },
+
             ]
         }
 
@@ -331,7 +347,7 @@ export default {
                 this.rows = this.options.clients.filter( x => { return !!x.is_active })
 
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'
+                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date', 'Date Created'
                 ]
 
                 this.keys = [
@@ -349,7 +365,10 @@ export default {
                     },
                     {
                         label: 'due_date'
-                    }
+                    },
+                    {
+                        label: 'display_created_at'
+                    },
                 ]
             }
 
@@ -357,7 +376,7 @@ export default {
                 this.rows = this.options.clients.filter( x => { return !!x.is_active })
 
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'
+                    'Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date', 'Date Created'
                 ]
 
                 this.keys = [
@@ -376,6 +395,9 @@ export default {
                     {
                         label: 'payment_date',
                     },
+                    {
+                        label: 'display_created_at'
+                    },
                 ]
             }
 
@@ -383,10 +405,10 @@ export default {
                 this.rows = this.options.clients.filter( x => {return !!x.is_active})
                 
                 this.columns = [
-                    'Name', 'Account #', 'Address'
+                    'Name', 'Account #', 'Address', 'Date Created'
                 ]
 
-                this.keys = [
+                this.keys = [ 
                     {
                         label: 'name',
                     },
@@ -395,6 +417,9 @@ export default {
                     },
                     {
                         label: 'address',
+                    },
+                    {
+                        label: 'display_created_at'
                     },
                 ]
             }
@@ -403,7 +428,7 @@ export default {
                 this.rows = this.options.clients.filter( x => { return !x.is_active})
                 
                 this.columns = [
-                    'Name', 'Account #', 'Address'
+                    'Name', 'Account #', 'Address', 'Date Created'
                 ]
 
                 this.keys = [
@@ -415,6 +440,9 @@ export default {
                     },
                     {
                         label: 'address',
+                    },
+                    {
+                        label: 'display_created_at'
                     },
                 ]
             }

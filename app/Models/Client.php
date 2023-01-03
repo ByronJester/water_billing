@@ -37,7 +37,8 @@ class Client extends Model
         'cubic_meter_consumed',
         'serial_display',
         'latest_consumed',
-        'address'
+        'address',
+        'display_created_at'
     ];
 
     public function getFullNameAttribute()
@@ -154,5 +155,12 @@ class Client extends Model
     public function getAddressAttribute()
     {
         return $this->house_no . ', ' . $this->street . ', ' . $this->town . ', ' . $this->province;
+    }
+
+    public function getDisplayCreatedAtAttribute()
+    {
+        $date = Carbon::parse($this->created_at);
+
+        return $date->isoFormat('LL'); 
     }
 }

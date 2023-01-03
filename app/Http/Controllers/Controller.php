@@ -75,7 +75,7 @@ class Controller extends BaseController
         $message = "Dear Client, \r\n Your temporary username is your account number ( %s ) and your password is  %s. \r\n You are required to change your password in your profile to our system for security purposes. \r\n Thank you!";
         $message = sprintf($message, $data['reference'], $password);
 
-        $this->sendSms($data['phone'], $message);
+        $this->sendSms($data['phone'], $message); 
 
         $saveUser = User::create($req);
 

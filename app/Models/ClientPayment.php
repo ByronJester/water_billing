@@ -24,7 +24,7 @@ class ClientPayment extends Model
         'charges',
         'total',
         'amount_to_pay',
-        'added_payment',
+        'added_payment', 
         'paid_charges'
     ];
 
@@ -41,7 +41,7 @@ class ClientPayment extends Model
         $date = Carbon::parse($this->date);
         $date = $date->addMonth(1);
 
-        return $date->isoFormat('LL'); 
+        return $date->isoFormat('LL');  
     }
 
     public function getStatusAttribute($value)
@@ -79,6 +79,10 @@ class ClientPayment extends Model
 
     public function getAmountToPayAttribute()
     {
+        if($this->status == 'PAID') {
+            return 0;
+        }
+
         return ($this->amount + $this->penalty + $this->charges) - ($this->payment + $this->penalty_payment + $this->paid_charges);
     }
 

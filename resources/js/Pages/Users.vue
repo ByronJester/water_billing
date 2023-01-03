@@ -14,6 +14,11 @@
             </div>
 
             <div class="w-full flex flex-row mt-5 mb-3 font-bold" style="height: 50px; border-bottom: 1px solid black">
+                <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'ir'" :class="{'bg-blue-300': activeTab == 'ir' }"
+                >
+                    SERVICES
+                </div>
+
                 <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'user'" :class="{'bg-blue-300': activeTab == 'user' }"
                 >
                     USER MAINTENANCE
@@ -24,10 +29,7 @@
                     CUBIC METER MAINTENANCE
                 </div>
 
-                <div class="w-full flex justify-center items-center h-full cursor-pointer" @click="activeTab = 'ir'" :class="{'bg-blue-300': activeTab == 'ir' }"
-                >
-                    SERVICES
-                </div>
+                
             </div>
 
             <div class="w-full h-full mt-5 flex flex-row" v-if="activeTab == 'cubic_meter'">
@@ -316,9 +318,9 @@ export default {
 			},
             saveError: null,
             selected: null,
-            activeTab: 'user',
+            activeTab: 'ir',
             cColumns: [
-                'Amount', 'Date', 'Personnel'
+                'Amount', 'Date/Time', 'Personnel'
             ],
             cKeys : [
                 {

@@ -47,6 +47,8 @@ class ClientController extends Controller
 
         $payments = ClientPayment::where('client_id', $client->id)->orderBy('date')->whereYear('date', Carbon::now()->year)->get();
 
+        $unpaid = ClientPayment::where('client_id', $client->id)->where('status', 'unpaid')->whereYear('date', Carbon::now()->year)->get();
+
         $reportArr = [];
 
         if($auth) {
@@ -57,8 +59,9 @@ class ClientController extends Controller
                     'payments' => $payments,
                     'reports' => [
                         'amount' => $payments->pluck('amount'), 
-                        'month' => $payments->pluck('month')  
-                    ]
+                        'month' => $payments->pluck('month'),
+                    ],
+                    'unpaid' => $unpaid->sum('total')
                 ]
             ]);
         }
@@ -584,8 +587,9 @@ class ClientController extends Controller
     {
         $payments = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->get();
         $total = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->where('status', 'unpaid')->get();
+        $months = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->where('status', 'unpaid')->get();
 
-        return response()->json(['payments' => $payments, 'total' => $total->sum('total')], 200);
+        return response()->json(['payments' => $payments, 'total' => $total->sum('total'), 'months' => $months->pluck('month')], 200);
     }
 
     public function assignWoker(Request $request)

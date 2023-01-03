@@ -126,19 +126,10 @@
                                     </div>
                                     
                                     <div class="w-full" v-if="hasSelected">
-                                        <select style="width: 90%; border: 1px solid black; border-radius: 5px; height: 34px; text-align: center" v-model="month" class="ml-1">
-                                            <option value="1">January</option>
-                                            <option value="2">February</option>
-                                            <option value="3">March</option>
-                                            <option value="4">April</option>
-                                            <option value="5">May</option>
-                                            <option value="6">June</option>
-                                            <option value="7">July</option>
-                                            <option value="8">August</option>
-                                            <option value="9">September</option>
-                                            <option value="10">October</option>
-                                            <option value="11">November</option>
-                                            <option value="12">December</option>
+                                        <select style="width: 90%; border: 1px solid black; border-radius: 5px; height: 34px; text-align: center" v-model="month" class="ml-1"> 
+                                            <option :value="m.value" v-for="m in months.filter(x => { return availableMonths.includes(x.label) })" :key="m.value">
+                                                {{ m.label }}
+                                            </option>
                                         </select>
                                     </div>
 
@@ -150,12 +141,16 @@
                                     </div>
 
                                     <div class="w-full" v-if="hasSelected">
-                                        <button style="background: #000000; color: white; padding: 0px 5px 0px 5px; border-radius: 5px; background: #0288D1; width: 90%; font-size: 15px"
+                                        <button style="background: #000000; color: white; padding: 0px 5px 0px 5px; border-radius: 5px; background: #0288D1; width: 100%; font-size: 15px"
                                             @click="markAsPaid(selectedClient.id)" v-if="activeTab == 'cashiering'"
                                             class="ml-1"
                                         >
                                             SAVE PAYMENT
                                         </button>
+
+                                        <span class="text-xs text-red-500" v-if="message">
+                                            {{message}} 
+                                        </span>
                                     </div>
 
 
@@ -165,7 +160,7 @@
                                 </div>
                                 <div class="w-full">
                                     <span class="float-right text-2xl font-bold">
-                                        ₱ {{ parseFloat(unpaid_total).toFixed(2) }}
+                                        Total: ₱ {{ parseFloat(unpaid_total).toFixed(2) }}
                                     </span>
                                 </div>
 
@@ -201,7 +196,7 @@
                             </div>
                         </div>
 
-                        <div class="w-full flex flex-col mx-2 cursor-pointer" style="border: 1px solid black; border-radius: 5px" @click="changeActive('/reports')">
+                        <div class="w-full flex flex-col mx-2 cursor-pointer" style="border: 1px solid black; border-radius: 5px" @click="changeActive('/users')">
                             <div class="w-full text-center text-red-600" style="font-size: 50px;">
                                 {{ options.incidents.length}}
                             </div>
@@ -669,13 +664,13 @@ export default {
                     label: 'amount',
                 },
                 {
-                    label: 'penalty',
+                    label: 'penalty_payment',
                 },
                 {
-                    label: 'charges',
+                    label: 'paid_charges', 
                 },
                 {
-                    label: 'total',
+                    label: 'added_payment',
                 },
                 {
                     label: 'added_payment',
@@ -690,7 +685,58 @@ export default {
             selectedClient: null,
             clientData: null,
             hasSelected: false,
-            unpaid_total: 0
+            unpaid_total: 0,
+            months: [
+                {
+                    label: 'January',
+                    value: 1
+                },
+                {
+                    label: 'February',
+                    value: 2
+                },
+                {
+                    label: 'March',
+                    value: 3
+                },
+                {
+                    label: 'April',
+                    value: 4
+                },
+                {
+                    label: 'May',
+                    value: 5
+                },
+                {
+                    label: 'June',
+                    value: 6
+                },
+                {
+                    label: 'July',
+                    value: 7
+                },
+                {
+                    label: 'August',
+                    value: 8
+                },
+                {
+                    label: 'September',
+                    value: 9
+                },
+                {
+                    label: 'October',
+                    value: 10
+                },
+                {
+                    label: 'November',
+                    value: 11
+                },
+                {
+                    label: 'December',
+                    value: 12
+                },
+            ],
+            availableMonths: []
         }
     },
 
@@ -954,7 +1000,7 @@ export default {
         },
 
         hasDownloaded(evt) {
-            // location.reload()
+            location.reload()
         },
 
         viewPayment(arg) {
@@ -962,6 +1008,9 @@ export default {
 				.then(response => {
                     this.payments = response.data.payments
                     this.unpaid_total = response.data.total
+                    this.availableMonths = response.data.months
+
+                    console.log(this.availableMonths)
 				})
         },
 

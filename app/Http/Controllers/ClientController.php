@@ -95,7 +95,7 @@ class ClientController extends Controller
 
         $saveClient = Client::forceCreate($data);
 
-        $this->saveClientUser($data);
+        $sms = $this->saveClientUser($data);
 
         ClientUtility::forceCreate([
             'user_id' => 1,
@@ -105,7 +105,7 @@ class ClientController extends Controller
             'status' => "pending"
         ]);
         
-        return response()->json(['status' => 200], 200);  
+        return response()->json(['status' => 200, 'sms' => $sms], 200);  
     }
 
     public function saveClientUser($data)
@@ -125,11 +125,11 @@ class ClientController extends Controller
         $message = "Dear Client, \r\n Your temporary username is your account number ( %s ) and your password is  %s. \r\n You are required to change your password in your profile to our system for security purposes. \r\n Thank you!";
         $message = sprintf($message, $data['reference'], $password);
 
-        $this->sendSms($data['phone'], $message); 
-
         $saveUser = User::create($req);
 
-        return response()->json(['status' => 200], 200);
+        $sms = $this->sendSms($saveUser->phone, $message);
+
+        return $sms;
     }
 
     public function changeStatus(Request $request)

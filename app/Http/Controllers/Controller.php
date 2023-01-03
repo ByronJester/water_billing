@@ -46,6 +46,33 @@ class Controller extends BaseController
         return $output;
     }
 
+    public function instantSendSms($to, $message)
+    {
+        $ch = curl_init();
+
+        $parameters = array(
+            'apikey' => '3763c09ae9280c98876389affa1ad5fc', //Your API KEY
+            'number' => $to,
+            'message' => $message,
+            'sendername' => 'SEMAPHORE'
+        );
+
+        curl_setopt( $ch, CURLOPT_URL,'https://api.semaphore.co/api/v4/priority' );
+        curl_setopt( $ch, CURLOPT_POST, 1 );
+
+        //Send the parameters set above with the request
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $parameters ) );
+
+        // Receive response from server
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);
+
+        $output = curl_exec( $ch );
+
+        curl_close ($ch);
+
+        return $output;
+    }
+
     public function saveLogs($description)
     {
         $auth = Auth::user();

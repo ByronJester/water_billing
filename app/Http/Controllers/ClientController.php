@@ -348,6 +348,7 @@ class ClientController extends Controller
                 $payment->payment = $payment->amount;
                 $payment->penalty_payment = $payment->penalty;
                 $payment->status = 'paid';
+                $payment->payment_date = Carbon::now();
                 $payment->save();
             } else {
                 
@@ -483,10 +484,29 @@ class ClientController extends Controller
             $utilities = $utilities->where('client_id', $client->id);
         }
 
-        ClientUtility::where('id', $request->id)->update([
-            'status' => $request->status,
-            'amount' => $request->amount
-        ]);
+        $now = Carbon::now();
+
+        // $payment = ClientPayment::where()
+
+        // ClientUtility::where('id', $request->id)->update([
+        //     'status' => $request->status,
+        //     'amount' => $request->amount
+        // ]);
+        $utility = ClientUtility::where('id', $request->id)->first();
+
+        $payment = ClientPayment::where('client_id', $utility->client_id)->where('status', 'unpaid')->whereMonth('created_at', $now->month)->first();
+        
+        $utility->status = $request->status;
+        $utility->amount = $request->amount; 
+
+        if(!$payment) {
+            $date = Carbon::parse($utility->created_at);
+            $date = $date->addMonth(1);
+            $utility->created_at = $date;
+            $utility->updated_at = $date;
+        }
+
+        $utility->save();
 
         return response()->json(['status' => 200, 'utilities' => $utilities->get()], 200);  
     }

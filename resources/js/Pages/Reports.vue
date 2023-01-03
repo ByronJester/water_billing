@@ -48,7 +48,7 @@
                             <option value="billing">Billing</option>
                             <option value="payment">Payment</option>
                             <option value="reconnection">ACTIVATED CONNECTION</option>
-                            <option value="deactivation">DEACTIVATED CONNECTION</option>
+                            <!-- <option value="deactivation">DEACTIVATED CONNECTION</option> -->
                         </select>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
             <div class="w-full mt-2">
                 <Table :columns="columns" :rows="rows" :keys="keys" :selected.sync="selected"/>
             </div>
-            <div class="w-full" v-if="(activeTab == 'billing' || activeTab == 'payment') || rows.length > 0">
+            <div class="w-full" v-if="(activeTab == 'billing' || activeTab == 'payment') && rows.length > 0">
                 <span class="float-right text-2xl font-bold py-2">
                         Total: ₱ {{ parseFloat(options.total).toFixed(2) }}
                 </span>
@@ -187,56 +187,63 @@ export default {
             }
 
             if(arg == 'billing') {
-                this.rows = this.options.clients.filter( x => { return !!x.is_active })
+                this.rows = this.options.clients
 
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'
+                    'Name', 'Account #', 'Total Bill', 'Due Date'
                 ]
 
                 this.keys = [
                     {
-                        label: 'name',
+                        label: 'client_name',
                     },
                     {
-                        label: 'reference',
+                        label: 'client_reference',
                     },
                     {
-                        label: 'amount_to_pay',
-                    },
-                    {
-                        label: 'penalty',
+                        label: 'total',
                     },
                     {
                         label: 'due_date'
                     }
                 ]
+
+                this.rows = this.rows.filter(x => {
+                    var createdAt = new Date(x.date);
+                    return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
+                })
             }
 
             if(arg == 'payment') {
-                this.rows = this.options.clients.filter( x => { return !!x.is_active })
+                this.rows = this.options.clients
 
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Payment Date'
+                    'Name', 'Account #', 'Total Bill', 'Payment Date'
                 ]
 
                 this.keys = [
                     {
-                        label: 'name',
+                        label: 'client_name',
                     },
                     {
-                        label: 'reference',
+                        label: 'client_reference',
                     },
                     {
-                        label: 'amount_to_pay',
+                        label: 'total',
                     },
                     {
                         label: 'payment_date',
                     }
                 ]
+
+                this.rows = this.rows.filter(x => {
+                    var createdAt = new Date(x.payment_date);
+                    return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
+                })
             }
 
             if(arg == 'reconnection') {
-                this.rows = this.options.clients.filter( x => {return !!x.is_active})
+                this.rows = this.options.connections.filter(x => { return !!x.is_active })
                 
                 this.columns = [
                     'Name', 'Account #', 'Address', 'Date Created'
@@ -256,10 +263,15 @@ export default {
                         label: 'display_created_at'
                     },
                 ]
+
+                this.rows = this.rows.filter(x => {
+                    var createdAt = new Date(x.created_at);
+                    return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
+                })
             }
 
             if(arg == 'deactivation') {
-                this.rows = this.options.clients.filter( x => { return !x.is_active})
+                this.rows = this.options.clients
                 
                 this.columns = [
                     'Name', 'Account #', 'Address', 'Date Created'
@@ -284,25 +296,23 @@ export default {
     },
 
     created(){
+        // console.log(this.options.clients)
         if(this.activeTab == 'billing') {
-            this.rows = this.options.clients.filter( x => { return !!x.is_active })
+            this.rows = this.options.clients
 
             this.columns = [
-                'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'
+                'Name', 'Account #', 'Total Bill', 'Due Date'
             ]
 
             this.keys = [
                 {
-                    label: 'name',
+                    label: 'client_name',
                 },
                 {
-                    label: 'reference',
+                    label: 'client_reference',
                 },
                 {
-                    label: 'amount_to_pay',
-                },
-                {
-                    label: 'penalty',
+                    label: 'total',
                 },
                 {
                     label: 'due_date'
@@ -321,10 +331,9 @@ export default {
         this.date.end = endDate
 
         this.rows = this.rows.filter(x => {
-            var createdAt = new Date(x.created_at);
+            var createdAt = new Date(x.date);
             return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
         })
-        
     },
 
     methods: {
@@ -332,56 +341,63 @@ export default {
             var arg = this.activeTab
 
             if(arg == 'billing') {
-                this.rows = this.options.clients.filter( x => { return !!x.is_active })
+                this.rows = this.options.clients
 
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'
+                    'Name', 'Account #', 'Total Bill', 'Due Date'
                 ]
 
                 this.keys = [
                     {
-                        label: 'name',
+                        label: 'client_name',
                     },
                     {
-                        label: 'reference',
+                        label: 'client_reference',
                     },
                     {
-                        label: 'amount_to_pay',
-                    },
-                    {
-                        label: 'penalty',
+                        label: 'total',
                     },
                     {
                         label: 'due_date'
                     }
                 ]
+
+                this.rows = this.rows.filter(x => {
+                    var createdAt = new Date(x.date);
+                    return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
+                })
             }
 
             if(arg == 'payment') {
-                this.rows = this.options.clients.filter( x => { return !!x.is_active })
+                this.rows = this.options.clients
 
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Payment Date'
+                    'Name', 'Account #', 'Total Bill', 'Payment Date'
                 ]
 
                 this.keys = [
                     {
-                        label: 'name',
+                        label: 'client_name',
                     },
                     {
-                        label: 'reference',
+                        label: 'client_reference',
                     },
                     {
-                        label: 'amount_to_pay',
+                        label: 'total',
                     },
                     {
                         label: 'payment_date',
                     }
                 ]
+
+                this.rows = this.rows.filter(x => {
+                    var createdAt = new Date(x.payment_date);
+                    return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
+                })
             }
 
             if(arg == 'reconnection') {
-                this.rows = this.options.clients.filter( x => {return !!x.is_active})
+                this.rows = this.options.connections.filter(x => { return !!x.is_active })
                 
                 this.columns = [
                     'Name', 'Account #', 'Address', 'Date Created'
@@ -401,10 +417,15 @@ export default {
                         label: 'display_created_at'
                     },
                 ]
+
+                this.rows = this.rows.filter(x => {
+                    var createdAt = new Date(x.created_at);
+                    return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
+                })
             }
 
             if(arg == 'deactivation') {
-                this.rows = this.options.clients.filter( x => { return !x.is_active})
+                this.rows = this.options.clients
                 
                 this.columns = [
                     'Name', 'Account #', 'Address', 'Date Created'
@@ -425,11 +446,6 @@ export default {
                     },
                 ]
             }
-
-            this.rows = this.rows.filter(x => {
-                var createdAt = new Date(x.created_at);
-                return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
-            })
 
         },
         printReport(){

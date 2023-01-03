@@ -25,8 +25,24 @@ class ClientPayment extends Model
         'total',
         'amount_to_pay',
         'added_payment', 
-        'paid_charges'
+        'paid_charges',
+        'client_name',
+        'client_reference'
     ];
+
+    public function getClientNameAttribute()
+    {
+        $client = Client::where('id', $this->client_id)->first();
+
+        return $client->fullname;
+    }
+
+    public function getClientReferenceAttribute()
+    {
+        $client = Client::where('id', $this->client_id)->first();
+
+        return $client->reference;
+    }
 
     public function getMonthAttribute()
     {
@@ -40,6 +56,13 @@ class ClientPayment extends Model
     {
         $date = Carbon::parse($this->date);
         $date = $date->addMonth(1);
+
+        return $date->isoFormat('LL');  
+    }
+
+    public function getPaymentDateAttribute($value)
+    {
+        $date = Carbon::parse($value);
 
         return $date->isoFormat('LL');  
     }

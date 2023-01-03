@@ -20,7 +20,6 @@ class Client extends Model
         'province',
         'reference',
         'is_active',
-        'penalty',
         'payment_date',
         'phone',
         'serial'
@@ -30,6 +29,7 @@ class Client extends Model
         'name',
         'fullname',
         'amount_to_pay',
+        'report_amount_to_pay',
         'due_date',
         'payment_status',
         'other_fee',
@@ -39,7 +39,8 @@ class Client extends Model
         'latest_consumed',
         'address',
         'display_created_at',
-        'display_updated_at'
+        'display_updated_at',
+        'report_penalty'
     ];
 
     public function getFullNameAttribute()
@@ -65,6 +66,30 @@ class Client extends Model
 
         if(count($payments) > 0) {
             return $payments->sum('amount');
+        }
+
+        return 0;
+        
+    }
+
+    public function getReportAmountToPayAttribute()
+    {
+        $payments = ClientPayment::where('client_id', $this->id)->get();
+
+        if(count($payments) > 0) {
+            return $payments->sum('amount');
+        }
+
+        return 0;
+        
+    }
+
+    public function getReportPenaltyAttribute()
+    {
+        $payments = ClientPayment::where('client_id', $this->id)->get();
+
+        if(count($payments) > 0) {
+            return $payments->sum('penalty');
         }
 
         return 0;

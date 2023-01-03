@@ -4735,6 +4735,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     activeTab: function activeTab(arg) {
+      var _this = this;
+
       if (arg == 'ir') {
         this.rows = this.options.ir;
         this.columns = ['Name', 'Address', 'Description', 'Worker', 'Status'];
@@ -4752,41 +4754,43 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       if (arg == 'billing') {
-        this.rows = this.options.clients.filter(function (x) {
-          return !!x.is_active;
-        });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
+        this.rows = this.options.clients;
+        this.columns = ['Name', 'Account #', 'Total Bill', 'Due Date'];
         this.keys = [{
-          label: 'name'
+          label: 'client_name'
         }, {
-          label: 'reference'
+          label: 'client_reference'
         }, {
-          label: 'amount_to_pay'
-        }, {
-          label: 'penalty'
+          label: 'total'
         }, {
           label: 'due_date'
         }];
+        this.rows = this.rows.filter(function (x) {
+          var createdAt = new Date(x.date);
+          return createdAt >= new Date(_this.date.start) && createdAt <= new Date(_this.date.end);
+        });
       }
 
       if (arg == 'payment') {
-        this.rows = this.options.clients.filter(function (x) {
-          return !!x.is_active;
-        });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Payment Date'];
+        this.rows = this.options.clients;
+        this.columns = ['Name', 'Account #', 'Total Bill', 'Payment Date'];
         this.keys = [{
-          label: 'name'
+          label: 'client_name'
         }, {
-          label: 'reference'
+          label: 'client_reference'
         }, {
-          label: 'amount_to_pay'
+          label: 'total'
         }, {
           label: 'payment_date'
         }];
+        this.rows = this.rows.filter(function (x) {
+          var createdAt = new Date(x.payment_date);
+          return createdAt >= new Date(_this.date.start) && createdAt <= new Date(_this.date.end);
+        });
       }
 
       if (arg == 'reconnection') {
-        this.rows = this.options.clients.filter(function (x) {
+        this.rows = this.options.connections.filter(function (x) {
           return !!x.is_active;
         });
         this.columns = ['Name', 'Account #', 'Address', 'Date Created'];
@@ -4799,12 +4803,14 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           label: 'display_created_at'
         }];
+        this.rows = this.rows.filter(function (x) {
+          var createdAt = new Date(x.created_at);
+          return createdAt >= new Date(_this.date.start) && createdAt <= new Date(_this.date.end);
+        });
       }
 
       if (arg == 'deactivation') {
-        this.rows = this.options.clients.filter(function (x) {
-          return !x.is_active;
-        });
+        this.rows = this.options.clients;
         this.columns = ['Name', 'Account #', 'Address', 'Date Created'];
         this.keys = [{
           label: 'name'
@@ -4819,21 +4825,18 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this = this;
+    var _this2 = this;
 
+    // console.log(this.options.clients)
     if (this.activeTab == 'billing') {
-      this.rows = this.options.clients.filter(function (x) {
-        return !!x.is_active;
-      });
-      this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
+      this.rows = this.options.clients;
+      this.columns = ['Name', 'Account #', 'Total Bill', 'Due Date'];
       this.keys = [{
-        label: 'name'
+        label: 'client_name'
       }, {
-        label: 'reference'
+        label: 'client_reference'
       }, {
-        label: 'amount_to_pay'
-      }, {
-        label: 'penalty'
+        label: 'total'
       }, {
         label: 'due_date'
       }];
@@ -4846,52 +4849,54 @@ __webpack_require__.r(__webpack_exports__);
     this.date.start = startDate;
     this.date.end = endDate;
     this.rows = this.rows.filter(function (x) {
-      var createdAt = new Date(x.created_at);
-      return createdAt >= new Date(_this.date.start) && createdAt <= new Date(_this.date.end);
+      var createdAt = new Date(x.date);
+      return createdAt >= new Date(_this2.date.start) && createdAt <= new Date(_this2.date.end);
     });
   },
   methods: {
     filterRows: function filterRows() {
-      var _this2 = this;
+      var _this3 = this;
 
       var arg = this.activeTab;
 
       if (arg == 'billing') {
-        this.rows = this.options.clients.filter(function (x) {
-          return !!x.is_active;
-        });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
+        this.rows = this.options.clients;
+        this.columns = ['Name', 'Account #', 'Total Bill', 'Due Date'];
         this.keys = [{
-          label: 'name'
+          label: 'client_name'
         }, {
-          label: 'reference'
+          label: 'client_reference'
         }, {
-          label: 'amount_to_pay'
-        }, {
-          label: 'penalty'
+          label: 'total'
         }, {
           label: 'due_date'
         }];
+        this.rows = this.rows.filter(function (x) {
+          var createdAt = new Date(x.date);
+          return createdAt >= new Date(_this3.date.start) && createdAt <= new Date(_this3.date.end);
+        });
       }
 
       if (arg == 'payment') {
-        this.rows = this.options.clients.filter(function (x) {
-          return !!x.is_active;
-        });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Payment Date'];
+        this.rows = this.options.clients;
+        this.columns = ['Name', 'Account #', 'Total Bill', 'Payment Date'];
         this.keys = [{
-          label: 'name'
+          label: 'client_name'
         }, {
-          label: 'reference'
+          label: 'client_reference'
         }, {
-          label: 'amount_to_pay'
+          label: 'total'
         }, {
           label: 'payment_date'
         }];
+        this.rows = this.rows.filter(function (x) {
+          var createdAt = new Date(x.payment_date);
+          return createdAt >= new Date(_this3.date.start) && createdAt <= new Date(_this3.date.end);
+        });
       }
 
       if (arg == 'reconnection') {
-        this.rows = this.options.clients.filter(function (x) {
+        this.rows = this.options.connections.filter(function (x) {
           return !!x.is_active;
         });
         this.columns = ['Name', 'Account #', 'Address', 'Date Created'];
@@ -4904,12 +4909,14 @@ __webpack_require__.r(__webpack_exports__);
         }, {
           label: 'display_created_at'
         }];
+        this.rows = this.rows.filter(function (x) {
+          var createdAt = new Date(x.created_at);
+          return createdAt >= new Date(_this3.date.start) && createdAt <= new Date(_this3.date.end);
+        });
       }
 
       if (arg == 'deactivation') {
-        this.rows = this.options.clients.filter(function (x) {
-          return !x.is_active;
-        });
+        this.rows = this.options.clients;
         this.columns = ['Name', 'Account #', 'Address', 'Date Created'];
         this.keys = [{
           label: 'name'
@@ -4921,11 +4928,6 @@ __webpack_require__.r(__webpack_exports__);
           label: 'display_created_at'
         }];
       }
-
-      this.rows = this.rows.filter(function (x) {
-        var createdAt = new Date(x.created_at);
-        return createdAt >= new Date(_this2.date.start) && createdAt <= new Date(_this2.date.end);
-      });
     },
     printReport: function printReport() {
       this.$refs.report.generatePdf();
@@ -53351,10 +53353,6 @@ var render = function() {
                   _vm._v(" "),
                   _c("option", { attrs: { value: "reconnection" } }, [
                     _vm._v("ACTIVATED CONNECTION")
-                  ]),
-                  _vm._v(" "),
-                  _c("option", { attrs: { value: "deactivation" } }, [
-                    _vm._v("DEACTIVATED CONNECTION")
                   ])
                 ]
               )
@@ -53398,8 +53396,7 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _vm.activeTab == "billing" ||
-        _vm.activeTab == "payment" ||
+        (_vm.activeTab == "billing" || _vm.activeTab == "payment") &&
         _vm.rows.length > 0
           ? _c("div", { staticClass: "w-full" }, [
               _c(

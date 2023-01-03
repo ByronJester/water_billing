@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\ClientUtility;
 use App\Models\Client;
+use App\Models\ClientPayment;
 use App\Models\Maintenance;
 use App\Models\AuditTrail;
 use App\Models\Verification;
@@ -239,7 +240,8 @@ class UserController extends Controller
     {
         $auth = Auth::user();
 
-        $clients = Client::orderBy('created_at', 'desc')->get();
+        $clients = ClientPayment::orderBy('created_at', 'desc')->get();
+        $connections = Client::orderBy('created_at', 'desc')->get();
 
         if($auth) {
             return Inertia::render('Reports', [
@@ -247,7 +249,8 @@ class UserController extends Controller
                 'options' => [
                     'ir' => ClientUtility::get(),
                     'clients' => $clients,
-                    'total' => $clients->sum('amount_to_pay')
+                    'total' => $clients->sum('total'),
+                    'connections' => $connections
                 ]
             ]);
         }

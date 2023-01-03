@@ -100,6 +100,8 @@ export default {
                 var search = arg.toLowerCase()
                 return name.includes(search)
             });
+
+            this.client = null
         },
     },
 

@@ -393,10 +393,10 @@ class ClientController extends Controller
             if($auth->role == 2) {
                 $client = Client::where('reference', $auth->reference)->first();
 
-                $utilities = $utilities->where('client_id', $client->id);
+                $utilities = $utilities->where('client_id', $client->id)->whereNotIn('status', ['paid']);
             } else {
                 if($auth->user_type == 'utility') {
-                    $utilities = $utilities->where('user_id', $auth->id);
+                    $utilities = $utilities->where('user_id', $auth->id)->whereNotIn('status', ['completed', 'paid']);
                 }
             }
 

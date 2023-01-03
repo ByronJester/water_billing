@@ -63,7 +63,7 @@
             <div class="w-full mt-2">
                 <Table :columns="columns" :rows="rows" :keys="keys" :selected.sync="selected"/>
             </div>
-            <div class="w-full" v-if="activeTab == 'billing' || activeTab == 'payment'">
+            <div class="w-full" v-if="(activeTab == 'billing' || activeTab == 'payment') || rows.length > 0">
                 <span class="float-right text-2xl font-bold py-2">
                         Total: ₱ {{ parseFloat(options.total).toFixed(2) }}
                 </span>
@@ -216,7 +216,7 @@ export default {
                 this.rows = this.options.clients.filter( x => { return !!x.is_active })
 
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'
+                    'Name', 'Account #', 'Amount to Pay', 'Payment Date'
                 ]
 
                 this.keys = [
@@ -228,9 +228,6 @@ export default {
                     },
                     {
                         label: 'amount_to_pay',
-                    },
-                    {
-                        label: 'status',
                     },
                     {
                         label: 'payment_date',
@@ -364,7 +361,7 @@ export default {
                 this.rows = this.options.clients.filter( x => { return !!x.is_active })
 
                 this.columns = [
-                    'Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'
+                    'Name', 'Account #', 'Amount to Pay', 'Payment Date'
                 ]
 
                 this.keys = [
@@ -376,9 +373,6 @@ export default {
                     },
                     {
                         label: 'amount_to_pay',
-                    },
-                    {
-                        label: 'status',
                     },
                     {
                         label: 'payment_date',
@@ -436,8 +430,6 @@ export default {
                 var createdAt = new Date(x.created_at);
                 return createdAt >= new Date(this.date.start) && createdAt <= new Date(this.date.end);
             })
-
-            console.log(this.rows)
 
         },
         printReport(){

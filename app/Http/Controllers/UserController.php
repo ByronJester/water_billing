@@ -146,7 +146,7 @@ class UserController extends Controller
 
             $bills = WaterBill::orderBy('created_at', 'desc')->get();
 
-            $utilities = ClientUtility::orderBy('created_at', 'desc')->get();
+            $utilities = ClientUtility::orderBy('created_at', 'desc')->whereNotIn('status', ['paid'])->get();
 
             return Inertia::render('Users', [
                 'auth'    => $auth,

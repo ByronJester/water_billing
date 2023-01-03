@@ -4773,15 +4773,13 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Payment Date'];
         this.keys = [{
           label: 'name'
         }, {
           label: 'reference'
         }, {
           label: 'amount_to_pay'
-        }, {
-          label: 'status'
         }, {
           label: 'payment_date'
         }];
@@ -4880,15 +4878,13 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Payment Date'];
         this.keys = [{
           label: 'name'
         }, {
           label: 'reference'
         }, {
           label: 'amount_to_pay'
-        }, {
-          label: 'status'
         }, {
           label: 'payment_date'
         }];
@@ -4930,7 +4926,6 @@ __webpack_require__.r(__webpack_exports__);
         var createdAt = new Date(x.created_at);
         return createdAt >= new Date(_this2.date.start) && createdAt <= new Date(_this2.date.end);
       });
-      console.log(this.rows);
     },
     printReport: function printReport() {
       this.$refs.report.generatePdf();
@@ -5983,6 +5978,7 @@ __webpack_require__.r(__webpack_exports__);
         var search = arg.toLowerCase();
         return name.includes(search);
       });
+      this.client = null;
     }
   },
   methods: {}
@@ -53402,7 +53398,9 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _vm.activeTab == "billing" || _vm.activeTab == "payment"
+        _vm.activeTab == "billing" ||
+        _vm.activeTab == "payment" ||
+        _vm.rows.length > 0
           ? _c("div", { staticClass: "w-full" }, [
               _c(
                 "span",

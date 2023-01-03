@@ -152,6 +152,15 @@ class ClientController extends Controller
             return response()->json(['errors' => $validator->messages(), 'status' => 422], 200);
         }
 
+        $dateSelected = Carbon::parse($request->date);
+
+        $existingReading = ClientPayment::where('client_id', $client->id)->whereMonth('date', $dateSelected->month)->first();
+
+        if(!!$existingReading) {
+            $errMessage = 'Reading already exist for this month.';
+            return response()->json(['status' => 422, 'errMessage' => $errMessage], 200); 
+        }
+
         $waterBill = WaterBill::orderBy('created_at', 'desc')->first();
 
         $consumed_cubic_meter =  ($request->consumed_cubic_meter - $bills->sum('consumed_cubic_meter'));
@@ -266,7 +275,7 @@ class ClientController extends Controller
 
         $users = User::where('reference', $request->reference)->get();
 
-        $message = "BILLING FOR THIS MONTH \r\n %s %s - %s \r\n Amount: ₱ %s \r\n Due Date: %s. \r\n For more info please visit water billing system. \r\n water-billing-6mb6.onrender.com";
+        $message = "BILLING FOR THIS MONTH \r\n %s %s - %s \r\n Amount: ₱ %s \r\n Due Date: %s. \r\n For more info please visit water billing system. \r\n https://water-billing-v2.onrender.com";
         $message = sprintf($message, $client->first_name, $client->last_name, $client->reference, $totalAmount + $client->penalty, $due_date->isoFormat('LL'));
         
         foreach($users as $user) {
@@ -318,7 +327,7 @@ class ClientController extends Controller
             } else {
                 
                 if($payment_amount < (($payment->amount - $payment->payment) + $charges)) {
-                    if($payment_amount > $charges) {
+                    if($payment_amount >= $charges) {
                         ClientUtility::where('client_id', $client_id)->where('status', 'completed')->whereMonth('created_at', $month)->update(['status' => 'paid']);
 
                         $payment->payment = ($payment_amount + $payment->payment) - $charges;

@@ -12,25 +12,31 @@
             </div>
 
             <div class="w-full" v-if="activeTab == 'archive'">
+                <div class="w-full mb-20">
+                    <input type="text" style="height: 50px; border: 1px solid black; border-radius: 10px; width: 300px" class="px-5 float-right"
+                        placeholder="Search..." v-model="search"
+                    >
+                </div>
+
                 <div class="w-full mt-5" v-if="client">
                     <Toggle :value="client.is_active" :url="'/clients/deactivate-reactivate'" :id="client.id" class="mr-1 pt-1"/> <span class="font-bold"> RECONNECT ACCOUNT #: {{client.reference}} </span>
                 </div>
 
                 <table class="w-full mt-5">
                     <tr class="text-center">
-                        <th v-for="column in ['FIRST NAME', 'LAST NAME', 'ADDRESS', 'ACCOUNT #']" :key="column">
+                        <th v-for="column in ['NAME', 'ADDRESS', 'ACCOUNT #', 'DATE CREATED', 'DATE DISCONNECTED']" :key="column">
                             {{ column }}
                         </th>
                     </tr>
 
                     <tr class="text-center"
-                        v-for="(l, index) in options.clients" :key="index"
+                        v-for="(l, index) in clients" :key="index"
                     >
-                        <td v-for="(k, i) in [{label: 'first_name'}, {label: 'last_name'}, {label: 'address'}, {label: 'reference'},]" :key="i" class="cursor-pointer"
+                        <td v-for="(k, i) in [{label: 'fullname'}, {label: 'address'}, {label: 'reference'}, {label: 'display_created_at'}, {label: 'display_updated_at'}]" :key="i" class="cursor-pointer"
                             :class="{'--active__color': !!client && client.id == l.id }"
                              @click="client = l"
                         >
-                            <span>{{options.clients[index][k.label] }}</span> 
+                            <span>{{clients[index][k.label] }}</span>
                         </td>
                     </tr>
 
@@ -75,17 +81,26 @@ export default {
     data(){
         return {
             activeTab: 'archive',
-            client: null
+            client: null,
+            search: null,
+            clients: []
         }
     },
 
     created(){
-        
+        this.clients = this.options.clients
     },
 
     watch: {
         client(arg) {
-        }
+        },
+        search(arg) {
+            this.clients = this.options.clients.filter(x => {
+                var name = x.name.toLowerCase();
+                var search = arg.toLowerCase()
+                return name.includes(search)
+            });
+        },
     },
 
     methods: {

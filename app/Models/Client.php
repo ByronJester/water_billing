@@ -38,7 +38,8 @@ class Client extends Model
         'serial_display',
         'latest_consumed',
         'address',
-        'display_created_at'
+        'display_created_at',
+        'display_updated_at'
     ];
 
     public function getFullNameAttribute()
@@ -160,6 +161,13 @@ class Client extends Model
     public function getDisplayCreatedAtAttribute()
     {
         $date = Carbon::parse($this->created_at);
+
+        return $date->isoFormat('LL'); 
+    }
+
+    public function getDisplayUpdatedAtAttribute()
+    {
+        $date = Carbon::parse($this->updated_at);
 
         return $date->isoFormat('LL'); 
     }

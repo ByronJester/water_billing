@@ -296,7 +296,7 @@ class UserController extends Controller
             $now = Carbon::now();
 
             foreach($users as $user) {
-                $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  We will be resuming normal hours starting today. You can now access our website https://water-billing-6mb6.onrender.com  \r\n  Thank you for understanding. \r\n  For any inquiries, please contact 09566814383/09657657443.";
+                $message = "ANNOUNCEMENT \r\n  Dear Clients, \r\n  We will be resuming normal hours starting today. You can now access our website https://water-billing-v2.onrender.com  \r\n  Thank you for understanding. \r\n  For any inquiries, please contact 09566814383/09657657443.";
                 $message = sprintf($message, $now->isoFormat('LL'));
 
                 $this->sendSms($user->phone, $message);

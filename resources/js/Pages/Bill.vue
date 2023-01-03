@@ -62,6 +62,8 @@
                     >
                         Generate Bill
                     </button>
+
+                    <span class="text-xs text-red-500" v-if="errMessage">{{errMessage}}</span>
                 </div>
 
                 <div class="w-full mt-2">
@@ -91,8 +93,8 @@
                 ref="receipt"
             >
                 <section slot="pdf-content">
-                    <div class="w-full flex justify-center items-center mt-5">
-                        <img src="/images/logo.png" style="width: 80px; height: 80px"/>
+                    <div class="w-full flex justify-center items-center mt-2">
+                        <img src="/images/logo.png" style="width: 60px; height: 60px"/>
                     </div>
 
                     <div class="w-full text-xs text-center font-bold">
@@ -103,8 +105,8 @@
                         Brgy. Lumbang Calzada Calaca, Batangas
                     </div>
 
-                    <div class="flex flex-col p-2 w-full h-screen mt-10">
-                        <div class="w-full text-center text-md mt-2 font-bold">
+                    <div class="flex flex-col p-2 w-full h-screen mt-5">
+                        <div class="w-full text-center text-md font-bold">
                            Billing Notice
                         </div>
 
@@ -112,7 +114,7 @@
                            FOR THE MONTH OF <span id="month" class="mx-1"></span> <span id="year"></span>
                         </div>
 
-                        <div class="w-full flex flex-col mt-3">
+                        <div class="w-full flex flex-col mt-2">
                             <div class="mt-2 text-lg w-full">
                                 <span class="float-left">
                                     <b>Name:</b>
@@ -258,7 +260,7 @@
                             </div>
 
                             <div class="mt-2 text-md w-full">
-                                You may check your bill online @https://water-billing-6mb6.onrender.com
+                                You may check your bill online @https://water-billing-v2.onrender.com
                             </div>
 
                             <div class="mt-2 text-md w-full">
@@ -298,7 +300,8 @@ export default {
             saveError: null,
             clientData: null,
             isPrint: false,
-            selected: null
+            selected: null,
+            errMessage: null
         }
     },
 
@@ -332,7 +335,11 @@ export default {
                     axios.post(this.$root.route + "/bills/generate", this.form)
                         .then(response => {
                             if(response.data.status == 422) {
-                                this.saveError = response.data.errors 
+                                if(!!response.data.errMessage) {
+                                    this.errMessage = response.data.errMessage
+                                } else {
+                                    this.saveError = response.data.errors 
+                                }
                             } else {
                                 var data = response.data.data
 

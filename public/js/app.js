@@ -2688,6 +2688,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2710,7 +2712,8 @@ __webpack_require__.r(__webpack_exports__);
       saveError: null,
       clientData: null,
       isPrint: false,
-      selected: null
+      selected: null,
+      errMessage: null
     };
   },
   created: function created() {
@@ -2737,7 +2740,11 @@ __webpack_require__.r(__webpack_exports__);
         if (proceed) {
           axios__WEBPACK_IMPORTED_MODULE_1___default().post(_this.$root.route + "/bills/generate", _this.form).then(function (response) {
             if (response.data.status == 422) {
-              _this.saveError = response.data.errors;
+              if (!!response.data.errMessage) {
+                _this.errMessage = response.data.errMessage;
+              } else {
+                _this.saveError = response.data.errors;
+              }
             } else {
               var data = response.data.data;
               _this.clientData = data;
@@ -4748,7 +4755,7 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date', 'Date Created'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
         this.keys = [{
           label: 'name'
         }, {
@@ -4759,8 +4766,6 @@ __webpack_require__.r(__webpack_exports__);
           label: 'penalty'
         }, {
           label: 'due_date'
-        }, {
-          label: 'display_created_at'
         }];
       }
 
@@ -4768,7 +4773,7 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date', 'Date Created'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'];
         this.keys = [{
           label: 'name'
         }, {
@@ -4779,8 +4784,6 @@ __webpack_require__.r(__webpack_exports__);
           label: 'status'
         }, {
           label: 'payment_date'
-        }, {
-          label: 'display_created_at'
         }];
       }
 
@@ -4824,7 +4827,7 @@ __webpack_require__.r(__webpack_exports__);
       this.rows = this.options.clients.filter(function (x) {
         return !!x.is_active;
       });
-      this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date', 'Date Created'];
+      this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
       this.keys = [{
         label: 'name'
       }, {
@@ -4835,8 +4838,6 @@ __webpack_require__.r(__webpack_exports__);
         label: 'penalty'
       }, {
         label: 'due_date'
-      }, {
-        label: 'display_created_at'
       }];
     }
 
@@ -4861,7 +4862,7 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date', 'Date Created'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Penalty', 'Due Date'];
         this.keys = [{
           label: 'name'
         }, {
@@ -4872,8 +4873,6 @@ __webpack_require__.r(__webpack_exports__);
           label: 'penalty'
         }, {
           label: 'due_date'
-        }, {
-          label: 'display_created_at'
         }];
       }
 
@@ -4881,7 +4880,7 @@ __webpack_require__.r(__webpack_exports__);
         this.rows = this.options.clients.filter(function (x) {
           return !!x.is_active;
         });
-        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date', 'Date Created'];
+        this.columns = ['Name', 'Account #', 'Amount to Pay', 'Status', 'Payment Date'];
         this.keys = [{
           label: 'name'
         }, {
@@ -4892,8 +4891,6 @@ __webpack_require__.r(__webpack_exports__);
           label: 'status'
         }, {
           label: 'payment_date'
-        }, {
-          label: 'display_created_at'
         }];
       }
 
@@ -5950,6 +5947,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5964,12 +5967,23 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       activeTab: 'archive',
-      client: null
+      client: null,
+      search: null,
+      clients: []
     };
   },
-  created: function created() {},
+  created: function created() {
+    this.clients = this.options.clients;
+  },
   watch: {
-    client: function client(arg) {}
+    client: function client(arg) {},
+    search: function search(arg) {
+      this.clients = this.options.clients.filter(function (x) {
+        var name = x.name.toLowerCase();
+        var search = arg.toLowerCase();
+        return name.includes(search);
+      });
+    }
   },
   methods: {}
 });
@@ -49473,7 +49487,13 @@ var render = function() {
                         "\n                    Generate Bill\n                "
                       )
                     ]
-                  )
+                  ),
+                  _vm._v(" "),
+                  _vm.errMessage
+                    ? _c("span", { staticClass: "text-xs text-red-500" }, [
+                        _vm._v(_vm._s(_vm.errMessage))
+                      ])
+                    : _vm._e()
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "w-full mt-2" }, [
@@ -49533,11 +49553,11 @@ var render = function() {
                 _c(
                   "div",
                   {
-                    staticClass: "w-full flex justify-center items-center mt-5"
+                    staticClass: "w-full flex justify-center items-center mt-2"
                   },
                   [
                     _c("img", {
-                      staticStyle: { width: "80px", height: "80px" },
+                      staticStyle: { width: "60px", height: "60px" },
                       attrs: { src: "/images/logo.png" }
                     })
                   ]
@@ -49565,13 +49585,11 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "flex flex-col p-2 w-full h-screen mt-10" },
+                  { staticClass: "flex flex-col p-2 w-full h-screen mt-5" },
                   [
                     _c(
                       "div",
-                      {
-                        staticClass: "w-full text-center text-md mt-2 font-bold"
-                      },
+                      { staticClass: "w-full text-center text-md font-bold" },
                       [
                         _vm._v(
                           "\n                       Billing Notice\n                    "
@@ -49595,7 +49613,7 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-full flex flex-col mt-3" }, [
+                    _c("div", { staticClass: "w-full flex flex-col mt-2" }, [
                       _c("div", { staticClass: "mt-2 text-lg w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Name:")])
@@ -49789,7 +49807,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-md w-full" }, [
                         _vm._v(
-                          "\n                            You may check your bill online @https://water-billing-6mb6.onrender.com\n                        "
+                          "\n                            You may check your bill online @https://water-billing-v2.onrender.com\n                        "
                         )
                       ]),
                       _vm._v(" "),
@@ -51805,7 +51823,7 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-md w-full mt-10" }, [
                         _vm._v(
-                          "\n                            You may check your bill online @https://water-billing-6mb6.onrender.com\n                        "
+                          "\n                            You may check your bill online @https://water-billing-v2.onrender.com\n                        "
                         )
                       ]),
                       _vm._v(" "),
@@ -55021,6 +55039,36 @@ var render = function() {
       _vm._v(" "),
       _vm.activeTab == "archive"
         ? _c("div", { staticClass: "w-full" }, [
+            _c("div", { staticClass: "w-full mb-20" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.search,
+                    expression: "search"
+                  }
+                ],
+                staticClass: "px-5 float-right",
+                staticStyle: {
+                  height: "50px",
+                  border: "1px solid black",
+                  "border-radius": "10px",
+                  width: "300px"
+                },
+                attrs: { type: "text", placeholder: "Search..." },
+                domProps: { value: _vm.search },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.search = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
             _vm.client
               ? _c(
                   "div",
@@ -55055,7 +55103,13 @@ var render = function() {
                   "tr",
                   { staticClass: "text-center" },
                   _vm._l(
-                    ["FIRST NAME", "LAST NAME", "ADDRESS", "ACCOUNT #"],
+                    [
+                      "NAME",
+                      "ADDRESS",
+                      "ACCOUNT #",
+                      "DATE CREATED",
+                      "DATE DISCONNECTED"
+                    ],
                     function(column) {
                       return _c("th", { key: column }, [
                         _vm._v(
@@ -55069,16 +55123,17 @@ var render = function() {
                   0
                 ),
                 _vm._v(" "),
-                _vm._l(_vm.options.clients, function(l, index) {
+                _vm._l(_vm.clients, function(l, index) {
                   return _c(
                     "tr",
                     { key: index, staticClass: "text-center" },
                     _vm._l(
                       [
-                        { label: "first_name" },
-                        { label: "last_name" },
+                        { label: "fullname" },
                         { label: "address" },
-                        { label: "reference" }
+                        { label: "reference" },
+                        { label: "display_created_at" },
+                        { label: "display_updated_at" }
                       ],
                       function(k, i) {
                         return _c(
@@ -55098,9 +55153,7 @@ var render = function() {
                           },
                           [
                             _c("span", [
-                              _vm._v(
-                                _vm._s(_vm.options.clients[index][k.label])
-                              )
+                              _vm._v(_vm._s(_vm.clients[index][k.label]))
                             ])
                           ]
                         )

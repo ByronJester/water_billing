@@ -550,7 +550,7 @@
                             
 
                             <div class="mt-2 text-md w-full mt-10">
-                                You may check your bill online @https://water-billing-6mb6.onrender.com
+                                You may check your bill online @https://water-billing-v2.onrender.com
                             </div>
 
                             <div class="mt-2 text-md w-full">

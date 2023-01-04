@@ -76,7 +76,7 @@ class ClientPayment extends Model
     {
         $month = Carbon::parse($this->date);
 
-        $charges = ClientUtility::whereMonth('created_at', $month)->whereIn('status', ['completed'])->where('client_id', $this->client_id)->sum('amount');
+        $charges = ClientUtility::whereMonth('created_at', $month->month)->whereIn('status', ['completed'])->where('client_id', $this->client_id)->sum('amount');
 
         return $this->paid_charges > 0 ? $this->paid_charges : $charges;
     }
@@ -85,7 +85,7 @@ class ClientPayment extends Model
     {
         $month = Carbon::parse($this->date);
 
-        $charges = ClientUtility::whereMonth('created_at', $month)->whereIn('status', ['paid'])->where('client_id', $this->client_id)->sum('amount');
+        $charges = ClientUtility::whereMonth('created_at', $month->month)->whereIn('status', ['paid'])->where('client_id', $this->client_id)->sum('amount');
 
         return $charges;
     }

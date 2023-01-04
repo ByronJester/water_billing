@@ -38,7 +38,7 @@ class Client extends Model
         'serial_display',
         'latest_consumed',
         'address',
-        'display_created_at',
+        'display_created_at', 
         'display_updated_at',
         'report_penalty'
     ];
@@ -110,10 +110,12 @@ class Client extends Model
 
     public function getOtherFeeAttribute()
     {
-        $utilities = ClientUtility::where('client_id', $this->id)->where('status', 'completed')->get();
+        $month = Carbon::parse($this->created_at);
 
-        if(count($utilities) > 0) {
-            return $utilities->sum('amount');
+        $payments = ClientPayment::where('client_id', $this->id)->whereMonth('created_at', $month->month)->get();
+
+        if(count($payments) > 0) {
+            return $payments->sum('charges'); 
         }
 
         return 0;

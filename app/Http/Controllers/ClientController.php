@@ -496,12 +496,12 @@ class ClientController extends Controller
         // ]);
         $utility = ClientUtility::where('id', $request->id)->first();
 
-        $payment = ClientPayment::where('client_id', $utility->client_id)->where('status', 'unpaid')->whereMonth('created_at', $now->month)->first();
+        $payment = ClientPayment::where('client_id', $utility->client_id)->whereMonth('created_at', $now->month)->first();
         
         $utility->status = $request->status;
         $utility->amount = $request->amount; 
 
-        if(!$payment) {
+        if($payment && ($payment->status == 'paid' || $payment->status == 'PAID')) {
             $date = Carbon::parse($utility->created_at);
             $date = $date->addMonth(1);
             $utility->created_at = $date;

@@ -94,7 +94,7 @@
             >
                 <section slot="pdf-content">
                     <div class="w-full flex justify-center items-center mt-2">
-                        <img src="/images/logo.png" style="width: 60px; height: 60px"/>
+                        <img src="/images/logo.png" style="width: 50px; height: 50px"/>
                     </div>
 
                     <div class="w-full text-xs text-center font-bold">
@@ -105,7 +105,7 @@
                         Brgy. Lumbang Calzada Calaca, Batangas
                     </div>
 
-                    <div class="flex flex-col p-2 w-full h-screen mt-5">
+                    <div class="flex flex-col p-2 w-full h-screen mt-2">
                         <div class="w-full text-center text-md font-bold">
                            Billing Notice
                         </div>
@@ -115,7 +115,7 @@
                         </div>
 
                         <div class="w-full flex flex-col mt-2">
-                            <div class="mt-2 text-lg w-full">
+                            <div class="text-md w-full">
                                 <span class="float-left">
                                     <b>Name:</b>
                                 </span>
@@ -125,7 +125,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full">
+                            <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Address:</b>
                                 </span>
@@ -135,7 +135,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full mb-1 pb-1">
+                            <div class="mt-2 text-md w-full mb-1 pb-1">
                                 <span class="float-left">
                                     <b>Account #:</b>
                                 </span>
@@ -145,7 +145,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full mb-1 pb-1" style="border-bottom: dashed black;">
+                            <div class="mt-2 text-md w-full mb-1 pb-1" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Serial #:</b>
                                 </span>
@@ -155,7 +155,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full">
+                            <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Previous Reading:</b>
                                 </span>
@@ -165,7 +165,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full">
+                            <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Present Reading:</b>
                                 </span>
@@ -175,7 +175,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full mt-10">
+                            <div class="mt-2 text-md w-full mt-10">
                                 <span class="float-left">
                                     <b>Consumption:</b>
                                 </span>
@@ -185,7 +185,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full">
+                            <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Penalty(10%):</b>
                                 </span>
@@ -195,7 +195,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full">
+                            <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Charges:</b>
                                 </span>
@@ -205,7 +205,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full">
+                            <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Unpaid Month:</b>
                                 </span>
@@ -215,7 +215,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full mb-1 pb-1 mt-5" style="border-bottom: dashed black;">
+                            <div class="mt-2 text-md w-full mb-1 pb-1 mt-5" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Due Date: </b>
                                 </span>
@@ -225,7 +225,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full mb-1 pb-1" style="border-bottom: dashed black;">
+                            <div class="mt-2 text-md w-full mb-1 pb-1" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Total Bill: </b>
                                 </span>
@@ -235,7 +235,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full">
+                            <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Meter Reader Name: </b>
                                 </span>
@@ -245,7 +245,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-lg w-full mb-1 pb-1" style="border-bottom: dashed black;">
+                            <div class="mt-2 text-md w-full mb-1 pb-1" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Date Read: </b>
                                 </span>

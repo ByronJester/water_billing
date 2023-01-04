@@ -78,7 +78,7 @@ class ClientPayment extends Model
 
         $charges = ClientUtility::whereMonth('created_at', $month)->whereIn('status', ['completed'])->where('client_id', $this->client_id)->sum('amount');
 
-        return $charges;
+        return $this->paid_charges > 0 ? $this->paid_charges : $charges;
     }
 
     public function getPaidChargesAttribute()

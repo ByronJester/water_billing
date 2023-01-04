@@ -73,7 +73,7 @@
 
 <script>
 import Navigation from '../Layouts/Navigation.vue'
-import { Inertia } from '@inertiajs/inertia';
+import { Inertia } from '@inertiajs/inertia'; 
 import Table from "../Components/Table";
 
 export default {

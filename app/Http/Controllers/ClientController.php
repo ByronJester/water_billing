@@ -305,8 +305,8 @@ class ClientController extends Controller
 
         $users = User::where('reference', $request->reference)->get();
 
-        $message = "BILLING FOR THIS MONTH \r\n %s %s - %s \r\n Amount: ₱ %s \r\n Due Date: %s. \r\n For more info please visit water billing system. \r\n https://water-billing-v2.onrender.com";
-        $message = sprintf($message, $client->first_name, $client->last_name, $client->reference, $totalAmount + $client->penalty, $due_date->isoFormat('LL'));
+        $message = "BILLING FOR THIS MONTH \r\n %s %s - %s \r\n Amount Due: ₱ %s \r\n Due Date: %s. \r\n For more info please visit water billing system. \r\n https://water-billing-v2.onrender.com";
+        $message = sprintf($message, $client->first_name, $client->last_name, $client->reference, $totalAmount + $penalty + $charges, $due_date->isoFormat('LL'));
         
         foreach($users as $user) {
             $this->sendSms($user->phone, $message);
@@ -407,6 +407,8 @@ class ClientController extends Controller
 
             $now = Carbon::now(); 
 
+            $x = ClientPayment::where('client_id', $client_id)->where('status', 'unpaid')->get();
+
             $display = [
                 'reference' => $client->reference,
                 'name' => $client->fullname,
@@ -417,7 +419,8 @@ class ClientController extends Controller
                 'previous' => count($payments) > 1 ? $payments[1]['consumed_cubic_meter'] : 0,
                 'charges' => implode(", ", $stringCharges->toArray()),
                 'chargesAmount' => $chargesAmount,
-                'amount_to_pay' => $payment->amount_to_pay, 
+                'amount_to_pay' => $payment->amount_to_pay,
+                'total' => $x->sum('amount_to_pay'), 
                 'amount_paid' => $payment_amount,
                 'penalty' => $payment->penalty,
                 'cashier' => $auth->name,

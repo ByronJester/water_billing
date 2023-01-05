@@ -3610,6 +3610,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3818,10 +3828,11 @@ __webpack_require__.r(__webpack_exports__);
       document.getElementById("charges").innerHTML = arg.charges;
       document.getElementById("cashier").innerHTML = arg.cashier;
       document.getElementById("now").innerHTML = arg.now;
-      document.getElementById("chargesAmount").innerHTML = '₱ ' + parseFloat(arg.chargesAmount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      document.getElementById("amount_to_pay").innerHTML = '₱ ' + parseFloat(arg.amount_to_pay).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("chargesAmount").innerHTML = '₱ ' + parseFloat(arg.chargesAmount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // document.getElementById("amount_to_pay").innerHTML = '₱ ' + (parseFloat(arg.amount_to_pay).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
       document.getElementById("amount_paid").innerHTML = '₱ ' + parseFloat(arg.amount_paid).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       document.getElementById("penalty").innerHTML = '₱ ' + parseFloat(arg.penalty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("total").innerHTML = '₱ ' + parseFloat(arg.total).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       setTimeout(function () {
         self.$refs.or.generatePdf();
       }, 3000);
@@ -50113,7 +50124,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                        DASHBOARD\n                    "
+                            "\n                            DASHBOARD\n                        "
                           )
                         ]
                       )
@@ -50134,7 +50145,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                        CLIENTS\n                    "
+                            "\n                            CLIENTS\n                        "
                           )
                         ]
                       )
@@ -50155,7 +50166,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                        BILLING\n                    "
+                            "\n                            BILLING\n                        "
                           )
                         ]
                       )
@@ -50178,7 +50189,7 @@ var render = function() {
                         },
                         [
                           _vm._v(
-                            "\n                        CASHIERING\n                    "
+                            "\n                            CASHIERING\n                        "
                           )
                         ]
                       )
@@ -50301,7 +50312,7 @@ var render = function() {
                                 { staticClass: "w-full text-2xl font-bold" },
                                 [
                                   _vm._v(
-                                    "\n                                Client's Personal Information\n                            "
+                                    "\n                                    Client's Personal Information\n                                "
                                   )
                                 ]
                               ),
@@ -50319,7 +50330,7 @@ var render = function() {
                                   _c("div", { staticClass: "w-full p-2" }, [
                                     _c("label", [
                                       _vm._v(
-                                        "\n                                        First Name:\n                                    "
+                                        "\n                                            First Name:\n                                        "
                                       )
                                     ]),
                                     _c("br"),
@@ -50336,7 +50347,7 @@ var render = function() {
                                   _c("div", { staticClass: "w-full p-2" }, [
                                     _c("label", [
                                       _vm._v(
-                                        "\n                                        Middle Name:\n                                    "
+                                        "\n                                            Middle Name:\n                                        "
                                       )
                                     ]),
                                     _c("br"),
@@ -50353,7 +50364,7 @@ var render = function() {
                                   _c("div", { staticClass: "w-full p-2" }, [
                                     _c("label", [
                                       _vm._v(
-                                        "\n                                        Last Name:\n                                    "
+                                        "\n                                            Last Name:\n                                        "
                                       )
                                     ]),
                                     _c("br"),
@@ -50370,7 +50381,7 @@ var render = function() {
                                   _c("div", { staticClass: "w-full p-2" }, [
                                     _c("label", [
                                       _vm._v(
-                                        "\n                                        Address:\n                                    "
+                                        "\n                                            Address:\n                                        "
                                       )
                                     ]),
                                     _c("br"),
@@ -50387,7 +50398,7 @@ var render = function() {
                                   _c("div", { staticClass: "w-full p-2" }, [
                                     _c("label", [
                                       _vm._v(
-                                        "\n                                        Contact #:\n                                    "
+                                        "\n                                            Contact #:\n                                        "
                                       )
                                     ]),
                                     _c("br"),
@@ -50404,7 +50415,7 @@ var render = function() {
                                   _c("div", { staticClass: "w-full p-2" }, [
                                     _c("label", [
                                       _vm._v(
-                                        "\n                                        Account #:\n                                    "
+                                        "\n                                            Account #:\n                                        "
                                       )
                                     ]),
                                     _c("br"),
@@ -50421,7 +50432,7 @@ var render = function() {
                                   _c("div", { staticClass: "w-full p-2" }, [
                                     _c("label", [
                                       _vm._v(
-                                        "\n                                        Serial #:\n                                    "
+                                        "\n                                            Serial #:\n                                        "
                                       )
                                     ]),
                                     _c("br"),
@@ -50515,9 +50526,9 @@ var render = function() {
                                                   },
                                                   [
                                                     _vm._v(
-                                                      "\n                                            " +
+                                                      "\n                                                " +
                                                         _vm._s(m.label) +
-                                                        "\n                                        "
+                                                        "\n                                            "
                                                     )
                                                   ]
                                                 )
@@ -50592,7 +50603,7 @@ var render = function() {
                                                 },
                                                 [
                                                   _vm._v(
-                                                    "\n                                        SAVE PAYMENT\n                                    "
+                                                    "\n                                            SAVE PAYMENT\n                                        "
                                                   )
                                                 ]
                                               )
@@ -50607,9 +50618,9 @@ var render = function() {
                                                 },
                                                 [
                                                   _vm._v(
-                                                    "\n                                        " +
+                                                    "\n                                            " +
                                                       _vm._s(_vm.message) +
-                                                      " \n                                    "
+                                                      " \n                                        "
                                                   )
                                                 ]
                                               )
@@ -50660,13 +50671,13 @@ var render = function() {
                                     },
                                     [
                                       _vm._v(
-                                        "\n                                    Total: ₱ " +
+                                        "\n                                        Total: ₱ " +
                                           _vm._s(
                                             parseFloat(
                                               _vm.unpaid_total
                                             ).toFixed(2)
                                           ) +
-                                          "\n                                "
+                                          "\n                                    "
                                       )
                                     ]
                                   )
@@ -50680,7 +50691,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "\n                                Payment History\n                            "
+                                      "\n                                    Payment History\n                                "
                                     )
                                   ]
                                 ),
@@ -50751,16 +50762,16 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                            " +
+                                "\n                                " +
                                   _vm._s(_vm.options.clients.length) +
-                                  "\n                        "
+                                  "\n                            "
                               )
                             ]
                           ),
                           _vm._v(" "),
                           _c("div", { staticClass: "w-full text-center" }, [
                             _vm._v(
-                              "\n                            Clients\n                        "
+                              "\n                                Clients\n                            "
                             )
                           ])
                         ]
@@ -50790,16 +50801,16 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                            " +
+                                "\n                                " +
                                   _vm._s(_vm.options.users.length) +
-                                  "\n                        "
+                                  "\n                            "
                               )
                             ]
                           ),
                           _vm._v(" "),
                           _c("div", { staticClass: "w-full text-center" }, [
                             _vm._v(
-                              "\n                            Users\n                        "
+                              "\n                                Users\n                            "
                             )
                           ])
                         ]
@@ -50829,16 +50840,16 @@ var render = function() {
                             },
                             [
                               _vm._v(
-                                "\n                            " +
+                                "\n                                " +
                                   _vm._s(_vm.options.incidents.length) +
-                                  "\n                        "
+                                  "\n                            "
                               )
                             ]
                           ),
                           _vm._v(" "),
                           _c("div", { staticClass: "w-full text-center" }, [
                             _vm._v(
-                              "\n                            Services\n                        "
+                              "\n                                Services\n                            "
                             )
                           ])
                         ]
@@ -50886,16 +50897,18 @@ var render = function() {
                       _c("div", { staticClass: "w-full text-center" }, [
                         _c("span", { staticClass: "text-xl font-bold" }, [
                           _vm._v(
-                            "\n                            " +
+                            "\n                                " +
                               _vm._s(_vm.client.name) +
-                              "\n                        "
+                              "\n                            "
                           )
                         ])
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "w-full mt-8 pl-2" }, [
                         _c("p", { staticClass: "text-xl" }, [
-                          _vm._v("\n                            Account #: "),
+                          _vm._v(
+                            "\n                                Account #: "
+                          ),
                           _c("span", { staticClass: "ml-2" }, [
                             _vm._v(" " + _vm._s(_vm.client.reference) + " ")
                           ])
@@ -50969,7 +50982,7 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                            Activate\n                        "
+                                    "\n                                Activate\n                            "
                                   )
                                 ]
                               )
@@ -50996,7 +51009,7 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                            VIEW\n                        "
+                                    "\n                                VIEW\n                            "
                                   )
                                 ]
                               )
@@ -51021,7 +51034,7 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                            VIEW PAYMENTS\n                        "
+                                    "\n                                VIEW PAYMENTS\n                            "
                                   )
                                 ]
                               )
@@ -51046,7 +51059,7 @@ var render = function() {
                                 },
                                 [
                                   _vm._v(
-                                    "\n                            NOTIFY\n                        "
+                                    "\n                                NOTIFY\n                            "
                                   )
                                 ]
                               )
@@ -51205,7 +51218,7 @@ var render = function() {
                                       },
                                       [
                                         _vm._v(
-                                          "\n                             SAVE PAYMENT\n                            "
+                                          "\n                                 SAVE PAYMENT\n                                "
                                         )
                                       ]
                                     )
@@ -51217,9 +51230,9 @@ var render = function() {
                                       { staticClass: "text-xs text-red-500" },
                                       [
                                         _vm._v(
-                                          "\n                                " +
+                                          "\n                                    " +
                                             _vm._s(_vm.message) +
-                                            " \n                            "
+                                            " \n                                "
                                         )
                                       ]
                                     )
@@ -51250,7 +51263,7 @@ var render = function() {
                         _c("i", {
                           staticClass: "fa-solid fa-square-plus mr-2"
                         }),
-                        _vm._v("New Connection\n                    ")
+                        _vm._v("New Connection\n                        ")
                       ])
                     ]
                   ),
@@ -51661,7 +51674,7 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                            Submit\n                        "
+                              "\n                                Submit\n                            "
                             )
                           ]
                         )
@@ -51721,7 +51734,7 @@ var render = function() {
                   { staticClass: "w-full text-xs text-center font-bold" },
                   [
                     _vm._v(
-                      "\n                    Hydrolite Waterworks and Consumers Association\n                "
+                      "\n                        Hydrolite Waterworks and Consumers Association\n                    "
                     )
                   ]
                 ),
@@ -51731,7 +51744,7 @@ var render = function() {
                   { staticClass: "w-full text-xs text-center font-bold pb-6" },
                   [
                     _vm._v(
-                      "\n                    Brgy. Lumbang Calzada Calaca, Batangas\n                "
+                      "\n                        Brgy. Lumbang Calzada Calaca, Batangas\n                    "
                     )
                   ]
                 ),
@@ -51747,7 +51760,7 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "\n                       OFFICIAL WATER BILLING RECEIPT\n                    "
+                          "\n                           OFFICIAL WATER BILLING RECEIPT\n                        "
                         )
                       ]
                     ),
@@ -51927,25 +51940,25 @@ var render = function() {
                         },
                         [
                           _c("span", { staticClass: "float-left" }, [
-                            _c("b", [_vm._v("Total Balance:")])
+                            _c("b", [_vm._v("Total Bill:")])
                           ]),
                           _vm._v(" "),
                           _c("span", {
                             staticClass: "float-right mr-2",
-                            attrs: { id: "amount_to_pay" }
+                            attrs: { id: "total" }
                           })
                         ]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-md w-full mt-5" }, [
                         _vm._v(
-                          "\n                            You may check your bill online @https://water-billing-v2.onrender.com\n                        "
+                          "\n                                You may check your bill online @https://water-billing-v2.onrender.com\n                            "
                         )
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-md w-full" }, [
                         _vm._v(
-                          "\n                            For any inquiries, please contact 09566814383/09657657443\n                        "
+                          "\n                                For any inquiries, please contact 09566814383/09657657443\n                            "
                         )
                       ])
                     ])

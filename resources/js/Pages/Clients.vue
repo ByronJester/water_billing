@@ -557,13 +557,23 @@
 
                                 </span>
                             </div>
-
+<!-- 
                             <div class="mt-2 text-lg w-full mt-5 pb-5" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Total Balance:</b>
                                 </span>
 
                                 <span class="float-right mr-2" id="amount_to_pay">
+
+                                </span>
+                            </div> -->
+
+                            <div class="mt-2 text-lg w-full mt-5 pb-5" style="border-bottom: dashed black;">
+                                <span class="float-left">
+                                    <b>Total Bill:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="total">
 
                                 </span>
                             </div>
@@ -875,9 +885,11 @@ export default {
             document.getElementById("cashier").innerHTML = arg.cashier;
             document.getElementById("now").innerHTML = arg.now;
             document.getElementById("chargesAmount").innerHTML = '₱ ' + (parseFloat(arg.chargesAmount).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            document.getElementById("amount_to_pay").innerHTML = '₱ ' + (parseFloat(arg.amount_to_pay).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            // document.getElementById("amount_to_pay").innerHTML = '₱ ' + (parseFloat(arg.amount_to_pay).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("amount_paid").innerHTML = '₱ ' + (parseFloat(arg.amount_paid).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("penalty").innerHTML = '₱ ' + (parseFloat(arg.penalty).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("total").innerHTML = '₱ ' + (parseFloat(arg.total).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
 
             setTimeout(() => {
                 self.$refs.or.generatePdf()

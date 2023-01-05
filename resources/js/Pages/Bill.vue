@@ -113,7 +113,7 @@
                            FOR THE MONTH OF <span id="month" class="mx-1"></span> <span id="year"></span>
                         </div>
 
-                        <div class="w-full flex flex-col mt-5">
+                        <div class="w-full flex flex-col mt-2">
                             <div class="text-md w-full">
                                 <span class="float-left">
                                     <b>Name:</b>
@@ -214,9 +214,6 @@
                                 </span>
                             </div>
 
-                                <div class="html2pdf__page-break mb-5"/>
-
-                                
                             <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Unpaid Month:</b>

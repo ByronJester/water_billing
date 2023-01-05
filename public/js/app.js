@@ -2709,9 +2709,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 
 
 
@@ -49677,7 +49674,7 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-full flex flex-col mt-5" }, [
+                    _c("div", { staticClass: "w-full flex flex-col mt-2" }, [
                       _c("div", { staticClass: "text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Name:")])
@@ -49812,8 +49809,6 @@ var render = function() {
                           })
                         ]
                       ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "html2pdf__page-break mb-5" }),
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [

@@ -211,9 +211,11 @@ class ClientController extends Controller
 
         $due_date = $due_date->addDays($days);
 
+        
+
         $saveBill = ClientPayment::forceCreate([
             'client_id' => $client->id,
-            'consumed_cubic_meter' => $consumed_cubic_meter,
+            'consumed_cubic_meter' => $consumed_cubic_meter, 
             'amount' => $waterBillAmount,
             'status' => 'unpaid',
             'date' => $request->date,
@@ -284,6 +286,8 @@ class ClientController extends Controller
 
         $otherBills = ClientPayment::where('client_id', $client->id)->where('status', 'unpaid')->get();
 
+        $xxx = ClientPayment::where('client_id', $client->id)->whereYear('date', Carbon::now()->year)->where('status', 'unpaid')->get();
+
         $data = [
             'client' => $client,
             'pres' => $request->consumed_cubic_meter,
@@ -292,7 +296,7 @@ class ClientController extends Controller
             'current_reading' => $waterBillAmount,
             'cost' => $waterBill->amount,
             'due_date' => $due_date,
-            'total' => $totalAmount + $penalty + $charges,
+            'total' => $xxx->sum('amount_to_pay'),
             'date' => $date->isoFormat('LL'),
             'reader' => $auth->name,
             'month' => $month,
@@ -462,7 +466,7 @@ class ClientController extends Controller
                 $utilities = $utilities->where('client_id', $client->id)->whereNotIn('status', ['paid']);
             } else {
                 if($auth->user_type == 'utility') {
-                    $utilities = $utilities->where('user_id', $auth->id)->whereNotIn('status', ['completed', 'paid']);
+                    $utilities = $utilities->where('user_id', $auth->id)->whereNotIn('status', ['paid']);
                 }
             }
 
@@ -494,6 +498,17 @@ class ClientController extends Controller
         
         $admin = User::where('user_type', 'admin')->first();
 
+        $date = Carbon::now();
+
+        $payment = ClientPayment::orderBy('date')->where('client_id', $client->id)->whereMonth('date', $date->month)->first();
+
+        if($payment && ($payment->status == 'paid' || $payment->status == 'PAID')){
+            $dd = Carbon::parse($payment->date);
+
+            $data['created_at'] = $date->year . '-' . ($date->month + 1) . '-' . $date->day;
+            $data['updated_at'] = $date->year . '-' . ($date->month + 1) . '-' . $date->day;
+        }
+
         $data['user_id'] = $admin->id;
         $data['client_id'] = $client->id;
         $data['status'] = 'pending';
@@ -518,7 +533,7 @@ class ClientController extends Controller
 
         $utility = ClientUtility::where('id', $request->id)->first();
         
-        $utilities = ClientUtility::orderBy('created_at', 'desc');
+        $utilities = ClientUtility::orderBy('created_at', 'desc')->whereNotIn('status', ['paid']);
 
         $client = Client::where('id', $utility->client_id)->first();
 
@@ -537,12 +552,12 @@ class ClientController extends Controller
         $utility->status = $request->status;
         $utility->amount = $request->amount; 
 
-        if($payment && ($payment->status == 'paid' || $payment->status == 'PAID')) {
-            $date = Carbon::parse($utility->created_at);
-            $date = $date->addMonth(1);
-            $utility->created_at = $date;
-            $utility->updated_at = $date;
-        }
+        // if($payment && ($payment->status == 'paid' || $payment->status == 'PAID')) {
+        //     $date = Carbon::parse($utility->created_at);
+        //     $date = $date->addMonth(1);
+        //     $utility->created_at = $date;
+        //     $utility->updated_at = $date;
+        // }
 
         if($request->status == 'completed') {
             $user = User::where('reference', $client->reference)->first();

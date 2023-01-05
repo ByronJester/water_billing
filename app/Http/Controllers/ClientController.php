@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\ClientPayment;
+use App\Models\PaymentHistory;
 use App\Models\ClientUtility;
 use App\Models\WaterBill;
 use Illuminate\Http\Request;
@@ -285,17 +286,19 @@ class ClientController extends Controller
 
         $data = [
             'client' => $client,
-            'prev' => $bills->sum('amount'),
-            'pres' => $waterBillAmount,
+            'pres' => $request->consumed_cubic_meter,
+            'prev' => $bills->sum('consumed_cubic_meter'),
             'consumption' => $consumed_cubic_meter,
+            'current_reading' => $waterBillAmount,
+            'cost' => $waterBill->amount,
             'due_date' => $due_date,
-            'total' => $totalAmount + $penalty,
+            'total' => $totalAmount + $penalty + $charges,
             'date' => $date->isoFormat('LL'),
             'reader' => $auth->name,
             'month' => $month,
             'year' => $year,
             'count' => count($bills) . ' month(s)',
-            'message' => count($otherBills) >= 2  ? "WARNING FOR DISCONNECTION. \r\n Please settle your balance." : '',
+            'message' => count($bills) >= 2  ? "WARNING FOR DISCONNECTION. \r\n Please settle your balance." : '',
             'penalty' => $penalty,
             'charges' => $charges
         ]; 
@@ -337,6 +340,20 @@ class ClientController extends Controller
         $payment = ClientPayment::where('client_id', $client_id)->where('status', 'unpaid')->whereMonth('date', $month)->first();
         $charges = ClientUtility::where('client_id', $client_id)->where('status', 'completed')->whereMonth('created_at', $month)->sum('amount');
 
+
+        $history = [
+            'client_id' => $payment->client_id,
+            'consumed_cubic_meter' => $payment->consumed_cubic_meter,
+            'amount' => $payment->amount,
+            'payment' => $payment->payment,
+            'penalty' => $payment->penalty,
+            'penalty_payment' => $payment->penalty_payment,
+            'date' => $payment->date,
+            'status' => $payment->status,
+            'payment_date' => $payment->payment_date,
+            'history_payment' => $payment_amount
+        ];
+
         $display = null;
 
         if(!$payment) {
@@ -352,6 +369,13 @@ class ClientController extends Controller
                 $payment->status = 'paid';
                 $payment->payment_date = Carbon::now();
                 $payment->save();
+
+                $history['payment'] = $payment->amount;
+                $history['penalty_payment'] = $payment->penalty;
+                $history['status'] = 'paid';
+                $history['payment_date'] = Carbon::now();
+
+                PaymentHistory::forceCreate($history);
             } else {
                 
                 if($payment_amount < (($payment->amount - $payment->payment) + $charges)) {
@@ -359,7 +383,14 @@ class ClientController extends Controller
                         ClientUtility::where('client_id', $client_id)->where('status', 'completed')->whereMonth('created_at', $month)->update(['status' => 'paid']);
 
                         $payment->payment = ($payment_amount + $payment->payment) - $charges;
+                        $payment->payment_date = Carbon::now();
                         $payment->save();
+
+
+                        $history['payment'] = ($payment_amount + $payment->payment) - $charges;
+                        $history['payment_date'] = Carbon::now();
+
+                        PaymentHistory::forceCreate($history);
                     } else {
                         $message = 'Minimum amount must be equal to utility charges (' . $charges . ').';
                     }
@@ -374,6 +405,8 @@ class ClientController extends Controller
             $chargesAmount = $other_charges->sum('amount');
             $stringCharges = $other_charges->pluck('display_service');
 
+            $now = Carbon::now(); 
+
             $display = [
                 'reference' => $client->reference,
                 'name' => $client->fullname,
@@ -384,9 +417,11 @@ class ClientController extends Controller
                 'previous' => count($payments) > 1 ? $payments[1]['consumed_cubic_meter'] : 0,
                 'charges' => implode(", ", $stringCharges->toArray()),
                 'chargesAmount' => $chargesAmount,
-                'amount_to_pay' => $payment->total + $chargesAmount,
+                'amount_to_pay' => $payment->amount_to_pay, 
                 'amount_paid' => $payment_amount,
-                'penalty' => $payment->penalty
+                'penalty' => $payment->penalty,
+                'cashier' => $auth->name,
+                'now' => $now->isoFormat('LL')
             ];
         }
 
@@ -478,7 +513,11 @@ class ClientController extends Controller
     {
         $auth = Auth::user();
 
+        $utility = ClientUtility::where('id', $request->id)->first();
+        
         $utilities = ClientUtility::orderBy('created_at', 'desc');
+
+        $client = Client::where('id', $utility->client_id)->first();
 
         if($auth->role == 2) {
             $client = Client::where('reference', $auth->reference)->first();
@@ -488,13 +527,7 @@ class ClientController extends Controller
 
         $now = Carbon::now();
 
-        // $payment = ClientPayment::where()
-
-        // ClientUtility::where('id', $request->id)->update([
-        //     'status' => $request->status,
-        //     'amount' => $request->amount
-        // ]);
-        $utility = ClientUtility::where('id', $request->id)->first();
+        
 
         $payment = ClientPayment::where('client_id', $utility->client_id)->whereMonth('created_at', $now->month)->first();
         
@@ -506,6 +539,15 @@ class ClientController extends Controller
             $date = $date->addMonth(1);
             $utility->created_at = $date;
             $utility->updated_at = $date;
+        }
+
+        if($request->status == 'completed') {
+            $user = User::where('reference', $client->reference)->first();
+
+            $message = "Dear Client, \r\n Your water service is completed. \r\n Your service charge is ₱ %s. \r\n For more info please visit water billing system. \r\n https://water-billing-v2.onrender.com";
+            $message = sprintf($message, $request->amount);
+
+            $this->sendSms($user->phone, $message);
         }
 
         $utility->save();
@@ -642,10 +684,11 @@ class ClientController extends Controller
     public function viewPayment(Request $request)
     {
         $payments = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->get();
+        $histories = PaymentHistory::orderBy('date')->where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->get();
         $total = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->where('status', 'unpaid')->get();
         $months = ClientPayment::where('client_id', $request->client_id)->whereYear('date', Carbon::now()->year)->where('status', 'unpaid')->get();
 
-        return response()->json(['payments' => $payments, 'total' => $total->sum('amount_to_pay'), 'months' => $months->pluck('month')], 200);
+        return response()->json(['payments' => $payments, 'total' => $total->sum('amount_to_pay'), 'months' => $months->pluck('month'), 'histories' => $histories], 200);
     }
 
     public function assignWoker(Request $request)

@@ -49,7 +49,6 @@
                     <label class="font-bold text-sm">Date:</label>
                     <input type="date" class="w-full  my-2 --login__register--input text-center text-sm"
                         v-model="form.date"
-                        :disabled="true"
                     >
                     <span class="text-xs text-red-500">{{validationError('date', saveError)}} </span>
                 </div>
@@ -114,7 +113,7 @@
                            FOR THE MONTH OF <span id="month" class="mx-1"></span> <span id="year"></span>
                         </div>
 
-                        <div class="w-full flex flex-col mt-2">
+                        <div class="w-full flex flex-col mt-5">
                             <div class="text-md w-full">
                                 <span class="float-left">
                                     <b>Name:</b>
@@ -157,7 +156,7 @@
 
                             <div class="mt-2 text-md w-full">
                                 <span class="float-left">
-                                    <b>Previous Reading:</b>
+                                    <b>Previous Reading:</b> 
                                 </span>
 
                                 <span class="float-right mr-2" id="prev">
@@ -175,7 +174,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-md w-full mt-10">
+                            <div class="mt-2 text-md w-full mt-2">
                                 <span class="float-left">
                                     <b>Consumption:</b>
                                 </span>
@@ -185,12 +184,12 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-md w-full">
+                            <div class="mt-2 text-md w-full mt-2 pb-2" style="border-bottom: dashed black;">
                                 <span class="float-left">
-                                    <b>Penalty(10%):</b>
+                                    <b>Cubic Meter Cost:</b>
                                 </span>
 
-                                <span class="float-right mr-2" id="penalty">
+                                <span class="float-right mr-2" id="cost">
 
                                 </span>
                             </div>
@@ -205,6 +204,19 @@
                                 </span>
                             </div>
 
+                            <div class="mt-2 text-md w-full mt-2 pb-2" style="border-bottom: dashed black;">
+                                <span class="float-left">
+                                    <b>Total Current Bill:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="current_reading">
+
+                                </span>
+                            </div>
+
+                                <div class="html2pdf__page-break mb-5"/>
+
+                                
                             <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Unpaid Month:</b>
@@ -215,22 +227,32 @@
                                 </span>
                             </div>
 
+                            <div class="mt-2 text-md w-full">
+                                <span class="float-left">
+                                    <b>Penalty(10%):</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="penalty">
+
+                                </span>
+                            </div>    
+
                             <div class="mt-2 text-md w-full mb-1 pb-1 mt-5" style="border-bottom: dashed black;">
+                                <span class="float-left">
+                                    <b>Total Amount Due: </b>
+                                </span>
+
+                                <span class="float-right mr-2" id="total">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-md w-full mb-1 pb-1 mt-1" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Due Date: </b>
                                 </span>
 
                                 <span class="float-right mr-2" id="due_date">
-
-                                </span>
-                            </div>
-
-                            <div class="mt-2 text-md w-full mb-1 pb-1" style="border-bottom: dashed black;">
-                                <span class="float-left">
-                                    <b>Total Bill: </b>
-                                </span>
-
-                                <span class="float-right mr-2" id="total">
 
                                 </span>
                             </div>
@@ -414,8 +436,8 @@ export default {
             document.getElementById("reference").innerHTML = arg.client.reference;
             document.getElementById("serial").innerHTML = arg.client.serial;
             document.getElementById("penalty").innerHTML = '₱ ' + (parseFloat(arg.penalty).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            document.getElementById("pres").innerHTML = '₱ ' + (parseFloat(arg.pres).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            document.getElementById("prev").innerHTML = '₱ ' + (parseFloat(arg.prev).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("pres").innerHTML = arg.pres + ' mᶟ';
+            document.getElementById("prev").innerHTML = arg.prev + ' mᶟ';
             document.getElementById("due_date").innerHTML = arg.client.due_date;
             document.getElementById("total").innerHTML = '₱ ' + (parseFloat(arg.total).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("reader").innerHTML = arg.reader;
@@ -424,6 +446,8 @@ export default {
             document.getElementById("message").innerHTML = arg.message; 
             document.getElementById("count").innerHTML = arg.count;
             document.getElementById("charges").innerHTML = '₱ ' + (parseFloat(arg.charges).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("current_reading").innerHTML = '₱ ' + (parseFloat(arg.current_reading).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("cost").innerHTML = '₱ ' + (parseFloat(arg.cost).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
             setTimeout(() => {
                 self.$refs.receipt.generatePdf()

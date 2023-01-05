@@ -169,7 +169,7 @@
                                 </div>
                                 
                                 <div style="height: 250px; border: 1px solid black" class="w-full flex flex-col items-center mt-2">
-                                    <Table :columns="otherPaymentColumns" :rows="payments.filter( x => { return x.status == 'PAID'})" :keys="otherPaymentKeys" :selected.sync="payment" style="width: 98%" class="mt-2"/>
+                                    <Table :columns="otherPaymentColumns" :rows="histories" :keys="otherPaymentKeys" :selected.sync="payment" style="width: 98%" class="mt-2"/>
                                 </div>
                             </div>
                         </div>
@@ -426,6 +426,16 @@
                         <div class="w-full flex flex-col mt-6">
                             <div class="mt-2 text-lg w-full mb-1 pb-1">
                                 <span class="float-left">
+                                    <b>Date:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="now">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full mb-1 pb-1">
+                                <span class="float-left">
                                     <b>Account #:</b>
                                 </span>
 
@@ -461,6 +471,16 @@
                                 </span>
 
                                 <span class="float-right mr-2" id="serial">
+
+                                </span>
+                            </div>
+
+                            <div class="mt-2 text-lg w-full mb-1 pb-1">
+                                <span class="float-left">
+                                    <b>Cashier:</b>
+                                </span>
+
+                                <span class="float-right mr-2" id="cashier">
 
                                 </span>
                             </div>
@@ -540,7 +560,7 @@
 
                             <div class="mt-2 text-lg w-full mt-5 pb-5" style="border-bottom: dashed black;">
                                 <span class="float-left">
-                                    <b>Total Bill:</b>
+                                    <b>Total Balance:</b>
                                 </span>
 
                                 <span class="float-right mr-2" id="amount_to_pay">
@@ -622,7 +642,7 @@ export default {
             payments: [],
             payment: null,
             paymentColumns: [
-                'Month', 'Amount', 'Penalty', 'Charges', 'Total Bill',  'Amount Paid' , 'Balance', 'Due Date', 'Status'
+                'Month', 'Amount', 'Penalty', 'Charges', 'Total Bill', 'Balance', 'Due Date', 'Status'
             ],
             paymentKeys : [
                 {
@@ -641,9 +661,6 @@ export default {
                     label: 'total',
                 },
                 {
-                    label: 'added_payment',
-                },
-                {
                     label: 'amount_to_pay',
                 },
                 {
@@ -654,7 +671,7 @@ export default {
                 }
             ],
             otherPaymentColumns: [
-                'Month', 'Amount', 'Penalty', 'Charges', 'Total Bill',  'Amount Paid', 'Status'
+                'Month', 'Amount', 'Penalty', 'Charges', 'Total Bill',  'Amount Paid', 'Payment Date'
             ],
             otherPaymentKeys : [
                 {
@@ -664,20 +681,20 @@ export default {
                     label: 'amount',
                 },
                 {
-                    label: 'penalty_payment',
+                    label: 'penalty',
                 },
                 {
                     label: 'paid_charges', 
                 },
                 {
-                    label: 'added_payment',
+                    label: 'total',
                 },
                 {
-                    label: 'added_payment',
+                    label: 'history_payment', 
                 },
                 {
-                    label: 'status',
-                }
+                    label: 'payment_date',
+                },
             ],
             month: 1,
             paymentAmount: 0,
@@ -736,7 +753,8 @@ export default {
                     value: 12
                 },
             ],
-            availableMonths: []
+            availableMonths: [],
+            histories: []
         }
     },
 
@@ -854,6 +872,8 @@ export default {
             document.getElementById("previous").innerHTML = arg.previous + ' mᶟ';
             document.getElementById("month").innerHTML = arg.month;
             document.getElementById("charges").innerHTML = arg.charges;
+            document.getElementById("cashier").innerHTML = arg.cashier;
+            document.getElementById("now").innerHTML = arg.now;
             document.getElementById("chargesAmount").innerHTML = '₱ ' + (parseFloat(arg.chargesAmount).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("amount_to_pay").innerHTML = '₱ ' + (parseFloat(arg.amount_to_pay).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("amount_paid").innerHTML = '₱ ' + (parseFloat(arg.amount_paid).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -1001,7 +1021,7 @@ export default {
 
         hasDownloaded(evt) {
             location.reload()
-        },
+        }, 
 
         viewPayment(arg) {
             axios.post(this.$root.route + "/clients/client/view-payment", {client_id : arg.id})
@@ -1009,8 +1029,7 @@ export default {
                     this.payments = response.data.payments
                     this.unpaid_total = response.data.total
                     this.availableMonths = response.data.months
-
-                    console.log(this.availableMonths)
+                    this.histories = response.data.histories
 				})
         },
 

@@ -42,6 +42,10 @@ class ClientUtility extends Model
     {
         $worker = User::where('id', $this->user_id)->first();
 
+        if($worker->user_type == 'admin') {
+            return 'Unassigned';
+        }
+
         return $worker->name;
     }
 

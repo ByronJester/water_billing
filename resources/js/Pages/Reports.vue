@@ -65,7 +65,7 @@
             </div>
             <div class="w-full" v-if="(activeTab == 'billing' || activeTab == 'payment') && rows.length > 0">
                 <span class="float-right text-2xl font-bold py-2">
-                        Total: ₱ {{ parseFloat(options.total).toFixed(2) }}
+                        Total: ₱ {{ parseFloat(rows.reduce((accumulator, object) => { return accumulator + object.total; }, 0)).toFixed(2) }}
                 </span>
             </div>
 
@@ -79,8 +79,8 @@
                 :pdf-quality="2"
                 :manual-pagination="false"
                 pdf-format="a4"
-                pdf-orientation="landscape"
-                pdf-content-width="100%"
+                pdf-orientation="portrait"
+                pdf-content-width="100%" 
                 ref="report"
             >
                 <section slot="pdf-content">
@@ -89,21 +89,31 @@
                             <img src="/images/logo.png" style="width: 100px; height: 100px"/>
                         </div>
 
-                        <div class="w-full text-xl text-center font-bold">
+                        <div class="w-full text-md text-center font-bold">
                             Hydrolite Waterworks and Consumers Association
                         </div>
 
-                        <div class="w-full text-lg text-center font-bold">
+                        <div class="w-full text-md text-center font-bold">
                             Brgy. Lumbang Calzada Calaca, Batangas
                         </div>
 
-                        <div class="w-full text-lg font-bold text-center mt-6">
+                        <div class="w-full text-md font-bold text-center mt-16">
                             {{ getReportLabel(activeTab) }}
                         </div>
 
-                        <table class="w-full mt-4">
+                        <div class="w-full mt-5">
+                            <p class="text-xs float-left">
+                                <span class="font-bold">Personnel:</span> {{ auth.name }}
+                            </p>
+
+                            <p class="text-xs float-right" v-if="date.start && date.end">
+                                <span class="font-bold">Date:</span> {{ new Date(date.start).toDateString().substring(3) }} - {{ new Date(date.end).toDateString().substring(3) }}
+                            </p>
+                        </div>
+
+                        <table class="w-full mt-4 --table mt-12">
                             <tr class="text-center">
-                                <th v-for="column in columns" :key="column">
+                                <th v-for="column in columns" :key="column" class="text-sm --th">
                                     {{ column }}
                                 </th>
                             </tr>
@@ -111,15 +121,15 @@
                             <tr class="text-center"
                                 v-for="(l, index) in rows" :key="l.id"
                             >
-                                <td v-for="(k, i) in keys" :key="i" class="cursor-pointer">
+                                <td v-for="(k, i) in keys" :key="i" class="cursor-pointer text-xs --td">
                                     <span>{{ rows[index][k.label] }}</span>
                                 </td>
                             </tr>
 
                         </table> 
                         <div class="w-full" v-if="activeTab == 'billing' || activeTab == 'payment'">
-                            <span class="float-right text-2xl font-bold py-2">
-                                    Total: ₱ {{ parseFloat(options.total).toFixed(2) }}
+                            <span class="float-right text-md font-bold py-2">
+                                    Total: ₱ {{ parseFloat(rows.reduce((accumulator, object) => { return accumulator + object.total; }, 0)).toFixed(2) }}
                             </span>
                         </div>
                     </div>
@@ -154,7 +164,7 @@ export default {
             date: {
                 start: null,
                 end: null
-            }
+            },
         }
     },
 
@@ -518,4 +528,27 @@ th {
 .--active__color {
     background: #B0BEC5;
 }
+
+.--table {
+    border-collapse: collapse;
+    border-radius: 5px;
+    border-style: hidden;
+    box-shadow: 0 0 0 1px black;
+}
+
+.--td {
+    border: 1px solid black;
+    padding-top: 5px;
+    padding-bottom: 8px;
+}
+
+.--th {
+    border: 1px solid black;
+    background: navy;
+    color: #ffffff;
+    padding-top: 5px;
+    padding-bottom: 8px;
+}
+
+
 </style>

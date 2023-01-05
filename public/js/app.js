@@ -2690,6 +2690,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2803,8 +2825,8 @@ __webpack_require__.r(__webpack_exports__);
       document.getElementById("reference").innerHTML = arg.client.reference;
       document.getElementById("serial").innerHTML = arg.client.serial;
       document.getElementById("penalty").innerHTML = '₱ ' + parseFloat(arg.penalty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      document.getElementById("pres").innerHTML = '₱ ' + parseFloat(arg.pres).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      document.getElementById("prev").innerHTML = '₱ ' + parseFloat(arg.prev).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("pres").innerHTML = arg.pres + ' mᶟ';
+      document.getElementById("prev").innerHTML = arg.prev + ' mᶟ';
       document.getElementById("due_date").innerHTML = arg.client.due_date;
       document.getElementById("total").innerHTML = '₱ ' + parseFloat(arg.total).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       document.getElementById("reader").innerHTML = arg.reader;
@@ -2813,6 +2835,8 @@ __webpack_require__.r(__webpack_exports__);
       document.getElementById("message").innerHTML = arg.message;
       document.getElementById("count").innerHTML = arg.count;
       document.getElementById("charges").innerHTML = '₱ ' + parseFloat(arg.charges).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("current_reading").innerHTML = '₱ ' + parseFloat(arg.current_reading).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("cost").innerHTML = '₱ ' + parseFloat(arg.cost).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       setTimeout(function () {
         self.$refs.receipt.generatePdf();
       }, 3000);
@@ -3566,6 +3590,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3611,7 +3655,7 @@ __webpack_require__.r(__webpack_exports__);
       isViewPayment: false,
       payments: [],
       payment: null,
-      paymentColumns: ['Month', 'Amount', 'Penalty', 'Charges', 'Total Bill', 'Amount Paid', 'Balance', 'Due Date', 'Status'],
+      paymentColumns: ['Month', 'Amount', 'Penalty', 'Charges', 'Total Bill', 'Balance', 'Due Date', 'Status'],
       paymentKeys: [{
         label: 'month'
       }, {
@@ -3623,29 +3667,27 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         label: 'total'
       }, {
-        label: 'added_payment'
-      }, {
         label: 'amount_to_pay'
       }, {
         label: 'due_date'
       }, {
         label: 'status'
       }],
-      otherPaymentColumns: ['Month', 'Amount', 'Penalty', 'Charges', 'Total Bill', 'Amount Paid', 'Status'],
+      otherPaymentColumns: ['Month', 'Amount', 'Penalty', 'Charges', 'Total Bill', 'Amount Paid', 'Payment Date'],
       otherPaymentKeys: [{
         label: 'month'
       }, {
         label: 'amount'
       }, {
-        label: 'penalty_payment'
+        label: 'penalty'
       }, {
         label: 'paid_charges'
       }, {
-        label: 'added_payment'
+        label: 'total'
       }, {
-        label: 'added_payment'
+        label: 'history_payment'
       }, {
-        label: 'status'
+        label: 'payment_date'
       }],
       month: 1,
       paymentAmount: 0,
@@ -3691,7 +3733,8 @@ __webpack_require__.r(__webpack_exports__);
         label: 'December',
         value: 12
       }],
-      availableMonths: []
+      availableMonths: [],
+      histories: []
     };
   },
   mounted: function mounted() {
@@ -3773,6 +3816,8 @@ __webpack_require__.r(__webpack_exports__);
       document.getElementById("previous").innerHTML = arg.previous + ' mᶟ';
       document.getElementById("month").innerHTML = arg.month;
       document.getElementById("charges").innerHTML = arg.charges;
+      document.getElementById("cashier").innerHTML = arg.cashier;
+      document.getElementById("now").innerHTML = arg.now;
       document.getElementById("chargesAmount").innerHTML = '₱ ' + parseFloat(arg.chargesAmount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       document.getElementById("amount_to_pay").innerHTML = '₱ ' + parseFloat(arg.amount_to_pay).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       document.getElementById("amount_paid").innerHTML = '₱ ' + parseFloat(arg.amount_paid).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -3905,7 +3950,7 @@ __webpack_require__.r(__webpack_exports__);
         _this4.payments = response.data.payments;
         _this4.unpaid_total = response.data.total;
         _this4.availableMonths = response.data.months;
-        console.log(_this4.availableMonths);
+        _this4.histories = response.data.histories;
       });
     },
     validate: function validate(evt) {
@@ -4576,6 +4621,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var vue_html2pdf__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue-html2pdf */ "./node_modules/vue-html2pdf/dist/vue-html2pdf.esm.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6333,7 +6388,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.--input[data-v-4c589ab4] {\r\n    width: 100%;\r\n    height: 30px;\r\n    border: 1px solid black;\r\n    border-radius: 5px;\r\n    text-align: center;\n}\n.--btn[data-v-4c589ab4] {\r\n    background: #2B4865;\r\n    border-radius: 10px;\r\n    width: 100%;\r\n    text-align: center;\r\n    color: white;\n}\ntable[data-v-4c589ab4] {\r\n    border-collapse: collapse;\r\n    border-radius: 5px;\r\n    border-style: hidden;\r\n    box-shadow: 0 0 0 1px black;\n}\ntd[data-v-4c589ab4] {\r\n    border: 1px solid black;\r\n    padding-top: 20px;\r\n    padding-bottom: 20px;\n}\nth[data-v-4c589ab4] {\r\n    border: 1px solid black;\r\n    background: \tnavy;\r\n    color: #ffffff;\r\n    padding-top: 20px;\r\n    padding-bottom: 20px;\n}\n.--active__color[data-v-4c589ab4] {\r\n    background: #B0BEC5;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.--input[data-v-4c589ab4] {\r\n    width: 100%;\r\n    height: 30px;\r\n    border: 1px solid black;\r\n    border-radius: 5px;\r\n    text-align: center;\n}\n.--btn[data-v-4c589ab4] {\r\n    background: #2B4865;\r\n    border-radius: 10px;\r\n    width: 100%;\r\n    text-align: center;\r\n    color: white;\n}\ntable[data-v-4c589ab4] {\r\n    border-collapse: collapse;\r\n    border-radius: 5px;\r\n    border-style: hidden;\r\n    box-shadow: 0 0 0 1px black;\n}\ntd[data-v-4c589ab4] {\r\n    border: 1px solid black;\r\n    padding-top: 20px;\r\n    padding-bottom: 20px;\n}\nth[data-v-4c589ab4] {\r\n    border: 1px solid black;\r\n    background: \tnavy;\r\n    color: #ffffff;\r\n    padding-top: 20px;\r\n    padding-bottom: 20px;\n}\n.--active__color[data-v-4c589ab4] {\r\n    background: #B0BEC5;\n}\n.--table[data-v-4c589ab4] {\r\n    border-collapse: collapse;\r\n    border-radius: 5px;\r\n    border-style: hidden;\r\n    box-shadow: 0 0 0 1px black;\n}\n.--td[data-v-4c589ab4] {\r\n    border: 1px solid black;\r\n    padding-top: 5px;\r\n    padding-bottom: 8px;\n}\n.--th[data-v-4c589ab4] {\r\n    border: 1px solid black;\r\n    background: navy;\r\n    color: #ffffff;\r\n    padding-top: 5px;\r\n    padding-bottom: 8px;\n}\r\n\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -49447,7 +49502,7 @@ var render = function() {
                     ],
                     staticClass:
                       "w-full  my-2 --login__register--input text-center text-sm",
-                    attrs: { type: "date", disabled: true },
+                    attrs: { type: "date" },
                     domProps: { value: _vm.form.date },
                     on: {
                       input: function($event) {
@@ -49555,7 +49610,7 @@ var render = function() {
                   },
                   [
                     _c("img", {
-                      staticStyle: { width: "60px", height: "60px" },
+                      staticStyle: { width: "50px", height: "50px" },
                       attrs: { src: "/images/logo.png" }
                     })
                   ]
@@ -49583,7 +49638,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "flex flex-col p-2 w-full h-screen mt-5" },
+                  { staticClass: "flex flex-col p-2 w-full h-screen mt-2" },
                   [
                     _c(
                       "div",
@@ -49611,8 +49666,8 @@ var render = function() {
                       ]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "w-full flex flex-col mt-2" }, [
-                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                    _c("div", { staticClass: "w-full flex flex-col mt-5" }, [
+                      _c("div", { staticClass: "text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Name:")])
                         ]),
@@ -49623,7 +49678,7 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Address:")])
                         ]),
@@ -49636,7 +49691,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "div",
-                        { staticClass: "mt-2 text-lg w-full mb-1 pb-1" },
+                        { staticClass: "mt-2 text-md w-full mb-1 pb-1" },
                         [
                           _c("span", { staticClass: "float-left" }, [
                             _c("b", [_vm._v("Account #:")])
@@ -49652,7 +49707,7 @@ var render = function() {
                       _c(
                         "div",
                         {
-                          staticClass: "mt-2 text-lg w-full mb-1 pb-1",
+                          staticClass: "mt-2 text-md w-full mb-1 pb-1",
                           staticStyle: { "border-bottom": "dashed black" }
                         },
                         [
@@ -49667,7 +49722,7 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Previous Reading:")])
                         ]),
@@ -49678,7 +49733,7 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Present Reading:")])
                         ]),
@@ -49689,7 +49744,7 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-lg w-full mt-10" }, [
+                      _c("div", { staticClass: "mt-2 text-md w-full mt-2" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Consumption:")])
                         ]),
@@ -49700,18 +49755,25 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
-                        _c("span", { staticClass: "float-left" }, [
-                          _c("b", [_vm._v("Penalty(10%):")])
-                        ]),
-                        _vm._v(" "),
-                        _c("span", {
-                          staticClass: "float-right mr-2",
-                          attrs: { id: "penalty" }
-                        })
-                      ]),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-md w-full mt-2 pb-2",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Cubic Meter Cost:")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "cost" }
+                          })
+                        ]
+                      ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Charges:")])
                         ]),
@@ -49722,7 +49784,27 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-md w-full mt-2 pb-2",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Total Current Bill:")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "current_reading" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "html2pdf__page-break mb-5" }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Unpaid Month:")])
                         ]),
@@ -49733,10 +49815,39 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
+                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Penalty(10%):")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "penalty" }
+                        })
+                      ]),
+                      _vm._v(" "),
                       _c(
                         "div",
                         {
-                          staticClass: "mt-2 text-lg w-full mb-1 pb-1 mt-5",
+                          staticClass: "mt-2 text-md w-full mb-1 pb-1 mt-5",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Total Amount Due: ")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "total" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-md w-full mb-1 pb-1 mt-1",
                           staticStyle: { "border-bottom": "dashed black" }
                         },
                         [
@@ -49751,25 +49862,7 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "mt-2 text-lg w-full mb-1 pb-1",
-                          staticStyle: { "border-bottom": "dashed black" }
-                        },
-                        [
-                          _c("span", { staticClass: "float-left" }, [
-                            _c("b", [_vm._v("Total Bill: ")])
-                          ]),
-                          _vm._v(" "),
-                          _c("span", {
-                            staticClass: "float-right mr-2",
-                            attrs: { id: "total" }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-lg w-full" }, [
+                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Meter Reader Name: ")])
                         ]),
@@ -49783,7 +49876,7 @@ var render = function() {
                       _c(
                         "div",
                         {
-                          staticClass: "mt-2 text-lg w-full mb-1 pb-1",
+                          staticClass: "mt-2 text-md w-full mb-1 pb-1",
                           staticStyle: { "border-bottom": "dashed black" }
                         },
                         [
@@ -50608,9 +50701,7 @@ var render = function() {
                                       staticStyle: { width: "98%" },
                                       attrs: {
                                         columns: _vm.otherPaymentColumns,
-                                        rows: _vm.payments.filter(function(x) {
-                                          return x.status == "PAID"
-                                        }),
+                                        rows: _vm.histories,
                                         keys: _vm.otherPaymentKeys,
                                         selected: _vm.payment
                                       },
@@ -51667,6 +51758,21 @@ var render = function() {
                         { staticClass: "mt-2 text-lg w-full mb-1 pb-1" },
                         [
                           _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Date:")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "now" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "mt-2 text-lg w-full mb-1 pb-1" },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
                             _c("b", [_vm._v("Account #:")])
                           ]),
                           _vm._v(" "),
@@ -51710,6 +51816,21 @@ var render = function() {
                           _c("span", {
                             staticClass: "float-right mr-2",
                             attrs: { id: "serial" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "mt-2 text-lg w-full mb-1 pb-1" },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Cashier:")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "cashier" }
                           })
                         ]
                       ),
@@ -51806,7 +51927,7 @@ var render = function() {
                         },
                         [
                           _c("span", { staticClass: "float-left" }, [
-                            _c("b", [_vm._v("Total Bill:")])
+                            _c("b", [_vm._v("Total Balance:")])
                           ]),
                           _vm._v(" "),
                           _c("span", {
@@ -53402,7 +53523,13 @@ var render = function() {
                 [
                   _vm._v(
                     "\n                    Total: ₱ " +
-                      _vm._s(parseFloat(_vm.options.total).toFixed(2)) +
+                      _vm._s(
+                        parseFloat(
+                          _vm.rows.reduce(function(accumulator, object) {
+                            return accumulator + object.total
+                          }, 0)
+                        ).toFixed(2)
+                      ) +
                       "\n            "
                   )
                 ]
@@ -53426,7 +53553,7 @@ var render = function() {
               "pdf-quality": 2,
               "manual-pagination": false,
               "pdf-format": "a4",
-              "pdf-orientation": "landscape",
+              "pdf-orientation": "portrait",
               "pdf-content-width": "100%"
             }
           },
@@ -53449,7 +53576,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "w-full text-xl text-center font-bold" },
+                    { staticClass: "w-full text-md text-center font-bold" },
                     [
                       _vm._v(
                         "\n                        Hydrolite Waterworks and Consumers Association\n                    "
@@ -53459,7 +53586,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
-                    { staticClass: "w-full text-lg text-center font-bold" },
+                    { staticClass: "w-full text-md text-center font-bold" },
                     [
                       _vm._v(
                         "\n                        Brgy. Lumbang Calzada Calaca, Batangas\n                    "
@@ -53470,7 +53597,7 @@ var render = function() {
                   _c(
                     "div",
                     {
-                      staticClass: "w-full text-lg font-bold text-center mt-6"
+                      staticClass: "w-full text-md font-bold text-center mt-16"
                     },
                     [
                       _vm._v(
@@ -53481,21 +53608,61 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
+                  _c("div", { staticClass: "w-full mt-5" }, [
+                    _c("p", { staticClass: "text-xs float-left" }, [
+                      _c("span", { staticClass: "font-bold" }, [
+                        _vm._v("Personnel:")
+                      ]),
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.auth.name) +
+                          "\n                        "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _vm.date.start && _vm.date.end
+                      ? _c("p", { staticClass: "text-xs float-right" }, [
+                          _c("span", { staticClass: "font-bold" }, [
+                            _vm._v("Date:")
+                          ]),
+                          _vm._v(
+                            " " +
+                              _vm._s(
+                                new Date(_vm.date.start)
+                                  .toDateString()
+                                  .substring(3)
+                              ) +
+                              " - " +
+                              _vm._s(
+                                new Date(_vm.date.end)
+                                  .toDateString()
+                                  .substring(3)
+                              ) +
+                              "\n                        "
+                          )
+                        ])
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "table",
-                    { staticClass: "w-full mt-4" },
+                    { staticClass: "w-full mt-4 --table mt-12" },
                     [
                       _c(
                         "tr",
                         { staticClass: "text-center" },
                         _vm._l(_vm.columns, function(column) {
-                          return _c("th", { key: column }, [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(column) +
-                                "\n                            "
-                            )
-                          ])
+                          return _c(
+                            "th",
+                            { key: column, staticClass: "text-sm --th" },
+                            [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(column) +
+                                  "\n                            "
+                              )
+                            ]
+                          )
                         }),
                         0
                       ),
@@ -53507,7 +53674,10 @@ var render = function() {
                           _vm._l(_vm.keys, function(k, i) {
                             return _c(
                               "td",
-                              { key: i, staticClass: "cursor-pointer" },
+                              {
+                                key: i,
+                                staticClass: "cursor-pointer text-xs --td"
+                              },
                               [
                                 _c("span", [
                                   _vm._v(_vm._s(_vm.rows[index][k.label]))
@@ -53526,14 +53696,20 @@ var render = function() {
                     ? _c("div", { staticClass: "w-full" }, [
                         _c(
                           "span",
-                          {
-                            staticClass: "float-right text-2xl font-bold py-2"
-                          },
+                          { staticClass: "float-right text-md font-bold py-2" },
                           [
                             _vm._v(
                               "\n                                Total: ₱ " +
                                 _vm._s(
-                                  parseFloat(_vm.options.total).toFixed(2)
+                                  parseFloat(
+                                    _vm.rows.reduce(function(
+                                      accumulator,
+                                      object
+                                    ) {
+                                      return accumulator + object.total
+                                    },
+                                    0)
+                                  ).toFixed(2)
                                 ) +
                                 "\n                        "
                             )

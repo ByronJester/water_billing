@@ -218,7 +218,7 @@ export default {
         },
 
         openStatusModal(){
-            var modal = document.getElementById("statusModal");
+            var modal = document.getElementById("statusModal"); 
             modal.style.display = "block";
         },
         closeStatusModal(){

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
-class ClientPayment extends Model
+class PaymentHistory extends Model
 {
     use HasFactory;
 
@@ -27,7 +27,8 @@ class ClientPayment extends Model
         'added_payment', 
         'paid_charges',
         'client_name',
-        'client_reference'
+        'client_reference',
+        'other_added_payment'
     ];
 
     public function getClientNameAttribute()
@@ -91,9 +92,15 @@ class ClientPayment extends Model
     }
 
     public function getAddedPaymentAttribute()
-    {
+    {   
         return  $this->payment + $this->penalty_payment + $this->paid_charges;
     }
+
+    public function getOtherAddedPaymentAttribute()
+    {   
+        return  $this->added_payment - $this->paid_charges;
+    }
+
 
     public function getTotalAttribute()
     {
@@ -108,5 +115,4 @@ class ClientPayment extends Model
 
         return ($this->amount + $this->penalty + $this->charges) - ($this->payment + $this->penalty_payment + ($this->paid_charges ? 0 : $this->paid_charges));
     }
-
 }

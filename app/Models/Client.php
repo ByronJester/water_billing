@@ -164,7 +164,7 @@ class Client extends Model
 
     public function getSerialDisplayAttribute($value)
     {
-        return $this->serial . ' - ' . $this->name;
+        return $this->serial . ' - ' . $this->fullname;
     }
 
     public function getLatestConsumedAttribute($value)

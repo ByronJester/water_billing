@@ -14,6 +14,7 @@ initialStuff() {
     php artisan event:cache; \
     php artisan config:cache; \
     php artisan route:cache;
+}
 
 if [ "$1" != "" ]; then
     exec "$@"

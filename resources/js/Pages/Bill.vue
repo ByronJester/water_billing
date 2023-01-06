@@ -92,7 +92,7 @@
                 ref="receipt"
             >
                 <section slot="pdf-content">
-                    <div class="w-full flex justify-center items-center mt-2">
+                    <div class="w-full flex justify-center items-center">
                         <img src="/images/logo.png" style="width: 50px; height: 50px"/>
                     </div>
 
@@ -104,12 +104,12 @@
                         Brgy. Lumbang Calzada Calaca, Batangas
                     </div>
 
-                    <div class="flex flex-col p-2 w-full h-screen mt-2">
+                    <div class="flex flex-col p-2 w-full h-screen">
                         <div class="w-full text-center text-md font-bold">
                            Billing Notice
                         </div>
 
-                        <div class="w-full text-center text-md mt-2 font-bold">
+                        <div class="w-full text-center text-md font-bold">
                            FOR THE MONTH OF <span id="month" class="mx-1"></span> <span id="year"></span>
                         </div>
 
@@ -124,7 +124,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-md w-full">
+                            <div class="text-md w-full">
                                 <span class="float-left">
                                     <b>Address:</b>
                                 </span>
@@ -134,7 +134,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-md w-full mb-1 pb-1">
+                            <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Account #:</b>
                                 </span>
@@ -154,7 +154,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-md w-full">
+                            <div class="text-md w-full">
                                 <span class="float-left">
                                     <b>Previous Reading:</b> 
                                 </span>
@@ -164,7 +164,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-md w-full">
+                            <div class="text-md w-full">
                                 <span class="float-left">
                                     <b>Present Reading:</b>
                                 </span>
@@ -174,7 +174,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-md w-full mt-2">
+                            <div class=" text-md w-full mt-2">
                                 <span class="float-left">
                                     <b>Consumption:</b>
                                 </span>
@@ -184,7 +184,7 @@
                                 </span>
                             </div>
 
-                            <div class="mt-2 text-md w-full mt-2 pb-2" style="border-bottom: dashed black;">
+                            <div class="text-md w-full pb-2" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Cubic Meter Cost:</b>
                                 </span>

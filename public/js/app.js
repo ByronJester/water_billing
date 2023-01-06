@@ -49650,9 +49650,7 @@ var render = function() {
               [
                 _c(
                   "div",
-                  {
-                    staticClass: "w-full flex justify-center items-center mt-2"
-                  },
+                  { staticClass: "w-full flex justify-center items-center" },
                   [
                     _c("img", {
                       staticStyle: { width: "50px", height: "50px" },
@@ -49683,7 +49681,7 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "flex flex-col p-2 w-full h-screen mt-2" },
+                  { staticClass: "flex flex-col p-2 w-full h-screen" },
                   [
                     _c(
                       "div",
@@ -49697,9 +49695,7 @@ var render = function() {
                     _vm._v(" "),
                     _c(
                       "div",
-                      {
-                        staticClass: "w-full text-center text-md mt-2 font-bold"
-                      },
+                      { staticClass: "w-full text-center text-md font-bold" },
                       [
                         _vm._v("\n                       FOR THE MONTH OF "),
                         _c("span", {
@@ -49723,7 +49719,7 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
+                      _c("div", { staticClass: "text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Address:")])
                         ]),
@@ -49734,20 +49730,16 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "mt-2 text-md w-full mb-1 pb-1" },
-                        [
-                          _c("span", { staticClass: "float-left" }, [
-                            _c("b", [_vm._v("Account #:")])
-                          ]),
-                          _vm._v(" "),
-                          _c("span", {
-                            staticClass: "float-right mr-2",
-                            attrs: { id: "reference" }
-                          })
-                        ]
-                      ),
+                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
+                        _c("span", { staticClass: "float-left" }, [
+                          _c("b", [_vm._v("Account #:")])
+                        ]),
+                        _vm._v(" "),
+                        _c("span", {
+                          staticClass: "float-right mr-2",
+                          attrs: { id: "reference" }
+                        })
+                      ]),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -49767,7 +49759,7 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
+                      _c("div", { staticClass: "text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Previous Reading:")])
                         ]),
@@ -49778,7 +49770,7 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-md w-full" }, [
+                      _c("div", { staticClass: "text-md w-full" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Present Reading:")])
                         ]),
@@ -49789,7 +49781,7 @@ var render = function() {
                         })
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-md w-full mt-2" }, [
+                      _c("div", { staticClass: " text-md w-full mt-2" }, [
                         _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Consumption:")])
                         ]),
@@ -49803,7 +49795,7 @@ var render = function() {
                       _c(
                         "div",
                         {
-                          staticClass: "mt-2 text-md w-full mt-2 pb-2",
+                          staticClass: "text-md w-full pb-2",
                           staticStyle: { "border-bottom": "dashed black" }
                         },
                         [

@@ -192,6 +192,8 @@ class ClientController extends Controller
         $consumed_cubic_meter =  ($request->consumed_cubic_meter - $bills->sum('consumed_cubic_meter'));
         $waterBillAmount = $consumed_cubic_meter * $waterBill->amount;
 
+        $previousBill = $bills->sum('amount');
+
         $totalAmount = $waterBillAmount;
 
         $penalty = 0;
@@ -294,12 +296,13 @@ class ClientController extends Controller
             'prev' => $bills->sum('consumed_cubic_meter'),
             'consumption' => $consumed_cubic_meter,
             'current_reading' => $waterBillAmount,
+            'previous_bill' => $previousBill,
             'cost' => $waterBill->amount,
             'due_date' => $due_date,
             'total' => $xxx->sum('amount_to_pay'),
             'date' => $date->isoFormat('LL'),
             'reader' => $auth->name,
-            'month' => $month,
+            'month' => $month, 
             'year' => $year,
             'count' => count($bills) . ' month(s)',
             'message' => count($bills) >= 2  ? "WARNING FOR DISCONNECTION. \r\n Please settle your balance." : '',
@@ -324,6 +327,8 @@ class ClientController extends Controller
         $auth = Auth::user();
 
         $message = null;
+
+        $isPaid = false;
 
         $client_id = $request->client_id;
         $payment_amount = $request->paymentAmount;
@@ -380,6 +385,8 @@ class ClientController extends Controller
                 $history['payment_date'] = Carbon::now();
 
                 PaymentHistory::forceCreate($history);
+
+                $isPaid = true;
             } else {
                 
                 if($payment_amount < (($payment->amount - $payment->payment) + $charges)) {
@@ -422,7 +429,7 @@ class ClientController extends Controller
                 'present' => count($payments) > 0 ? $payments[0]['consumed_cubic_meter'] : 0,
                 'previous' => count($payments) > 1 ? $payments[1]['consumed_cubic_meter'] : 0,
                 'charges' => implode(", ", $stringCharges->toArray()),
-                'chargesAmount' => $chargesAmount > 0 ? 0 : $chargesAmount,
+                'chargesAmount' => !!$isPaid ? 0 : $chargesAmount,
                 'amount_to_pay' => $payment->amount_to_pay,
                 'total' => $x->sum('amount_to_pay'), 
                 'amount_paid' => $payment_amount,

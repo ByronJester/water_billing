@@ -2709,6 +2709,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2833,6 +2843,7 @@ __webpack_require__.r(__webpack_exports__);
       document.getElementById("count").innerHTML = arg.count;
       document.getElementById("charges").innerHTML = '₱ ' + parseFloat(arg.charges).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       document.getElementById("current_reading").innerHTML = '₱ ' + parseFloat(arg.current_reading).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("previous_bill").innerHTML = '₱ ' + parseFloat(arg.previous_bill).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       document.getElementById("cost").innerHTML = '₱ ' + parseFloat(arg.cost).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       setTimeout(function () {
         self.$refs.receipt.generatePdf();
@@ -3818,9 +3829,9 @@ __webpack_require__.r(__webpack_exports__);
       document.getElementById("reference").innerHTML = arg.reference;
       document.getElementById("name").innerHTML = arg.name;
       document.getElementById("address").innerHTML = arg.address;
-      document.getElementById("serial").innerHTML = arg.serial;
-      document.getElementById("present").innerHTML = arg.present + ' mᶟ';
-      document.getElementById("previous").innerHTML = arg.previous + ' mᶟ';
+      document.getElementById("serial").innerHTML = arg.serial; // document.getElementById("present").innerHTML = arg.present + ' mᶟ';
+      // document.getElementById("previous").innerHTML = arg.previous + ' mᶟ';
+
       document.getElementById("month").innerHTML = arg.month;
       document.getElementById("charges").innerHTML = arg.charges;
       document.getElementById("cashier").innerHTML = arg.cashier;
@@ -3828,8 +3839,8 @@ __webpack_require__.r(__webpack_exports__);
       document.getElementById("chargesAmount").innerHTML = '₱ ' + parseFloat(arg.chargesAmount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // document.getElementById("amount_to_pay").innerHTML = '₱ ' + (parseFloat(arg.amount_to_pay).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
       document.getElementById("amount_paid").innerHTML = '₱ ' + parseFloat(arg.amount_paid).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      document.getElementById("penalty").innerHTML = '₱ ' + parseFloat(arg.penalty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      document.getElementById("total").innerHTML = '₱ ' + parseFloat(arg.total).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      document.getElementById("penalty").innerHTML = '₱ ' + parseFloat(arg.penalty).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // document.getElementById("total").innerHTML = '₱ ' + (parseFloat(arg.total).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
       setTimeout(function () {
         self.$refs.or.generatePdf();
       }, 3000);
@@ -49832,6 +49843,24 @@ var render = function() {
                           _c("span", {
                             staticClass: "float-right mr-2",
                             attrs: { id: "current_reading" }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "mt-2 text-md w-full mt-2 pb-2",
+                          staticStyle: { "border-bottom": "dashed black" }
+                        },
+                        [
+                          _c("span", { staticClass: "float-left" }, [
+                            _c("b", [_vm._v("Previous Bill:")])
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "float-right mr-2",
+                            attrs: { id: "previous_bill" }
                           })
                         ]
                       ),

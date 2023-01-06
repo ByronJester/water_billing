@@ -214,6 +214,16 @@
                                 </span>
                             </div>
 
+                            <div class="mt-2 text-md w-full mt-2 pb-2" style="border-bottom: dashed black;">
+                                <span class="float-left">
+                                    <b>Previous Bill:</b> 
+                                </span>
+
+                                <span class="float-right mr-2" id="previous_bill">
+
+                                </span>
+                            </div>
+
                             <div class="mt-2 text-md w-full">
                                 <span class="float-left">
                                     <b>Unpaid Month:</b>
@@ -444,6 +454,7 @@ export default {
             document.getElementById("count").innerHTML = arg.count;
             document.getElementById("charges").innerHTML = '₱ ' + (parseFloat(arg.charges).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("current_reading").innerHTML = '₱ ' + (parseFloat(arg.current_reading).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            document.getElementById("previous_bill").innerHTML = '₱ ' + (parseFloat(arg.previous_bill).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("cost").innerHTML = '₱ ' + (parseFloat(arg.cost).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
             setTimeout(() => {

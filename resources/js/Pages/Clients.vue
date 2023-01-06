@@ -878,8 +878,8 @@ export default {
             document.getElementById("name").innerHTML = arg.name;
             document.getElementById("address").innerHTML = arg.address;
             document.getElementById("serial").innerHTML = arg.serial;
-            document.getElementById("present").innerHTML = arg.present + ' mᶟ';
-            document.getElementById("previous").innerHTML = arg.previous + ' mᶟ';
+            // document.getElementById("present").innerHTML = arg.present + ' mᶟ';
+            // document.getElementById("previous").innerHTML = arg.previous + ' mᶟ';
             document.getElementById("month").innerHTML = arg.month;
             document.getElementById("charges").innerHTML = arg.charges;
             document.getElementById("cashier").innerHTML = arg.cashier;
@@ -888,7 +888,7 @@ export default {
             // document.getElementById("amount_to_pay").innerHTML = '₱ ' + (parseFloat(arg.amount_to_pay).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("amount_paid").innerHTML = '₱ ' + (parseFloat(arg.amount_paid).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             document.getElementById("penalty").innerHTML = '₱ ' + (parseFloat(arg.penalty).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            document.getElementById("total").innerHTML = '₱ ' + (parseFloat(arg.total).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            // document.getElementById("total").innerHTML = '₱ ' + (parseFloat(arg.total).toFixed(2)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 
             setTimeout(() => {

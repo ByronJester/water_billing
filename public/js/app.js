@@ -4770,6 +4770,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -51856,35 +51882,6 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-lg w-full mt-5" }, [
                         _c("span", { staticClass: "float-left" }, [
-                          _c("b", [_vm._v("Present Reading:")])
-                        ]),
-                        _vm._v(" "),
-                        _c("span", {
-                          staticClass: "float-right mr-2",
-                          attrs: { id: "present" }
-                        })
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "mt-2 text-lg w-full pb-5",
-                          staticStyle: { "border-bottom": "dashed black" }
-                        },
-                        [
-                          _c("span", { staticClass: "float-left" }, [
-                            _c("b", [_vm._v("Previous Reading:")])
-                          ]),
-                          _vm._v(" "),
-                          _c("span", {
-                            staticClass: "float-right mr-2",
-                            attrs: { id: "previous" }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "mt-2 text-lg w-full mt-5" }, [
-                        _c("span", { staticClass: "float-left" }, [
                           _c("b", [_vm._v("Other Charge(s):")])
                         ]),
                         _vm._v(" "),
@@ -51926,24 +51923,6 @@ var render = function() {
                           attrs: { id: "amount_paid" }
                         })
                       ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "mt-2 text-lg w-full mt-5 pb-5",
-                          staticStyle: { "border-bottom": "dashed black" }
-                        },
-                        [
-                          _c("span", { staticClass: "float-left" }, [
-                            _c("b", [_vm._v("Total Bill:")])
-                          ]),
-                          _vm._v(" "),
-                          _c("span", {
-                            staticClass: "float-right mr-2",
-                            attrs: { id: "total" }
-                          })
-                        ]
-                      ),
                       _vm._v(" "),
                       _c("div", { staticClass: "mt-2 text-md w-full mt-5" }, [
                         _vm._v(
@@ -53501,26 +53480,68 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "w-full mt-2" },
-          [
-            _c("Table", {
-              attrs: {
-                columns: _vm.columns,
-                rows: _vm.rows,
-                keys: _vm.keys,
-                selected: _vm.selected
-              },
-              on: {
-                "update:selected": function($event) {
-                  _vm.selected = $event
-                }
-              }
-            })
-          ],
-          1
-        ),
+        _c("div", { staticClass: "w-full mt-2" }, [
+          _c(
+            "table",
+            { staticClass: "w-full mt-4 --table mt-12" },
+            [
+              _c(
+                "tr",
+                { staticClass: "text-center" },
+                _vm._l(_vm.columns, function(column) {
+                  return _c(
+                    "th",
+                    { key: column, staticClass: "text-sm --th" },
+                    [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(column) +
+                          "\n                    "
+                      )
+                    ]
+                  )
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _vm._l(_vm.rows, function(l, index) {
+                return _c(
+                  "tr",
+                  { key: l.id, staticClass: "text-center" },
+                  _vm._l(_vm.keys, function(k, i) {
+                    return _c(
+                      "td",
+                      { key: i, staticClass: "cursor-pointer text-xs --td" },
+                      [
+                        k.label == "total"
+                          ? _c("span", [
+                              _vm._v(
+                                "\n                            ₱ " +
+                                  _vm._s(
+                                    parseFloat(
+                                      _vm.rows[index][k.label]
+                                    ).toFixed(2)
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          : _c("span", [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(_vm.rows[index][k.label]) +
+                                  "\n                        "
+                              )
+                            ])
+                      ]
+                    )
+                  }),
+                  0
+                )
+              })
+            ],
+            2
+          )
+        ]),
         _vm._v(" "),
         (_vm.activeTab == "billing" || _vm.activeTab == "payment") &&
         _vm.rows.length > 0
@@ -53687,9 +53708,25 @@ var render = function() {
                                 staticClass: "cursor-pointer text-xs --td"
                               },
                               [
-                                _c("span", [
-                                  _vm._v(_vm._s(_vm.rows[index][k.label]))
-                                ])
+                                k.label == "total"
+                                  ? _c("span", [
+                                      _vm._v(
+                                        "\n                                    ₱ " +
+                                          _vm._s(
+                                            parseFloat(
+                                              _vm.rows[index][k.label]
+                                            ).toFixed(2)
+                                          ) +
+                                          "\n                                "
+                                      )
+                                    ])
+                                  : _c("span", [
+                                      _vm._v(
+                                        "\n                                    " +
+                                          _vm._s(_vm.rows[index][k.label]) +
+                                          "\n                                "
+                                      )
+                                    ])
                               ]
                             )
                           }),

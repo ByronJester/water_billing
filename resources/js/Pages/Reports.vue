@@ -61,7 +61,28 @@
             </div>
 
             <div class="w-full mt-2">
-                <Table :columns="columns" :rows="rows" :keys="keys" :selected.sync="selected"/>
+                <!-- <Table :columns="columns" :rows="rows" :keys="keys" :selected.sync="selected"/> -->
+                <table class="w-full mt-4 --table mt-12">
+                    <tr class="text-center">
+                        <th v-for="column in columns" :key="column" class="text-sm --th">
+                            {{ column }}
+                        </th>
+                    </tr>
+
+                    <tr class="text-center"
+                        v-for="(l, index) in rows" :key="l.id"
+                    >
+                        <td v-for="(k, i) in keys" :key="i" class="cursor-pointer text-xs --td">
+                            <span v-if="k.label == 'total'">
+                                ₱ {{ parseFloat(rows[index][k.label]).toFixed(2) }}
+                            </span>
+
+                            <span v-else>
+                                {{ rows[index][k.label ]}}
+                            </span>
+                        </td>
+                    </tr>
+                </table> 
             </div>
             <div class="w-full" v-if="(activeTab == 'billing' || activeTab == 'payment') && rows.length > 0">
                 <span class="float-right text-2xl font-bold py-2">
@@ -122,10 +143,15 @@
                                 v-for="(l, index) in rows" :key="l.id"
                             >
                                 <td v-for="(k, i) in keys" :key="i" class="cursor-pointer text-xs --td">
-                                    <span>{{ rows[index][k.label] }}</span>
+                                    <span v-if="k.label == 'total'">
+                                        ₱ {{ parseFloat(rows[index][k.label]).toFixed(2) }}
+                                    </span>
+
+                                    <span v-else>
+                                        {{ rows[index][k.label ]}}
+                                    </span>
                                 </td>
                             </tr>
-
                         </table> 
                         <div class="w-full" v-if="activeTab == 'billing' || activeTab == 'payment'">
                             <span class="float-right text-md font-bold py-2">

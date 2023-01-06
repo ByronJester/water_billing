@@ -495,7 +495,7 @@
                                 </span>
                             </div>
                             
-                            <div class="mt-2 text-lg w-full mt-5">
+                            <!-- <div class="mt-2 text-lg w-full mt-5">
                                 <span class="float-left">
                                     <b>Present Reading:</b>
                                 </span>
@@ -513,7 +513,7 @@
                                 <span class="float-right mr-2" id="previous">
 
                                 </span>
-                            </div>
+                            </div> -->
 
                             <div class="mt-2 text-lg w-full mt-5">
                                 <span class="float-left">
@@ -568,7 +568,7 @@
                                 </span>
                             </div> -->
 
-                            <div class="mt-2 text-lg w-full mt-5 pb-5" style="border-bottom: dashed black;">
+                            <!-- <div class="mt-2 text-lg w-full mt-5 pb-5" style="border-bottom: dashed black;">
                                 <span class="float-left">
                                     <b>Total Bill:</b>
                                 </span>
@@ -576,7 +576,7 @@
                                 <span class="float-right mr-2" id="total">
 
                                 </span>
-                            </div>
+                            </div> -->
                             
 
                             <div class="mt-2 text-md w-full mt-5">

@@ -397,7 +397,7 @@ class ClientController extends Controller
                         PaymentHistory::forceCreate($history);
                     } else {
                         $message = 'Minimum amount must be equal to utility charges (' . $charges . ').';
-                    }
+                    } 
                     
                 } else {
                     $message = 'Payment exceeded to existing balance.';
@@ -422,7 +422,7 @@ class ClientController extends Controller
                 'present' => count($payments) > 0 ? $payments[0]['consumed_cubic_meter'] : 0,
                 'previous' => count($payments) > 1 ? $payments[1]['consumed_cubic_meter'] : 0,
                 'charges' => implode(", ", $stringCharges->toArray()),
-                'chargesAmount' => $chargesAmount,
+                'chargesAmount' => $chargesAmount > 0 ? 0 : $chargesAmount,
                 'amount_to_pay' => $payment->amount_to_pay,
                 'total' => $x->sum('amount_to_pay'), 
                 'amount_paid' => $payment_amount,

@@ -428,7 +428,7 @@ class ClientController extends Controller
                 'month' => $this->getMonth($month),
                 'present' => count($payments) > 0 ? $payments[0]['consumed_cubic_meter'] : 0,
                 'previous' => count($payments) > 1 ? $payments[1]['consumed_cubic_meter'] : 0,
-                'charges' => implode(", ", $stringCharges->toArray()),
+                'charges' => !!$isPaid ? "" : implode(", ", $stringCharges->toArray()),
                 'chargesAmount' => !!$isPaid ? 0 : $chargesAmount,
                 'amount_to_pay' => $payment->amount_to_pay,
                 'total' => $x->sum('amount_to_pay'), 
